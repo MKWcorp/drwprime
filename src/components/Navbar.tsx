@@ -10,8 +10,9 @@ export default function Navbar() {
             src="/drwprime-logo.png" 
             alt="DRW Prime Logo" 
             className="nav-logo"
-            width={120}
-            height={40}
+            width={150}
+            height={50}
+            style={{ width: 'auto', height: '40px', maxWidth: '150px' }}
           />
         </Link>
         <ul className="nav-menu">

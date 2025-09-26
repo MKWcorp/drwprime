@@ -38,6 +38,9 @@ body {
 
 .nav-logo {
   height: 40px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
 }
 
 .nav-menu {
@@ -616,7 +619,10 @@ footer {
 
 .footer-logo {
   height: 60px;
+  width: auto;
+  max-width: 180px;
   margin-bottom: 20px;
+  object-fit: contain;
 }
 
 footer p {
@@ -626,6 +632,17 @@ footer p {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  /* Logo responsiveness */
+  .nav-logo {
+    height: 32px;
+    max-width: 120px;
+  }
+  
+  .footer-logo {
+    height: 48px;
+    max-width: 140px;
+  }
+  
   /* Gallery responsiveness */
   .gallery-grid {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
