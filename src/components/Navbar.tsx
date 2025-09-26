@@ -1,14 +1,17 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="nav-container">
         <Link href="/">
-          <img 
+          <Image 
             src="/drwprime-logo.png" 
             alt="DRW Prime Logo" 
             className="nav-logo"
+            width={120}
+            height={40}
           />
         </Link>
         <ul className="nav-menu">

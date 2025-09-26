@@ -1,8 +1,10 @@
+import Image from 'next/image';
+
 export default function Footer() {
   return (
     <footer>
       <div className="footer-content">
-        <img src="/drwprime-logo.png" alt="DRW Prime Logo" className="footer-logo" />
+        <Image src="/drwprime-logo.png" alt="DRW Prime Logo" className="footer-logo" width={120} height={60} />
         <p>&copy; 2025 DRW Prime. All rights reserved.</p>
         <p>Menghadirkan &apos;The Art of Timeless Beauty&apos; untuk wanita Indonesia</p>
       </div>

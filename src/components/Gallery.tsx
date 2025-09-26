@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function Gallery() {
   const galleryImages = [
     { src: "/drwprime-faceside.png", alt: "Fasad Klinik DRW Prime" },
@@ -18,7 +20,7 @@ export default function Gallery() {
       <div className="gallery-grid">
         {galleryImages.map((image, index) => (
           <a key={index} href={image.src} data-fancybox="gallery">
-            <img src={image.src} alt={image.alt} />
+            <Image src={image.src} alt={image.alt} width={300} height={300} />
           </a>
         ))}
       </div>

@@ -1,22 +1,29 @@
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import Stats from "@/components/Stats";
+import Excellence from "@/components/Excellence";
+import Treatments from "@/components/Treatments";
+import Gallery from "@/components/Gallery";
+import Society from "@/components/Society";
+import Values from "@/components/Values";
+import Testimonials from "@/components/Testimonials";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
+
 export default function Home() {
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      backgroundColor: '#0a0a0a', 
-      color: '#d4af37',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: 'Inter, sans-serif'
-    }}>
-      <div style={{ textAlign: 'center' }}>
-        <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>DRW Prime</h1>
-        <p style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>The Art of Timeless Beauty</p>
-        <p>Premium Beauty & Wellness Center</p>
-        <p style={{ marginTop: '2rem', fontSize: '0.9rem', opacity: 0.7 }}>
-          Website is loading components...
-        </p>
-      </div>
-    </div>
+    <main className="min-h-screen bg-black text-white overflow-x-hidden">
+      <Navbar />
+      <Hero />
+      <Stats />
+      <Excellence />
+      <Treatments />
+      <Gallery />
+      <Society />
+      <Values />
+      <Testimonials />
+      <Contact />
+      <Footer />
+    </main>
   );
 }
