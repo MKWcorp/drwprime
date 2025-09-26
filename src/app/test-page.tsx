@@ -1,4 +1,4 @@
-export default function Home() {
+export default function TestPage() {
   return (
     <div style={{ 
       minHeight: '100vh', 
@@ -11,11 +11,8 @@ export default function Home() {
     }}>
       <div style={{ textAlign: 'center' }}>
         <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>DRW Prime</h1>
-        <p style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>The Art of Timeless Beauty</p>
-        <p>Premium Beauty & Wellness Center</p>
-        <p style={{ marginTop: '2rem', fontSize: '0.9rem', opacity: 0.7 }}>
-          Website is loading components...
-        </p>
+        <p style={{ fontSize: '1.2rem' }}>Website is loading...</p>
+        <p>The Art of Timeless Beauty</p>
       </div>
     </div>
   );
