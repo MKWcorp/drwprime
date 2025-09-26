@@ -1,10 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  trailingSlash: false,
-  images: {
-    unoptimized: true
-  }
+  // Empty config - let Next.js handle everything with defaults
 };
 
 export default nextConfig;
