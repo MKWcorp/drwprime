@@ -21,7 +21,7 @@ export default function Testimonials() {
       <div className="testimonials-grid">
         {testimonials.map((testimonial, index) => (
           <div key={index} className="testimonial-item">
-            <p>"{testimonial.quote}"</p>
+            <p>&ldquo;{testimonial.quote}&rdquo;</p>
             <div className="testimonial-author">{testimonial.author}</div>
           </div>
         ))}
