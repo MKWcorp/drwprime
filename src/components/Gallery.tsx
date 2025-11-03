@@ -15,26 +15,41 @@ export default function Gallery() {
   ];
 
   return (
-    <section id="gallery" className="py-20 px-5 bg-dark/50">
-      <div className="max-w-7xl mx-auto">
+    <section id="gallery" className="py-20 bg-dark/50 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-5">
         <h2 className="font-playfair text-4xl md:text-5xl font-bold text-primary text-center mb-16">
           GALERI
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      </div>
+      
+      {/* Horizontal Scroll Gallery */}
+      <div className="relative">
+        <div className="flex gap-6 overflow-x-auto pb-4 px-5 md:px-10 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {galleryImages.map((image, index) => (
             <div 
               key={index} 
-              className="relative aspect-square overflow-hidden rounded-lg group cursor-pointer"
+              className="flex-shrink-0 w-64 h-64 md:w-80 md:h-80 relative group cursor-pointer"
             >
-              <Image 
-                src={image.src} 
-                alt={image.alt} 
-                fill
-                className="object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* Gold Circle Frame */}
+              <div className="absolute inset-0 rounded-full border-4 border-primary shadow-lg shadow-primary/30 z-10 group-hover:scale-105 transition-transform duration-300" />
+              
+              {/* Image Container */}
+              <div className="absolute inset-2 rounded-full overflow-hidden">
+                <Image 
+                  src={image.src} 
+                  alt={image.alt} 
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-all duration-300" />
+              </div>
             </div>
           ))}
+        </div>
+        
+        {/* Scroll Indicator */}
+        <div className="text-center mt-6">
+          <p className="text-white/50 text-sm">← Geser untuk melihat lebih banyak →</p>
         </div>
       </div>
     </section>

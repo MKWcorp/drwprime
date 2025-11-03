@@ -25,7 +25,7 @@ export default function TreatmentsPage() {
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
   const handleWhatsAppBooking = (treatmentName: string) => {
-    const message = encodeURIComponent(`Saya ingin booking untuk perawatan ini: ${treatmentName}`);
+    const message = encodeURIComponent(`Booking ${treatmentName}`);
     const whatsappUrl = `${treatmentsData.whatsapp.url}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   };
@@ -73,9 +73,10 @@ export default function TreatmentsPage() {
         </section>
 
         {/* Category Navigation */}
-        <section className="py-10 px-5 bg-[#0f0f0f]/80 border-b border-primary/10 sticky top-[70px] z-50 backdrop-blur-md">
+        <section className="py-6 md:py-10 px-5 bg-[#0f0f0f]/80 border-b border-primary/10 sticky top-[70px] z-50 backdrop-blur-md">
           <div className="max-w-7xl mx-auto">
-            <div className="flex gap-4 flex-wrap justify-center">
+            {/* Desktop: Flex wrap center */}
+            <div className="hidden md:flex gap-4 flex-wrap justify-center">
               <button
                 className={`px-8 py-3 rounded-lg font-semibold text-sm tracking-wide uppercase transition-all duration-300 ${
                   activeCategory === 'all'
@@ -100,6 +101,36 @@ export default function TreatmentsPage() {
                   {category.name}
                 </button>
               ))}
+            </div>
+
+            {/* Mobile: Horizontal scroll */}
+            <div className="md:hidden overflow-x-auto hide-scrollbar">
+              <div className="flex gap-3 pb-2 min-w-max">
+                <button
+                  className={`px-6 py-2.5 rounded-lg font-semibold text-xs tracking-wide uppercase transition-all duration-300 whitespace-nowrap ${
+                    activeCategory === 'all'
+                      ? 'bg-gradient-to-r from-primary to-primary-light text-dark shadow-lg shadow-primary/40'
+                      : 'bg-primary/10 border-2 border-primary/30 text-primary'
+                  }`}
+                  onClick={() => setActiveCategory('all')}
+                >
+                  All Treatments
+                </button>
+                {treatmentsData.categories.map((category: Category) => (
+                  <button
+                    key={category.id}
+                    id={category.id}
+                    className={`px-6 py-2.5 rounded-lg font-semibold text-xs tracking-wide uppercase transition-all duration-300 whitespace-nowrap ${
+                      activeCategory === category.id
+                        ? 'bg-gradient-to-r from-primary to-primary-light text-dark shadow-lg shadow-primary/40'
+                        : 'bg-primary/10 border-2 border-primary/30 text-primary'
+                    }`}
+                    onClick={() => setActiveCategory(category.id)}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </section>

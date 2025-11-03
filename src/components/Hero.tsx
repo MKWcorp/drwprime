@@ -13,10 +13,10 @@ export default function Hero() {
           pelayanan personal, dan komunitas eksklusif untuk membantu wanita mencapai kecantikan abadi dengan percaya diri.
         </p>
         <a 
-          href="#society" 
+          href="/treatments" 
           className="inline-block bg-gradient-to-r from-primary to-primary-light text-dark px-10 py-4 rounded-lg font-bold text-sm tracking-wider hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105"
         >
-          BERGABUNG DENGAN PRIME SOCIETY
+          OUR TREATMENTS
         </a>
       </div>
     </section>
