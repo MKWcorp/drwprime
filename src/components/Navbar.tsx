@@ -16,10 +16,10 @@ export default function Navbar() {
           />
         </Link>
         <ul className="nav-menu">
-          <li><Link href="#about">TENTANG KAMI</Link></li>
-          <li><Link href="#treatments">TREATMENT</Link></li>
-          <li><Link href="#gallery">GALERI</Link></li>
-          <li><Link href="#contact">KONTAK</Link></li>
+          <li><Link href="/#about">TENTANG KAMI</Link></li>
+          <li><Link href="/treatments">TREATMENT</Link></li>
+          <li><Link href="/#gallery">GALERI</Link></li>
+          <li><Link href="/#contact">KONTAK</Link></li>
         </ul>
       </div>
     </nav>

@@ -1,0 +1,206 @@
+{
+  "categories": [
+    {
+      "id": "facial",
+      "name": "Facial Treatment",
+      "description": "Perawatan wajah premium dengan teknologi terkini",
+      "treatments": [
+        {
+          "id": "prime-facial",
+          "name": "Prime Facial",
+          "description": "Facial premium dengan teknik advance dan produk berkualitas tinggi untuk hasil optimal",
+          "duration": "90 menit",
+          "benefits": [
+            "Membersihkan pori-pori secara mendalam",
+            "Mengangkat sel kulit mati",
+            "Mencerahkan dan meratakan warna kulit",
+            "Meningkatkan elastisitas kulit"
+          ]
+        },
+        {
+          "id": "acne-treatment",
+          "name": "Acne Treatment",
+          "description": "Perawatan khusus untuk mengatasi jerawat dan bekasnya",
+          "duration": "75 menit",
+          "benefits": [
+            "Mengatasi jerawat aktif",
+            "Mengurangi bekas jerawat",
+            "Mengontrol produksi minyak",
+            "Mencegah jerawat kembali"
+          ]
+        },
+        {
+          "id": "brightening-facial",
+          "name": "Brightening Facial",
+          "description": "Perawatan untuk mencerahkan dan meratakan warna kulit",
+          "duration": "80 menit",
+          "benefits": [
+            "Mencerahkan kulit kusam",
+            "Memudarkan flek hitam",
+            "Meratakan warna kulit",
+            "Memberikan efek glowing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "body-treatment",
+      "name": "Body Treatment",
+      "description": "Perawatan tubuh untuk relaksasi dan kecantikan",
+      "treatments": [
+        {
+          "id": "body-scrub",
+          "name": "Body Scrub & Massage",
+          "description": "Kombinasi scrub dan massage untuk kulit tubuh yang lembut dan rileks",
+          "duration": "120 menit",
+          "benefits": [
+            "Mengangkat sel kulit mati",
+            "Melancarkan peredaran darah",
+            "Relaksasi otot",
+            "Kulit lebih halus dan lembut"
+          ]
+        },
+        {
+          "id": "slimming-treatment",
+          "name": "Slimming Treatment",
+          "description": "Perawatan untuk membentuk dan mengencangkan tubuh",
+          "duration": "90 menit",
+          "benefits": [
+            "Membentuk kontur tubuh",
+            "Mengurangi lemak berlebih",
+            "Mengencangkan kulit",
+            "Melancarkan metabolisme"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laser-treatment",
+      "name": "Laser Treatment",
+      "description": "Perawatan dengan teknologi laser untuk hasil maksimal",
+      "treatments": [
+        {
+          "id": "laser-hair-removal",
+          "name": "Laser Hair Removal",
+          "description": "Menghilangkan bulu secara permanen dengan teknologi laser",
+          "duration": "30-60 menit",
+          "benefits": [
+            "Menghilangkan bulu secara permanen",
+            "Aman dan tidak sakit",
+            "Hasil tahan lama",
+            "Cocok untuk semua area tubuh"
+          ]
+        },
+        {
+          "id": "laser-pigmentation",
+          "name": "Laser Pigmentation",
+          "description": "Mengatasi masalah pigmentasi dan flek hitam dengan laser",
+          "duration": "45 menit",
+          "benefits": [
+            "Menghilangkan flek hitam",
+            "Meratakan warna kulit",
+            "Mencerahkan kulit",
+            "Hasil cepat dan efektif"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hifu-treatment",
+      "name": "HIFU Treatment",
+      "description": "Teknologi HIFU untuk mengencangkan dan meremajakan kulit",
+      "treatments": [
+        {
+          "id": "ultra-former-mpt",
+          "name": "Ultra Former MPT",
+          "description": "Teknologi HIFU terbaru untuk mengencangkan dan meremajakan kulit wajah tanpa operasi",
+          "duration": "60-90 menit",
+          "benefits": [
+            "Mengencangkan kulit wajah",
+            "Mengurangi kerutan",
+            "Mengangkat kontur wajah",
+            "Hasil natural tanpa operasi"
+          ]
+        },
+        {
+          "id": "hifu-body",
+          "name": "HIFU Body Contouring",
+          "description": "HIFU untuk membentuk dan mengencangkan tubuh",
+          "duration": "90 menit",
+          "benefits": [
+            "Membentuk kontur tubuh",
+            "Mengencangkan kulit kendur",
+            "Mengurangi lemak",
+            "Tanpa downtime"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "injection-treatment",
+      "name": "Injection Treatment",
+      "description": "Perawatan injection untuk kecantikan optimal",
+      "treatments": [
+        {
+          "id": "botox",
+          "name": "Botox Treatment",
+          "description": "Mengurangi kerutan dan garis halus dengan botox",
+          "duration": "30 menit",
+          "benefits": [
+            "Mengurangi kerutan wajah",
+            "Menghaluskan garis halus",
+            "Hasil natural",
+            "Prosedur cepat"
+          ]
+        },
+        {
+          "id": "filler",
+          "name": "Dermal Filler",
+          "description": "Mengisi dan membentuk area wajah dengan filler",
+          "duration": "45 menit",
+          "benefits": [
+            "Membentuk kontur wajah",
+            "Menambah volume",
+            "Mengurangi kerutan dalam",
+            "Hasil instant"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "special-treatment",
+      "name": "Special Treatment",
+      "description": "Perawatan khusus dengan teknologi eksklusif",
+      "treatments": [
+        {
+          "id": "oxy-treatment",
+          "name": "Oxy Treatment",
+          "description": "Perawatan oksigen untuk mencerahkan dan merevitalisasi kulit kusam",
+          "duration": "75 menit",
+          "benefits": [
+            "Mencerahkan kulit kusam",
+            "Merevitalisasi sel kulit",
+            "Detoksifikasi kulit",
+            "Memberikan nutrisi optimal"
+          ]
+        },
+        {
+          "id": "contouring-treatment",
+          "name": "Contouring Treatment",
+          "description": "Membentuk dan mengencangkan kontur wajah untuk tampilan yang lebih defined",
+          "duration": "90 menit",
+          "benefits": [
+            "Membentuk kontur wajah",
+            "Mengencangkan kulit",
+            "Mengurangi double chin",
+            "Hasil tampak lebih V-shape"
+          ]
+        }
+      ]
+    }
+  ],
+  "whatsapp": {
+    "number": "081138800071",
+    "url": "https://wa.me/6281138800071"
+  }
+}
