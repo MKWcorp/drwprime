@@ -151,7 +151,7 @@ export default function TreatmentsPage() {
 
             {/* Grid 3 kolom untuk web, 1 kolom untuk mobile */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayedTreatments.map((treatment: any) => (
+              {displayedTreatments.map((treatment: Treatment & { categoryName?: string }) => (
                 <div 
                   key={treatment.id} 
                   className="bg-[#141414]/95 rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 hover:-translate-y-2 flex flex-col"
