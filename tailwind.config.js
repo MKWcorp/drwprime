@@ -15,6 +15,7 @@ module.exports = {
       fontFamily: {
         playfair: ['Playfair Display', 'serif'],
         inter: ['Inter', 'sans-serif'],
+        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
       },
     },
   },

@@ -1,17 +1,26 @@
 export default function Hero() {
   return (
-    <section className="min-h-screen flex items-center justify-center px-5 pt-20 bg-gradient-to-b from-black via-dark to-black" id="about">
-      <div className="max-w-4xl text-center">
-        <h1 className="font-playfair text-5xl md:text-7xl font-bold text-primary mb-6 leading-tight">
-          The Art of Timeless Beauty
+    <section className="relative min-h-screen flex items-center justify-center px-5 pt-20 overflow-hidden" id="about">
+      {/* Video Background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      >
+        <source src="/drwprime_section_1.mp4" type="video/mp4" />
+      </video>
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/60 z-10"></div>
+
+      {/* Content */}
+      <div className="relative z-20 max-w-4xl text-center">
+        <h1 className="font-bold text-primary mb-10 leading-tight drop-shadow-2xl">
+          <div className="font-playfair text-3xl md:text-4xl mb-2">The Art of</div>
+          <div className="font-jakarta text-5xl md:text-7xl">Timeless Beauty</div>
         </h1>
-        <p className="text-xl md:text-2xl text-white/80 mb-6 leading-relaxed">
-          Menghadirkan layanan premium berbasis komunitas dengan sentuhan emosional dan estetika yang kuat.
-        </p>
-        <p className="text-base md:text-lg text-white/60 mb-10 leading-relaxed max-w-2xl mx-auto">
-          DRW Prime adalah klinik kecantikan premium di Yogyakarta yang memadukan teknologi modern, 
-          pelayanan personal, dan komunitas eksklusif untuk membantu wanita mencapai kecantikan abadi dengan percaya diri.
-        </p>
         <a 
           href="/treatments" 
           className="inline-block bg-gradient-to-r from-primary to-primary-light text-dark px-10 py-4 rounded-lg font-bold text-sm tracking-wider hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105"
