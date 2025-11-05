@@ -50,7 +50,8 @@ export default function TreatmentDetailPage() {
 
   const handleWhatsAppBooking = (treatmentName: string) => {
     const message = encodeURIComponent(`Booking ${treatmentName}`);
-    const whatsappUrl = `${(treatmentsData as any).contact.whatsapp.url}?text=${message}`;
+    const contactData = treatmentsData.contact as { whatsapp: { url: string } };
+    const whatsappUrl = `${contactData.whatsapp.url}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   };
 

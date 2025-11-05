@@ -1,3 +1,6 @@
+import React from 'react';
+import Link from 'next/link';
+
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center px-5 pt-20 overflow-hidden" id="about">
@@ -21,12 +24,12 @@ export default function Hero() {
           <div className="font-playfair text-3xl md:text-4xl mb-2">The Art of</div>
           <div className="font-jakarta text-5xl md:text-7xl">Timeless Beauty</div>
         </h1>
-        <a 
+        <Link 
           href="/treatments" 
           className="inline-block bg-gradient-to-r from-primary to-primary-light text-dark px-10 py-4 rounded-lg font-bold text-sm tracking-wider hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105"
         >
           OUR TREATMENTS
-        </a>
+        </Link>
       </div>
     </section>
   );

@@ -29,7 +29,8 @@ export default function TreatmentsPage() {
 
   const handleWhatsAppBooking = (treatmentName: string) => {
     const message = encodeURIComponent(`Booking ${treatmentName}`);
-    const whatsappUrl = `${(treatmentsData as any).contact.whatsapp.url}?text=${message}`;
+    const contactData = treatmentsData.contact as { whatsapp: { url: string } };
+    const whatsappUrl = `${contactData.whatsapp.url}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   };
 
@@ -176,7 +177,7 @@ export default function TreatmentsPage() {
               <div className="flex flex-wrap gap-2 mt-4">
                 {searchQuery && (
                   <span className="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 text-primary px-3 py-1 rounded-full text-sm">
-                    <span>"{searchQuery}"</span>
+                    <span>&quot;{searchQuery}&quot;</span>
                     <button 
                       onClick={() => setSearchQuery('')}
                       className="hover:text-white transition-colors"

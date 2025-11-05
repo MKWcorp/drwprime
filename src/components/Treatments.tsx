@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Treatments() {
   const treatments = [
     {
@@ -36,12 +38,12 @@ export default function Treatments() {
               <p className="text-sm text-white/60 mb-4 leading-relaxed">
                 {treatment.description}
               </p>
-              <a 
+              <Link 
                 href="/treatments" 
                 className="inline-block text-sm text-primary hover:text-primary-light transition-colors duration-300 font-semibold"
               >
                 Discover More →
-              </a>
+              </Link>
             </div>
           ))}
         </div>
