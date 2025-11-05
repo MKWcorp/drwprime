@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import treatmentsData from '@/data/treatments.json';
@@ -23,33 +24,49 @@ interface Category {
 
 export default function TreatmentsPage() {
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
 
   const handleWhatsAppBooking = (treatmentName: string) => {
     const message = encodeURIComponent(`Booking ${treatmentName}`);
-    const whatsappUrl = `${treatmentsData.whatsapp.url}?text=${message}`;
+    const whatsappUrl = `${(treatmentsData as any).contact.whatsapp.url}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   };
 
-  // Get all treatments or filtered by category
+  // Get all treatments or filtered by category and search
   const displayedTreatments = useMemo(() => {
+    let treatments: (Treatment & { categoryName: string })[] = [];
+    
     if (activeCategory === 'all') {
       // Flatten all treatments from all categories
-      return treatmentsData.categories.flatMap((cat: Category) => 
+      treatments = treatmentsData.categories.flatMap((cat: Category) => 
         cat.treatments.map((treatment: Treatment) => ({
           ...treatment,
           categoryName: cat.name
         }))
       );
+    } else {
+      const category = treatmentsData.categories.find(
+        (cat: Category) => cat.id === activeCategory
+      );
+      treatments = category ? category.treatments.map((treatment: Treatment) => ({
+        ...treatment,
+        categoryName: category.name
+      })) : [];
     }
-    
-    const category = treatmentsData.categories.find(
-      (cat: Category) => cat.id === activeCategory
-    );
-    return category ? category.treatments.map((treatment: Treatment) => ({
-      ...treatment,
-      categoryName: category.name
-    })) : [];
-  }, [activeCategory]);
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      treatments = treatments.filter(treatment => 
+        treatment.name.toLowerCase().includes(query) ||
+        treatment.description.toLowerCase().includes(query) ||
+        treatment.categoryName.toLowerCase().includes(query)
+      );
+    }
+
+    return treatments;
+  }, [activeCategory, searchQuery]);
 
   const activeCategoryData = treatmentsData.categories.find(
     (cat: Category) => cat.id === activeCategory
@@ -72,66 +89,119 @@ export default function TreatmentsPage() {
           </div>
         </section>
 
-        {/* Category Navigation */}
-        <section className="py-6 md:py-10 px-5 bg-[#0f0f0f]/80 border-b border-primary/10 sticky top-[70px] z-50 backdrop-blur-md">
+        {/* Search & Filter Section */}
+        <section className="py-6 px-5 bg-[#0f0f0f]/80 border-b border-primary/10 sticky top-[70px] z-50 backdrop-blur-md">
           <div className="max-w-7xl mx-auto">
-            {/* Desktop: Flex wrap center */}
-            <div className="hidden md:flex gap-4 flex-wrap justify-center">
-              <button
-                className={`px-8 py-3 rounded-lg font-semibold text-sm tracking-wide uppercase transition-all duration-300 ${
-                  activeCategory === 'all'
-                    ? 'bg-gradient-to-r from-primary to-primary-light text-dark shadow-lg shadow-primary/40'
-                    : 'bg-primary/10 border-2 border-primary/30 text-primary hover:bg-primary/20 hover:border-primary hover:-translate-y-0.5'
-                }`}
-                onClick={() => setActiveCategory('all')}
-              >
-                All Treatments
-              </button>
-              {treatmentsData.categories.map((category: Category) => (
-                <button
-                  key={category.id}
-                  id={category.id}
-                  className={`px-8 py-3 rounded-lg font-semibold text-sm tracking-wide uppercase transition-all duration-300 ${
-                    activeCategory === category.id
-                      ? 'bg-gradient-to-r from-primary to-primary-light text-dark shadow-lg shadow-primary/40'
-                      : 'bg-primary/10 border-2 border-primary/30 text-primary hover:bg-primary/20 hover:border-primary hover:-translate-y-0.5'
-                  }`}
-                  onClick={() => setActiveCategory(category.id)}
+            <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center">
+              {/* Search Bar */}
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  placeholder="Cari treatment..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-black/50 border-2 border-primary/30 text-white placeholder-white/40 px-5 py-3 md:py-3.5 rounded-lg focus:outline-none focus:border-primary transition-all duration-300 pr-12"
+                />
+                <svg 
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/60"
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
                 >
-                  {category.name}
-                </button>
-              ))}
-            </div>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
 
-            {/* Mobile: Horizontal scroll */}
-            <div className="md:hidden overflow-x-auto hide-scrollbar">
-              <div className="flex gap-3 pb-2 min-w-max">
+              {/* Category Dropdown */}
+              <div className="relative min-w-[200px]">
                 <button
-                  className={`px-6 py-2.5 rounded-lg font-semibold text-xs tracking-wide uppercase transition-all duration-300 whitespace-nowrap ${
-                    activeCategory === 'all'
-                      ? 'bg-gradient-to-r from-primary to-primary-light text-dark shadow-lg shadow-primary/40'
-                      : 'bg-primary/10 border-2 border-primary/30 text-primary'
-                  }`}
-                  onClick={() => setActiveCategory('all')}
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  className="w-full bg-primary/10 border-2 border-primary/30 text-primary px-5 py-3 md:py-3.5 rounded-lg font-semibold text-sm flex items-center justify-between hover:bg-primary/20 hover:border-primary transition-all duration-300"
                 >
-                  All Treatments
-                </button>
-                {treatmentsData.categories.map((category: Category) => (
-                  <button
-                    key={category.id}
-                    id={category.id}
-                    className={`px-6 py-2.5 rounded-lg font-semibold text-xs tracking-wide uppercase transition-all duration-300 whitespace-nowrap ${
-                      activeCategory === category.id
-                        ? 'bg-gradient-to-r from-primary to-primary-light text-dark shadow-lg shadow-primary/40'
-                        : 'bg-primary/10 border-2 border-primary/30 text-primary'
-                    }`}
-                    onClick={() => setActiveCategory(category.id)}
+                  <span className="flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                    <span className="truncate">
+                      {activeCategory === 'all' 
+                        ? 'Semua Kategori' 
+                        : treatmentsData.categories.find((c: Category) => c.id === activeCategory)?.name}
+                    </span>
+                  </span>
+                  <svg 
+                    className={`w-4 h-4 transition-transform duration-300 ${isFilterOpen ? 'rotate-180' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
                   >
-                    {category.name}
-                  </button>
-                ))}
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {/* Dropdown Menu */}
+                {isFilterOpen && (
+                  <div className="absolute top-full mt-2 w-full bg-[#1a1a1a] border-2 border-primary/30 rounded-lg shadow-2xl shadow-black/50 max-h-[400px] overflow-y-auto z-[60]">
+                    <button
+                      onClick={() => {
+                        setActiveCategory('all');
+                        setIsFilterOpen(false);
+                      }}
+                      className={`w-full text-left px-5 py-3 hover:bg-primary/20 transition-colors duration-200 ${
+                        activeCategory === 'all' ? 'bg-primary/10 text-primary font-semibold' : 'text-white/80'
+                      }`}
+                    >
+                      Semua Kategori
+                    </button>
+                    {treatmentsData.categories.map((category: Category) => (
+                      <button
+                        key={category.id}
+                        onClick={() => {
+                          setActiveCategory(category.id);
+                          setIsFilterOpen(false);
+                        }}
+                        className={`w-full text-left px-5 py-3 hover:bg-primary/20 transition-colors duration-200 border-t border-primary/10 ${
+                          activeCategory === category.id ? 'bg-primary/10 text-primary font-semibold' : 'text-white/80'
+                        }`}
+                      >
+                        {category.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
+
+            {/* Active filters indicator */}
+            {(searchQuery || activeCategory !== 'all') && (
+              <div className="flex flex-wrap gap-2 mt-4">
+                {searchQuery && (
+                  <span className="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 text-primary px-3 py-1 rounded-full text-sm">
+                    <span>"{searchQuery}"</span>
+                    <button 
+                      onClick={() => setSearchQuery('')}
+                      className="hover:text-white transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </span>
+                )}
+                {activeCategory !== 'all' && (
+                  <span className="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 text-primary px-3 py-1 rounded-full text-sm">
+                    <span>{treatmentsData.categories.find((c: Category) => c.id === activeCategory)?.name}</span>
+                    <button 
+                      onClick={() => setActiveCategory('all')}
+                      className="hover:text-white transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </section>
 
@@ -147,9 +217,38 @@ export default function TreatmentsPage() {
                   ? 'Explore our complete range of premium beauty treatments' 
                   : activeCategoryData?.description}
               </p>
+              {displayedTreatments.length > 0 && (
+                <p className="text-sm text-primary/80 mt-2">
+                  {displayedTreatments.length} treatment{displayedTreatments.length > 1 ? 's' : ''} ditemukan
+                </p>
+              )}
             </div>
 
+            {/* No Results Message */}
+            {displayedTreatments.length === 0 && (
+              <div className="text-center py-20">
+                <svg className="w-20 h-20 text-primary/30 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 className="text-2xl font-bold text-white/80 mb-2">Tidak ada treatment ditemukan</h3>
+                <p className="text-white/60 mb-6">Coba ubah kata kunci atau kategori pencarian Anda</p>
+                <button
+                  onClick={() => {
+                    setSearchQuery('');
+                    setActiveCategory('all');
+                  }}
+                  className="inline-flex items-center gap-2 bg-primary/20 border border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary/30 transition-all duration-300"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  Reset Filter
+                </button>
+              </div>
+            )}
+
             {/* Grid 3 kolom untuk web, 1 kolom untuk mobile */}
+            {displayedTreatments.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {displayedTreatments.map((treatment: Treatment & { categoryName?: string }) => (
                 <div 
@@ -197,6 +296,24 @@ export default function TreatmentsPage() {
                       </ul>
                     </div>
                     
+                    {/* Read More Link */}
+                    <Link 
+                      href={`/treatments/${treatment.id}`}
+                      className="text-sm text-primary hover:text-primary-light transition-colors duration-300 flex items-center gap-1 group"
+                    >
+                      <span>Selengkapnya</span>
+                      <svg 
+                        width="14" 
+                        height="14" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                        className="group-hover:translate-x-1 transition-transform duration-300"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                    
                     {/* WhatsApp Button */}
                     <button
                       className="mt-auto w-full bg-gradient-to-r from-primary to-primary-light text-dark py-3 px-4 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 hover:scale-105"
@@ -216,6 +333,7 @@ export default function TreatmentsPage() {
                 </div>
               ))}
             </div>
+            )}
           </div>
         </section>
 

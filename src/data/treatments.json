@@ -1,4 +1,9 @@
 {
+  "clinic": {
+    "name": "DRW Primé Aesthetic Clinic",
+    "doctor": "dr. Wahyu Triasmara",
+    "address": "Jl. Affandi CT. X No. 24A, Karang Gayam, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta"
+  },
   "categories": [
     {
       "id": "facial-basic",
@@ -8,66 +13,92 @@
         {
           "id": "acne-facial",
           "name": "Acne Facial",
-          "description": "Facial untuk membersihkan & merelaksasi kulit berminyak/berjerawat",
+          "description": "Facial Acne merupakan treatment yang berfungsi untuk membersihkan & merelaksasi kulit wajah berminyak/jerawat",
           "duration": "60-90 menit",
-          "price": "Rp 150.000",
+          "price": "Rp150.000",
+          "priceNumeric": 150000,
           "benefits": [
-            "Kulit berminyak terkontrol",
-            "Mengatasi jerawat ringan-sedang",
-            "Mengangkat komedo",
-            "Membersihkan pori-pori"
+            "Membersihkan pori-pori secara mendalam",
+            "Mengurangi produksi minyak berlebih",
+            "Membantu mengatasi jerawat aktif",
+            "Mengangkat komedo dan sel kulit mati",
+            "Menenangkan kulit yang meradang",
+            "Mencegah timbulnya jerawat baru"
           ]
         },
         {
           "id": "glow-facial",
           "name": "Glow Facial",
-          "description": "Facial pembersihan & relaksasi untuk kulit normal/tidak berjerawat",
+          "description": "Facial Glow merupakan treatment yang berfungsi untuk membersihkan & merelaksasi kulit wajah normal/tidak berjerawat",
           "duration": "60-90 menit",
-          "price": "Rp 175.000",
+          "price": "Rp175.000",
+          "priceNumeric": 175000,
           "benefits": [
-            "Cocok untuk kulit normal-kombinasi",
-            "Mengatasi kusam ringan",
-            "Membersihkan mendalam",
-            "Efek glowing alami"
+            "Membersihkan kulit secara menyeluruh",
+            "Memberikan efek glowing alami",
+            "Meningkatkan kelembaban kulit",
+            "Mengangkat sel kulit mati",
+            "Mencerahkan warna kulit",
+            "Membuat kulit lebih halus dan kenyal",
+            "Merelaksasi otot wajah"
           ]
-        },
+        }
+      ]
+    },
+    {
+      "id": "facial-prime",
+      "name": "Facial Prime",
+      "description": "Perawatan wajah premium dengan serum khusus untuk hasil maksimal",
+      "treatments": [
         {
           "id": "acne-cure-facial",
           "name": "Acne Cure Facial",
-          "description": "Facial jerawat dengan tambahan serum khusus",
+          "description": "Facial Acne Cure merupakan treatment yang berfungsi untuk membersihkan & merelaksasi kulit wajah berjerawat dengan tambahan serum khusus",
           "duration": "60-90 menit",
-          "price": "Rp 225.000",
+          "price": "Rp225.000",
+          "priceNumeric": 225000,
           "benefits": [
-            "Mengatasi jerawat aktif",
-            "Mengurangi komedo",
-            "Serum khusus anti jerawat",
-            "Hasil lebih optimal"
+            "Membersihkan pori-pori secara intensif",
+            "Mengatasi jerawat aktif dengan lebih efektif",
+            "Mengurangi peradangan jerawat",
+            "Mempercepat penyembuhan jerawat",
+            "Mengontrol produksi sebum",
+            "Mencegah bekas jerawat",
+            "Nutrisi tambahan dari serum khusus untuk kulit berjerawat"
           ]
         },
         {
           "id": "whitening-glow-facial",
           "name": "Whitening Glow Facial",
-          "description": "Facial untuk kulit normal/tidak berjerawat plus serum khusus pencerahan",
+          "description": "Facial Whitening Glow merupakan treatment yang berfungsi untuk membersihkan & merelaksasi kulit wajah normal/tidak berjerawat plus tambahan serum khusus",
           "duration": "60-90 menit",
-          "price": "Rp 250.000",
+          "price": "Rp250.000",
+          "priceNumeric": 250000,
           "benefits": [
-            "Mencerahkan kulit kusam",
+            "Mencerahkan kulit secara intensif",
             "Meratakan warna kulit",
-            "Serum pencerahan khusus",
-            "Efek glowing maksimal"
+            "Mengurangi hiperpigmentasi",
+            "Memberikan efek glowing maksimal",
+            "Melembabkan kulit secara mendalam",
+            "Meningkatkan elastisitas kulit",
+            "Membuat kulit tampak lebih bercahaya dan sehat"
           ]
         },
         {
           "id": "eterna-rejuve-facial",
           "name": "Eterna Rejuve Facial",
-          "description": "Facial calming untuk kulit kering/sensitif dengan serum khusus",
+          "description": "Facial Calming Care merupakan treatment yang berfungsi untuk membersihkan & merelaksasi kulit wajah kering dan sensitif dengan tambahan serum khusus",
           "duration": "60-90 menit",
-          "price": "Rp 250.000",
+          "price": "Rp250.000",
+          "priceNumeric": 250000,
           "benefits": [
-            "Untuk kulit kering & sensitif",
-            "Mengurangi kemerahan ringan",
-            "Menenangkan kulit",
-            "Serum khusus calming"
+            "Menenangkan kulit sensitif dan iritasi",
+            "Melembabkan kulit kering secara intensif",
+            "Mengurangi kemerahan pada kulit",
+            "Memperbaiki skin barrier",
+            "Meremajakan kulit yang lelah",
+            "Memberikan nutrisi mendalam untuk kulit kering",
+            "Membuat kulit lebih nyaman dan sehat"
           ]
         }
       ]
@@ -75,130 +106,167 @@
     {
       "id": "chemical-peeling",
       "name": "Chemical Peeling",
-      "description": "Perawatan pengelupasan kulit dengan bahan kimia untuk regenerasi kulit",
+      "description": "Prosedur medis pengelupasan kulit dengan bahan kimia untuk regenerasi kulit",
       "treatments": [
         {
           "id": "clarifying-light-peel",
           "name": "Clarifying Light Peel",
-          "description": "Peeling ringan bersifat keratolitik",
+          "description": "Clarifying Light Peel merupakan prosedur medis yang menggunakan larutan kimia bersifat keratolitik dengan kekuatan ringan",
           "duration": "15 menit",
-          "price": "Rp 250.000",
+          "price": "Rp250.000",
+          "priceNumeric": 250000,
           "benefits": [
-            "Mengatasi kulit kusam",
+            "Mengangkat sel kulit mati dengan lembut",
+            "Mencerahkan kulit kusam",
             "Meratakan tekstur kulit",
-            "Peeling ringan",
-            "Downtime minimal"
+            "Cocok untuk pemula chemical peeling",
+            "Minim downtime",
+            "Membuat kulit lebih segar dan cerah",
+            "Mempersiapkan kulit untuk perawatan lanjutan"
           ]
         },
         {
           "id": "purifying-acne-peel",
           "name": "Purifying Acne Peel",
-          "description": "Peeling sedang untuk jerawat & komedo",
+          "description": "Purifying Acne Peel merupakan prosedur medis yang menggunakan larutan kimia bersifat keratolitik dengan kekuatan sedang yang berfokus pada penanganan jerawat dan komedo",
           "duration": "15 menit",
-          "price": "Rp 250.000",
+          "price": "Rp250.000",
+          "priceNumeric": 250000,
           "benefits": [
-            "Mengatasi jerawat ringan-sedang",
-            "Mengangkat komedo",
-            "Mengontrol minyak berlebih",
-            "Mempercepat regenerasi kulit"
+            "Mengatasi jerawat aktif secara efektif",
+            "Membersihkan komedo (blackhead & whitehead)",
+            "Mengurangi produksi minyak berlebih",
+            "Mengecilkan pori-pori",
+            "Mengurangi peradangan kulit",
+            "Mencegah timbulnya jerawat baru",
+            "Memperbaiki tekstur kulit berjerawat"
           ]
         },
         {
           "id": "radiance-glow-peel",
           "name": "Radiance Glow Peel",
-          "description": "Peeling sedang–berat untuk glow & tekstur",
+          "description": "Radiance Glow Peel merupakan prosedur medis yang menggunakan larutan kimia bersifat keratolitik dengan kekuatan sedang-berat",
           "duration": "15 menit",
-          "price": "Rp 250.000",
+          "price": "Rp250.000",
+          "priceNumeric": 250000,
           "benefits": [
-            "Mencerahkan kulit kusam",
-            "Mengecilkan pori-pori",
-            "Meratakan tekstur",
-            "Efek glowing maksimal"
+            "Mencerahkan kulit secara intensif",
+            "Mengatasi hiperpigmentasi dan flek hitam",
+            "Meratakan warna kulit",
+            "Merangsang regenerasi sel kulit baru",
+            "Memberikan efek glowing maksimal",
+            "Meningkatkan produksi kolagen",
+            "Membuat kulit tampak lebih muda dan bercahaya"
           ]
         },
         {
           "id": "retinol-bright-peel",
           "name": "Retinol Bright Peel",
-          "description": "Peeling kuat dengan turunan vitamin A",
+          "description": "Retinol Bright Peel merupakan prosedur medis yang menggunakan larutan kimia mengandung turunan vitamin A yang bersifat keratolitik dengan kekuatan berat",
           "duration": "15 menit",
-          "price": "Rp 400.000",
+          "price": "Rp400.000",
+          "priceNumeric": 400000,
           "benefits": [
-            "Mengatasi kusam & garis halus",
-            "Menyamarkan noda ringan",
-            "Anti aging",
-            "Hasil optimal dengan downtime ringan"
+            "Anti-aging yang efektif",
+            "Mengurangi garis halus dan kerutan",
+            "Mencerahkan kulit kusam",
+            "Mengatasi hiperpigmentasi berat",
+            "Memperbaiki tekstur kulit yang kasar",
+            "Merangsang produksi kolagen dan elastin",
+            "Mengecilkan pori-pori",
+            "Hasil lebih dramatis untuk aging skin"
           ]
         },
         {
           "id": "body-peeling",
           "name": "Body Peeling",
-          "description": "Peeling kuat khusus area tubuh",
+          "description": "Body Peeling merupakan prosedur medis yang menggunakan larutan kimia yang bersifat keratolitik dengan kekuatan berat yang dikhususkan untuk area leher, dada, punggung, perut, tangan dan kaki",
           "duration": "15 menit",
-          "price": "Rp 500.000",
+          "price": "Rp500.000",
+          "priceNumeric": 500000,
           "benefits": [
-            "Mencerahkan area tubuh",
-            "Meratakan warna kulit",
-            "Mengatasi kulit kusam",
-            "Hasil tahan lama"
+            "Mencerahkan kulit tubuh yang gelap",
+            "Mengatasi jerawat punggung dan dada",
+            "Mengurangi bekas jerawat di tubuh",
+            "Meratakan warna kulit tubuh",
+            "Mengangkat sel kulit mati",
+            "Membuat kulit tubuh lebih halus",
+            "Meremajakan kulit yang terpapar sinar matahari"
           ]
         }
       ]
     },
     {
       "id": "ipl",
-      "name": "IPL Treatment",
-      "description": "Teknologi cahaya intens untuk berbagai masalah kulit",
+      "name": "IPL (Intense Pulsed Light)",
+      "description": "Teknologi cahaya intens untuk mengatasi berbagai masalah kulit",
       "treatments": [
         {
           "id": "ipl-acne",
           "name": "IPL Acne",
-          "description": "IPL untuk kontrol jerawat & masalah kulit terkait",
+          "description": "IPL (intense pulsed light) Acne adalah treatment yang memanfaatkan cahaya dengan intensitas tertentu untuk mengontrol jerawat dan mengatasi berbagai permasalahan kulit lainnya",
           "duration": "30 menit",
-          "price": "Rp 250.000",
+          "price": "Rp250.000",
+          "priceNumeric": 250000,
           "benefits": [
-            "Mengontrol jerawat",
-            "Mengurangi peradangan",
-            "Memperbaiki tekstur kulit",
-            "Tanpa downtime"
+            "Membunuh bakteri penyebab jerawat (P. acnes)",
+            "Mengurangi peradangan jerawat",
+            "Mengontrol produksi minyak berlebih",
+            "Mempercepat penyembuhan jerawat",
+            "Mengurangi kemerahan akibat jerawat",
+            "Mencegah jerawat berulang",
+            "Non-invasif dan nyaman"
           ]
         },
         {
           "id": "ipl-glow",
           "name": "IPL Glow",
-          "description": "IPL untuk mencerahkan dan meratakan warna kulit",
+          "description": "IPL (intense pulsed light) Glow adalah treatment yang memanfaatkan cahaya dengan intensitas tertentu untuk mengontrol jerawat dan mengatasi berbagai permasalahan kulit lainnya",
           "duration": "30 menit",
-          "price": "Rp 250.000",
+          "price": "Rp250.000",
+          "priceNumeric": 250000,
           "benefits": [
-            "Mencerahkan kulit",
+            "Mencerahkan kulit kusam",
             "Meratakan warna kulit",
-            "Mengurangi pigmentasi",
-            "Hasil glowing alami"
+            "Mengurangi pori-pori besar",
+            "Memberikan efek glowing alami",
+            "Merangsang produksi kolagen",
+            "Memperbaiki tekstur kulit",
+            "Membuat kulit lebih halus dan kenyal"
           ]
         },
         {
           "id": "ipl-vascular",
           "name": "IPL Vascular",
-          "description": "IPL untuk vaskular/kemerahan tertentu",
+          "description": "IPL (intense pulsed light) Vascular adalah treatment yang memanfaatkan cahaya dengan intensitas tertentu untuk mencerahkan kulit dan mengatasi berbagai permasalahan kulit lainnya",
           "duration": "30 menit",
-          "price": "Rp 250.000",
+          "price": "Rp250.000",
+          "priceNumeric": 250000,
           "benefits": [
-            "Mengatasi kemerahan",
-            "Mengurangi pembuluh darah tampak",
-            "Memperbaiki skin tone",
-            "Downtime minimal"
+            "Mengatasi spider veins (pembuluh darah kecil)",
+            "Mengurangi kemerahan pada wajah (rosacea)",
+            "Memudarkan bintik-bintik merah",
+            "Meratakan warna kulit",
+            "Memperbaiki sirkulasi darah",
+            "Membuat kulit tampak lebih cerah dan merata",
+            "Mengatasi pigmentasi vaskular"
           ]
         },
         {
           "id": "ipl-hair-removal",
           "name": "IPL Hair Removal",
-          "description": "IPL untuk menghilangkan bulu di area tertentu",
+          "description": "IPL (intense pulsed light) Hair Removal adalah treatment yang memanfaatkan cahaya dengan intensitas tertentu untuk menghilangkan bulu dan rambut di area yang diinginkan",
           "duration": "45 menit",
-          "price": "Rp 250.000",
+          "price": "Rp250.000",
+          "priceNumeric": 250000,
           "benefits": [
-            "Menghilangkan bulu permanen",
-            "Aman untuk berbagai area",
-            "Tidak sakit",
-            "Hasil tahan lama"
+            "Mengurangi pertumbuhan rambut/bulu secara permanen",
+            "Hasil lebih tahan lama dibanding waxing/shaving",
+            "Membuat kulit lebih halus",
+            "Mengurangi masalah ingrown hair",
+            "Proses cepat dan efisien",
+            "Bisa untuk berbagai area tubuh",
+            "Minim iritasi kulit"
           ]
         }
       ]
@@ -206,209 +274,361 @@
     {
       "id": "pico-laser",
       "name": "Pico Laser",
-      "description": "Teknologi laser picosecond untuk perawatan kulit tanpa operasi",
+      "description": "Teknologi laser picosecond non-ablatif untuk berbagai perawatan kulit",
       "treatments": [
         {
           "id": "pico-glow-rejuve",
           "name": "Pico Glow Rejuve",
-          "description": "Laser picosecond non-ablatif untuk peremajaan kulit",
+          "description": "Pico Glow Rejuve adalah perawatan kecantikan non ablatif dengan teknologi laser dengan kecepatan tembakan picosecond untuk meremajakan kulit",
           "duration": "45 menit",
-          "price": "Rp 400.000",
+          "price": "Rp400.000",
+          "priceNumeric": 400000,
           "benefits": [
-            "Meremajakan kulit",
-            "Mencerahkan wajah",
-            "Tanpa operasi",
-            "Downtime minimal"
+            "Meremajakan kulit secara keseluruhan",
+            "Mencerahkan kulit kusam",
+            "Mengecilkan pori-pori",
+            "Meratakan tekstur kulit",
+            "Merangsang produksi kolagen",
+            "Mengurangi garis halus",
+            "Memberikan efek glowing maksimal",
+            "Tanpa downtime"
           ]
         },
         {
           "id": "pico-melasma",
           "name": "Pico Melasma",
-          "description": "Laser picosecond untuk menyamarkan flek dan melasma",
+          "description": "Pico Melasma adalah perawatan kecantikan non ablatif yang menggunakan teknologi laser dengan kecepatan tembakan picosecond untuk menyamarkan flek",
           "duration": "45 menit",
-          "price": "Rp 400.000",
+          "price": "Rp400.000",
+          "priceNumeric": 400000,
           "benefits": [
-            "Menyamarkan flek hitam",
-            "Mengatasi melasma",
-            "Meratakan warna kulit",
-            "Hasil cepat & efektif"
+            "Mengatasi melasma dan hiperpigmentasi",
+            "Memudarkan flek hitam",
+            "Mencerahkan warna kulit",
+            "Meratakan tone kulit",
+            "Hasil lebih cepat dan efektif",
+            "Minim efek samping",
+            "Cocok untuk berbagai jenis kulit",
+            "Tidak merusak jaringan sekitar"
           ]
         },
         {
           "id": "pico-black-doll",
           "name": "Pico Black Doll",
-          "description": "Laser picosecond dengan media karbon untuk rejuvenation",
+          "description": "Pico Black Doll adalah perawatan kecantikan non ablatif yang menggunakan teknologi laser dengan kecepatan tembakan picosecond dengan media karbon untuk meremajakan kulit",
           "duration": "45 menit",
-          "price": "Rp 400.000",
+          "price": "Rp400.000",
+          "priceNumeric": 400000,
           "benefits": [
+            "Deep cleansing pori-pori",
+            "Mengangkat komedo dan kotoran",
             "Mengecilkan pori-pori",
             "Mencerahkan kulit",
-            "Mengurangi minyak berlebih",
-            "Efek glowing maksimal"
+            "Mengontrol produksi minyak",
+            "Meratakan tekstur kulit",
+            "Memberikan efek instant glow",
+            "Cocok sebelum acara penting"
           ]
         },
         {
           "id": "pico-pink-lips",
           "name": "Pico Pink Lips",
-          "description": "Laser picosecond untuk mencerahkan bibir",
+          "description": "Pico Pink lips adalah perawatan kecantikan non ablatif menggunakan teknologi laser dengan kecepatan tembakan picosecond untuk mencerahkan area bibir",
           "duration": "45 menit",
-          "price": "Rp 150.000",
+          "price": "Rp150.000",
+          "priceNumeric": 150000,
           "benefits": [
-            "Mencerahkan bibir gelap",
+            "Mencerahkan bibir hitam/gelap",
+            "Mengatasi hiperpigmentasi bibir",
+            "Membuat bibir lebih pink alami",
             "Meratakan warna bibir",
-            "Hasil natural",
-            "Downtime minimal"
+            "Meremajakan kulit bibir",
+            "Aman dan efektif",
+            "Hasil natural"
           ]
         },
         {
           "id": "pico-tattoo-removal",
           "name": "Pico Tattoo Removal",
-          "description": "Laser picosecond untuk menyamarkan tattoo",
+          "description": "Pico Tattoo Removal adalah perawatan kecantikan non ablatif menggunakan teknologi laser dengan kecepatan tembakan picosecond untuk menyamarkan tattoo",
           "duration": "45 menit",
-          "price": "Rp 400.000",
+          "price": "Rp400.000",
+          "priceNumeric": 400000,
           "benefits": [
-            "Menghilangkan tattoo",
-            "Aman untuk berbagai warna tinta",
-            "Minimal scarring",
-            "Hasil progresif"
+            "Menghilangkan tattoo secara bertahap",
+            "Efektif untuk berbagai warna tinta",
+            "Minim bekas luka",
+            "Lebih cepat dari laser konvensional",
+            "Lebih sedikit sesi treatment",
+            "Aman untuk kulit",
+            "Proses pemulihan lebih cepat"
           ]
         }
       ]
     },
     {
-      "id": "dermapen",
-      "name": "Dermapen & EPN",
-      "description": "Microneedling dengan teknologi canggih untuk regenerasi kulit",
+      "id": "cauter",
+      "name": "Cauter",
+      "description": "Prosedur medis elektrokauter untuk menghilangkan lesi kulit",
+      "treatments": [
+        {
+          "id": "cauter",
+          "name": "Cauter",
+          "description": "Cauter adalah prosedur medis yang memanfaatkan energi listrik (elektrocauter) untuk membakar lesi atau jaringan tubuh tertentu",
+          "duration": "45 menit",
+          "price": "Rp300.000",
+          "priceNumeric": 300000,
+          "benefits": [
+            "Menghilangkan skin tag",
+            "Mengangkat kutil (warts)",
+            "Mengatasi milia",
+            "Menghilangkan syringoma",
+            "Mengangkat sebaceous hyperplasia",
+            "Prosedur cepat dan efektif",
+            "Hasil permanen",
+            "Minim perdarahan"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dermapen-epn",
+      "name": "Dermapen EPN",
+      "description": "Microneedling dengan Electroporation Needle untuk regenerasi kulit intensif",
       "treatments": [
         {
           "id": "dermapen-prp",
           "name": "Dermapen PRP",
-          "description": "Microneedling EPN dengan Platelet Rich Plasma",
+          "description": "Dermapen PRP adalah suatu tindakan medis microneedling dengan alat EPN (Electroporation Needle) menggunakan serum Platelet Rich Plasma",
           "duration": "60 menit",
-          "price": "Rp 1.500.000",
+          "price": "Rp800.000",
+          "priceNumeric": 800000,
           "benefits": [
-            "Regenerasi kulit optimal",
-            "Mengatasi bekas jerawat",
-            "Anti aging",
-            "Menggunakan plasma darah sendiri"
+            "Meremajakan kulit secara alami",
+            "Mengurangi bekas jerawat dan bopeng",
+            "Merangsang produksi kolagen dan elastin",
+            "Memperbaiki tekstur kulit",
+            "Mengurangi garis halus dan kerutan",
+            "Mengecilkan pori-pori",
+            "Mencerahkan kulit",
+            "Meningkatkan elastisitas kulit",
+            "Menggunakan plasma dari darah sendiri (aman)"
           ]
         },
         {
           "id": "dermapen-dna-salmon",
           "name": "Dermapen DNA Salmon",
-          "description": "Microneedling EPN menggunakan serum DNA Salmon",
+          "description": "Dermapen DNA SALMON adalah suatu tindakan medis microneedling dengan alat EPN (Electroporation Needle) dan menggunakan serum DNA salmon",
           "duration": "60 menit",
-          "price": "Rp 800.000",
+          "price": "Rp1.500.000",
+          "priceNumeric": 1500000,
           "benefits": [
-            "Regenerasi kulit intensif",
-            "Memperbaiki tekstur",
-            "Mengurangi garis halus",
-            "Serum premium DNA Salmon"
+            "Anti-aging yang powerful",
+            "Regenerasi sel kulit maksimal",
+            "Meningkatkan hidrasi kulit",
+            "Memperbaiki skin barrier",
+            "Mengurangi kerutan dalam",
+            "Meningkatkan elastisitas kulit",
+            "Mencerahkan dan meratakan warna kulit",
+            "Memperbaiki bekas luka dan bopeng",
+            "Hasil lebih dramatis dan tahan lama"
           ]
         }
       ]
     },
     {
-      "id": "hifu",
+      "id": "hifu-ultraformer-mpt",
       "name": "HIFU Ultraformer MPT",
-      "description": "Teknologi HIFU non-invasif untuk lifting & peremajaan",
+      "description": "High-Intensity Focused Ultrasound untuk face & body lifting non-invasif",
       "treatments": [
         {
           "id": "hifu-face",
           "name": "HIFU Face",
-          "description": "HIFU non-invasif untuk peremajaan & pengencangan wajah",
+          "description": "HIFU (High-Intensity Focused Ultrasound) Face adalah perawatan kecantikan dengan prosedur non-invasif yang menggunakan gelombang ultrasound untuk menargetkan lapisan kulit pada wajah. Berfungsi untuk memperbaiki tekstur kulit dengan cara membuat perlukaan mikro pada kulit. Sehingga meningkatkan produksi kolagen dan meregenerasi kulit untuk hilangkan bopeng dan bekas luka, menyamarkan noda, garis halus dan pori-pori",
           "duration": "60 menit",
-          "price": "Rp 2.350.000",
+          "price": "Rp2.350.000",
+          "priceNumeric": 2350000,
+          "priceOriginal": "Rp4.500.000",
+          "priceOriginalNumeric": 4500000,
+          "discount": true,
           "benefits": [
-            "Mengencangkan kulit wajah",
-            "Lifting tanpa operasi",
-            "Mengurangi kerutan",
-            "Hasil tahan lama"
+            "Face lifting tanpa operasi",
+            "Mengencangkan kulit wajah yang kendur",
+            "Mengurangi double chin",
+            "Membentuk V-line wajah",
+            "Mengurangi kerutan dan garis halus",
+            "Mengangkat alis yang turun",
+            "Merangsang kolagen hingga lapisan SMAS",
+            "Hasil bertahan 1-2 tahun",
+            "Tanpa operasi dan downtime",
+            "Efek terlihat bertahap hingga 3-6 bulan"
           ]
         },
         {
           "id": "hifu-body",
           "name": "HIFU Body",
-          "description": "HIFU non-invasif untuk area tubuh tertentu",
+          "description": "HIFU (High-Intensity Focused Ultrasound) Body adalah perawatan kecantikan dengan prosedur non-invasif yang menggunakan gelombang ultrasound untuk menargetkan lapisan kulit pada bagian tubuh tertentu",
           "duration": "60 menit",
-          "price": "Rp 2.350.000",
+          "price": "Rp2.350.000",
+          "priceNumeric": 2350000,
+          "priceOriginal": "Rp4.500.000",
+          "priceOriginalNumeric": 4500000,
+          "discount": true,
           "benefits": [
-            "Body contouring",
-            "Mengencangkan kulit kendur",
-            "Mengurangi lemak",
-            "Tanpa downtime"
+            "Body contouring tanpa operasi",
+            "Mengencangkan kulit tubuh yang kendur",
+            "Mengurangi lemak di area tertentu",
+            "Membentuk lekuk tubuh",
+            "Mengatasi kulit kendur pasca melahirkan",
+            "Mengencangkan lengan, perut, paha",
+            "Meningkatkan elastisitas kulit",
+            "Hasil natural dan bertahan lama",
+            "Non-invasif dan aman"
           ]
         }
       ]
     },
     {
       "id": "botox",
-      "name": "Botox Treatment",
-      "description": "Botulinum toxin untuk mengurangi kerutan dan garis halus",
+      "name": "Botox",
+      "description": "Injeksi botulinum toxin untuk mengurangi kerutan dan membentuk kontur wajah",
       "treatments": [
         {
           "id": "botox-forehead",
           "name": "Botox Forehead",
-          "description": "Botulinum toxin area dahi",
+          "description": "Botox Forehead adalah suatu prosedur medis menyuntikan botulinum toxin ke bawah lapisan kulit di area dahi untuk tujuan tertentu",
           "duration": "45 menit",
-          "price": "Rp 750.000",
+          "price": "Rp750.000",
+          "priceNumeric": 750000,
           "benefits": [
             "Mengurangi kerutan dahi",
-            "Hasil natural",
-            "Tanpa operasi",
-            "Efek 3-6 bulan"
+            "Menghaluskan garis horizontal di dahi",
+            "Mencegah kerutan makin dalam",
+            "Memberikan tampilan lebih muda",
+            "Hasil natural jika dilakukan dengan tepat",
+            "Efek bertahan 3-6 bulan",
+            "Prosedur cepat tanpa downtime"
           ]
         },
         {
           "id": "botox-crows-feet",
           "name": "Botox Crow's Feet",
-          "description": "Botulinum toxin area sudut mata",
+          "description": "Botox Crow's Feet adalah suatu prosedur medis menyuntikan botulinum toxin ke bawah lapisan kulit di area mata bagian luar untuk tujuan tertentu",
           "duration": "45 menit",
-          "price": "Rp 375.000",
+          "price": "Rp375.000",
+          "priceNumeric": 375000,
           "benefits": [
-            "Mengurangi garis halus mata",
-            "Tampak lebih segar",
-            "Prosedur cepat",
-            "Tanpa downtime"
+            "Mengurangi kerutan di sekitar mata",
+            "Menghaluskan garis senyum di mata",
+            "Membuat area mata tampak lebih segar",
+            "Mengurangi tanda penuaan",
+            "Hasil terlihat lebih awet muda",
+            "Ekspresi tetap natural",
+            "Efek bertahan 3-6 bulan"
           ]
         },
         {
           "id": "botox-jawline",
           "name": "Botox Jawline",
-          "description": "Botulinum toxin area rahang/pipi bawah",
+          "description": "Botox Jawline adalah suatu prosedur medis menyuntikan botulinum toxin ke bawah lapisan kulit di area rahang / pipi bawah untuk tujuan tertentu",
           "duration": "45 menit",
-          "price": "Rp 1.500.000",
+          "price": "Rp1.500.000",
+          "priceNumeric": 1500000,
           "benefits": [
-            "Membentuk V-shape face",
-            "Mengecilkan rahang",
-            "Hasil natural",
-            "Tanpa operasi"
+            "Membentuk V-line wajah",
+            "Mengecilkan otot masseter (rahang besar)",
+            "Mengatasi bruxism (menggertakkan gigi)",
+            "Membuat wajah lebih tirus",
+            "Mengurangi tension di rahang",
+            "Memberikan kontur wajah lebih feminin",
+            "Efek bertahan 4-6 bulan"
+          ]
+        },
+        {
+          "id": "botox-perunit",
+          "name": "Botox Perunit",
+          "description": "Botox Perunit adalah suatu prosedur medis menyuntikan botulinum toxin ke bawah lapisan kulit untuk tujuan tertentu",
+          "duration": "45 menit",
+          "price": "Rp30.000",
+          "priceNumeric": 30000,
+          "priceUnit": "per unit",
+          "benefits": [
+            "Fleksibel sesuai kebutuhan area",
+            "Bisa customize jumlah unit",
+            "Mengatasi kerutan di area spesifik",
+            "Lebih ekonomis untuk area kecil",
+            "Cocok untuk first timer",
+            "Hasil dapat disesuaikan dengan budget"
           ]
         },
         {
           "id": "botox-prime-forehead",
           "name": "Botox Prime Forehead",
-          "description": "Botox premium area dahi",
+          "description": "Botox Prime Forehead adalah suatu prosedur medis menyuntikan botulinum toxin premium ke bawah lapisan kulit di area dahi untuk tujuan tertentu",
           "duration": "45 menit",
-          "price": "Rp 2.500.000",
+          "price": "Rp2.500.000",
+          "priceNumeric": 2500000,
+          "premium": true,
           "benefits": [
-            "Produk premium berkualitas tinggi",
-            "Hasil maksimal & tahan lama",
-            "Mengurangi kerutan dalam",
-            "Efek lebih natural"
+            "Hasil lebih maksimal dan natural",
+            "Kualitas botox premium",
+            "Efek bertahan lebih lama (6-8 bulan)",
+            "Penyebaran lebih merata",
+            "Minim efek samping",
+            "Cocok untuk yang menginginkan hasil terbaik",
+            "Tampilan lebih fresh dan youthful"
+          ]
+        },
+        {
+          "id": "botox-prime-crows-feet",
+          "name": "Botox Prime Crow's Feet",
+          "description": "Botox Prime Crow's Feet adalah suatu prosedur medis menyuntikan botulinum toxin premium ke bawah lapisan kulit di area mata bagian luar untuk tujuan tertentu",
+          "duration": "45 menit",
+          "price": "Rp1.250.000",
+          "priceNumeric": 1250000,
+          "premium": true,
+          "benefits": [
+            "Menghilangkan kerutan mata secara optimal",
+            "Hasil lebih halus dan natural",
+            "Efek lebih tahan lama",
+            "Mata tampak lebih segar dan cerah",
+            "Kualitas premium dengan hasil maksimal",
+            "Ekspresi tetap natural"
           ]
         },
         {
           "id": "botox-prime-jawline",
           "name": "Botox Prime Jawline",
-          "description": "Botox premium area rahang/pipi bawah",
+          "description": "Botox Prime Jawline adalah suatu prosedur medis menyuntikan botulinum toxin premium ke bawah lapisan kulit untuk tujuan tertentu",
           "duration": "45 menit",
-          "price": "Rp 5.000.000",
+          "price": "Rp5.000.000",
+          "priceNumeric": 5000000,
+          "premium": true,
           "benefits": [
-            "Produk premium terbaik",
-            "Hasil V-shape optimal",
-            "Efek tahan lama",
-            "Prosedur aman & nyaman"
+            "Membentuk V-line sempurna",
+            "Hasil lebih dramatis dan tahan lama",
+            "Mengecilkan rahang besar secara maksimal",
+            "Kontur wajah lebih defined",
+            "Kualitas premium dengan hasil optimal",
+            "Efek bertahan hingga 8-12 bulan"
+          ]
+        },
+        {
+          "id": "botox-prime-perunit",
+          "name": "Botox Prime Perunit",
+          "description": "Botox Prime Perunit adalah suatu prosedur medis menyuntikan botulinum toxin premium ke bawah lapisan kulit untuk tujuan tertentu",
+          "duration": "45 menit",
+          "price": "Rp100.000",
+          "priceNumeric": 100000,
+          "priceUnit": "per unit",
+          "premium": true,
+          "benefits": [
+            "Kualitas premium per unit",
+            "Fleksibel untuk berbagai area",
+            "Hasil lebih natural dan maksimal",
+            "Efek lebih tahan lama",
+            "Bisa customize sesuai kebutuhan",
+            "Investasi terbaik untuk hasil optimal"
           ]
         }
       ]
@@ -416,71 +636,106 @@
     {
       "id": "skin-booster",
       "name": "Skin Booster",
-      "description": "Injeksi nutrisi dan bahan aktif untuk meremajakan kulit dari dalam",
+      "description": "Injeksi nutrisi dan bahan aktif untuk meremajakan dan melembabkan kulit dari dalam",
       "treatments": [
         {
           "id": "skinbooster-acne-plus",
           "name": "Skin Booster Acne Plus",
-          "description": "Injeksi bahan anti jerawat ke lapisan kulit",
+          "description": "Skinbooster Acne Plus adalah tindakan medis dengan tujuan menginjeksikan suatu bahan anti jerawat ke dalam lapisan kulit",
           "duration": "45 menit",
-          "price": "Rp 800.000",
+          "price": "Rp800.000",
+          "priceNumeric": 800000,
           "benefits": [
-            "Mengontrol jerawat dari dalam",
-            "Mengurangi peradangan",
-            "Memperbaiki tekstur kulit",
-            "Hasil bertahap optimal"
+            "Mengatasi jerawat dari dalam kulit",
+            "Mengurangi peradangan jerawat",
+            "Mengontrol produksi sebum",
+            "Memperbaiki tekstur kulit berjerawat",
+            "Mencegah jerawat berulang",
+            "Mencerahkan bekas jerawat",
+            "Melembabkan kulit tanpa membuatnya berminyak",
+            "Hasil lebih tahan lama"
           ]
         },
         {
           "id": "skinbooster-dna-salmon",
           "name": "Skin Booster DNA Salmon",
-          "description": "Injeksi PDRN, peptides, glutathione & HA",
+          "description": "Skinbooster DNA Salmon adalah tindakan medis dengan tujuan menginjeksikan PDRN, peptides, glutathion, dan asam hyaluronat ke dalam lapisan kulit",
           "duration": "45 menit",
-          "price": "Rp 1.000.000",
+          "price": "Rp1.000.000",
+          "priceNumeric": 1000000,
           "benefits": [
-            "Regenerasi kulit intensif",
-            "Mencerahkan dari dalam",
-            "Anti aging",
-            "Hasil glowing maksimal"
+            "Anti-aging yang powerful",
+            "Regenerasi sel kulit optimal",
+            "Meningkatkan elastisitas kulit",
+            "Deep hydration hingga lapisan dermis",
+            "Mencerahkan kulit kusam",
+            "Memperbaiki skin texture",
+            "Mengurangi kerutan halus",
+            "Kulit lebih kenyal dan plump",
+            "Memberikan glow dari dalam"
           ]
         },
         {
           "id": "skinbooster-nctf-135ha",
           "name": "Skin Booster NCTF 135HA",
-          "description": "Lebih dari 55 bahan aktif untuk nutrisi kulit dari dalam",
+          "description": "Skinbooster NCTF 135HA adalah tindakan medis dengan tujuan memasukan lebih dari 55 bahan aktif termasuk Hyaluronic Acid, asam amino, vitamin dan mineral yang berfungsi untuk menutrisi kulit dari dalam",
           "duration": "60 menit",
-          "price": "Rp 2.000.000",
+          "price": "Rp2.000.000",
+          "priceNumeric": 2000000,
           "benefits": [
-            "Nutrisi kulit lengkap",
-            "Meremajakan dari dalam",
-            "Mencerahkan & mengencangkan",
-            "Hasil komprehensif"
+            "Nutrisi lengkap untuk kulit",
+            "Meremajakan kulit secara menyeluruh",
+            "Hidrasi maksimal dengan HA",
+            "Mencerahkan dan meratakan warna kulit",
+            "Meningkatkan produksi kolagen",
+            "Memperbaiki elastisitas kulit",
+            "Mengurangi tanda penuaan",
+            "Kulit lebih sehat dari dalam",
+            "Glow natural dan tahan lama"
           ]
         },
         {
           "id": "skinbooster-nucleofill-strong",
           "name": "Skin Booster Nucleofill Strong",
-          "description": "Polynucleotide konsentrasi tinggi dari DNA salmon",
+          "description": "Skinbooster Nucleofill Strong adalah tindakan medis dengan tujuan memasukan polynucleotide konsentrasi tinggi dari DNA salmon ke dalam lapisan kulit",
           "duration": "45 menit",
-          "price": "Rp 3.600.000",
+          "price": "Rp3.600.000",
+          "priceNumeric": 3600000,
+          "priceOriginal": "Rp5.000.000",
+          "priceOriginalNumeric": 5000000,
+          "discount": true,
           "benefits": [
-            "Regenerasi sel optimal",
-            "Anti aging maksimal",
-            "Memperbaiki elastisitas",
-            "Produk premium"
+            "Konsentrasi PN tinggi untuk hasil maksimal",
+            "Regenerasi kulit super intensif",
+            "Mengatasi aging skin berat",
+            "Memperbaiki skin laxity (kulit kendur)",
+            "Meningkatkan densitas kulit",
+            "Mengurangi kerutan dalam",
+            "Mencerahkan kulit kusam",
+            "Hasil dramatis dan long-lasting",
+            "Premium anti-aging treatment"
           ]
         },
         {
           "id": "skinbooster-rejuran-healer",
           "name": "Skin Booster Rejuran Healer",
-          "description": "Polynucleotide (PN) untuk peremajaan intensif",
+          "description": "Skinbooster Rejuran Healer adalah tindakan medis dengan tujuan memasukan polynucleotide (PN) dari DNA salmon ke dalam lapisan kulit",
           "duration": "60 menit",
-          "price": "Rp 4.750.000",
+          "price": "Rp4.750.000",
+          "priceNumeric": 4750000,
+          "priceOriginal": "Rp6.500.000",
+          "priceOriginalNumeric": 6500000,
+          "discount": true,
           "benefits": [
-            "Peremajaan kulit maksimal",
-            "Memperbaiki skin barrier",
-            "Anti aging premium",
-            "Hasil tahan lama"
+            "Gold standard skin booster Korea",
+            "Regenerasi kulit maksimal",
+            "Wound healing untuk bekas jerawat/luka",
+            "Meningkatkan elastisitas kulit dramatis",
+            "Memperbaiki kulit rusak",
+            "Anti-aging paling efektif",
+            "Meningkatkan densitas kulit",
+            "Hasil natural dan tahan lama",
+            "Investment terbaik untuk kulit sehat"
           ]
         }
       ]
@@ -493,66 +748,90 @@
         {
           "id": "acne-injection",
           "name": "Acne Injection",
-          "description": "Injeksi anti jerawat pada lesi",
+          "description": "Injeksi Acne adalah prosedur medis menyuntikkan suatu bahan anti jerawat pada lesi jerawat",
           "duration": "15 menit",
-          "price": "Rp 75.000",
+          "price": "Rp75.000",
+          "priceNumeric": 75000,
           "benefits": [
-            "Mengatasi jerawat meradang",
-            "Prosedur cepat",
-            "Hasil segera terlihat",
-            "Mencegah bekas jerawat"
+            "Mempercepat penyembuhan jerawat besar",
+            "Mengurangi peradangan jerawat",
+            "Mengecilkan jerawat meradang",
+            "Mencegah bekas jerawat",
+            "Efek cepat (1-2 hari)",
+            "Cocok untuk jerawat cystic",
+            "Mengurangi rasa sakit jerawat",
+            "Emergency treatment sebelum acara penting"
           ]
         },
         {
           "id": "keloid-injection",
           "name": "Keloid Injection",
-          "description": "Injeksi steroid pada lesi keloid",
+          "description": "Injeksi Keloid adalah prosedur menginjeksikan bahan steroid pada lesi keloid",
           "duration": "45 menit",
-          "price": "Rp 150.000",
+          "price": "Rp150.000",
+          "priceNumeric": 150000,
           "benefits": [
-            "Mengecilkan keloid",
-            "Mengurangi kemerahan",
-            "Meratakan tekstur",
-            "Prosedur aman"
+            "Meratakan keloid yang menonjol",
+            "Mengurangi ukuran keloid",
+            "Mengurangi rasa gatal pada keloid",
+            "Melunakkan jaringan keloid",
+            "Mencegah keloid membesar",
+            "Memperbaiki tampilan bekas luka",
+            "Perlu beberapa sesi untuk hasil optimal"
           ]
         },
         {
           "id": "prp-injection",
           "name": "PRP Injection",
-          "description": "Suntik PRP dari darah pasien sendiri",
+          "description": "Injeksi Platelet Rich Plasma adalah tindakan medis menyuntikkan Platelet-Rich Plasma (PRP) dari darah pasien sendiri ke area tubuh tertentu",
           "duration": "45 menit",
-          "price": "Rp 275.000",
+          "price": "Rp275.000",
+          "priceNumeric": 275000,
           "benefits": [
-            "Regenerasi alami",
-            "Anti aging",
-            "Memperbaiki tekstur",
-            "Aman & natural"
+            "Regenerasi jaringan alami",
+            "Mempercepat penyembuhan luka",
+            "Mengurangi bekas jerawat",
+            "Meremajakan kulit wajah",
+            "Mengatasi hair loss (rambut rontok)",
+            "Aman karena dari darah sendiri",
+            "Merangsang produksi kolagen",
+            "Cocok untuk berbagai area"
           ]
         },
         {
           "id": "meso-face-lift",
-          "name": "Meso Face Lift",
-          "description": "Injeksi non-bedah untuk contouring wajah",
+          "name": "Meso Face Lift (2,5 cc)",
+          "description": "Injeksi Facelift adalah prosedur medis non-bedah yang menggunakan suntikan bahan aktif tertentu untuk menghilangkan lemak berlebih di area wajah",
           "duration": "45 menit",
-          "price": "Rp 550.000",
+          "price": "Rp550.000",
+          "priceNumeric": 550000,
           "benefits": [
-            "Membentuk kontur wajah",
-            "Mengurangi lemak pipi",
-            "Tanpa operasi",
-            "Hasil natural"
+            "Mengecilkan pipi tembem (chubby cheeks)",
+            "Menghilangkan double chin",
+            "Membentuk kontur wajah lebih tirus",
+            "Face slimming tanpa operasi",
+            "Membentuk V-line wajah",
+            "Hasil terlihat bertahap dalam 2-4 minggu",
+            "Non-invasif dan aman",
+            "Wajah lebih defined dan sculpted"
           ]
         },
         {
           "id": "meso-body-slim",
-          "name": "Meso Body Slim",
-          "description": "Injeksi pengurangan lemak area tubuh",
+          "name": "Meso Body Slim (10 cc)",
+          "description": "Injeksi Body Slimming adalah prosedur medis non-bedah menggunakan suntikan bahan aktif tertentu untuk mengurangi lemak berlebih di bagian tubuh tertentu",
           "duration": "45 menit",
-          "price": "Rp 1.000.000",
+          "price": "Rp1.000.000",
+          "priceNumeric": 1000000,
           "benefits": [
-            "Mengurangi lemak lokal",
-            "Body contouring",
-            "Tanpa operasi",
-            "Hasil progresif"
+            "Mengurangi lemak lokal di area tertentu",
+            "Body contouring tanpa operasi",
+            "Cocok untuk perut, lengan, paha, punggung",
+            "Mengecilkan area berlemak membandel",
+            "Hasil terlihat dalam 2-4 minggu",
+            "Bisa diulang untuk hasil maksimal",
+            "Non-invasif dengan downtime minimal",
+            "Alternatif liposuction tanpa operasi"
           ]
         }
       ]
@@ -560,32 +839,46 @@
     {
       "id": "infusion",
       "name": "Infusion Treatment",
-      "description": "Infus vitamin dan nutrisi untuk kesehatan kulit dari dalam",
+      "description": "Terapi infus vitamin dan nutrisi untuk kesehatan kulit dari dalam",
       "treatments": [
         {
           "id": "vitamin-white-booster",
           "name": "Vitamin White Booster",
-          "description": "Infus vitamin, mineral & nutrisi untuk pencerahan",
+          "description": "Infus Vitamin White Booster adalah tindakan medis memberikan vitamin, mineral, dan nutrisi tertentu ke tubuh secara intravena menggunakan infus",
           "duration": "15 menit",
-          "price": "Rp 750.000",
+          "price": "Rp750.000",
+          "priceNumeric": 750000,
           "benefits": [
-            "Mencerahkan dari dalam",
+            "Mencerahkan kulit dari dalam",
             "Detoksifikasi tubuh",
-            "Meningkatkan energi",
-            "Kulit lebih glowing"
+            "Meningkatkan sistem imun",
+            "Antioksidan tinggi",
+            "Membuat kulit glowing",
+            "Energi boost",
+            "Penyerapan vitamin 100%",
+            "Efek lebih cepat dari suplemen oral",
+            "Membuat tubuh lebih segar"
           ]
         },
         {
           "id": "vitamin-prime-booster",
           "name": "Vitamin Prime Booster",
-          "description": "Infus vitamin premium untuk energi & recovery",
+          "description": "Infus Vitamin Prime Booster adalah tindakan medis memberikan vitamin, mineral, dan nutrisi tertentu ke tubuh secara intravena menggunakan infus",
           "duration": "45 menit",
-          "price": "Rp 1.500.000",
+          "price": "Rp1.500.000",
+          "priceNumeric": 1500000,
+          "premium": true,
           "benefits": [
-            "Boost energi maksimal",
-            "Recovery cepat",
-            "Anti aging dari dalam",
-            "Formula premium lengkap"
+            "Formulasi premium dengan dosis tinggi",
+            "Mencerahkan kulit maksimal",
+            "Anti-aging dari dalam",
+            "Detox mendalam",
+            "Meningkatkan stamina dan vitalitas",
+            "Boost immune system optimal",
+            "Antioksidan super tinggi",
+            "Recovery lebih cepat",
+            "Kulit glowing dan tubuh fit",
+            "Efek bertahan lebih lama"
           ]
         }
       ]
@@ -593,65 +886,81 @@
     {
       "id": "add-on",
       "name": "Add On Treatment",
-      "description": "Perawatan tambahan untuk hasil optimal",
+      "description": "Perawatan tambahan untuk melengkapi treatment utama dan hasil maksimal",
       "treatments": [
         {
           "id": "masker-pdt-acne",
           "name": "Masker PDT Acne",
-          "description": "Masker peel off & PDT untuk kulit berjerawat/komedo",
+          "description": "Masker PDT Acne adalah suatu tindakan tambahan berupa pemberian masker peel off dan PDT untuk kondisi kulit berjerawat atau komedo",
           "duration": "15 menit",
-          "price": "Rp 50.000",
+          "price": "Rp50.000",
+          "priceNumeric": 50000,
           "benefits": [
-            "Mengatasi jerawat & komedo",
-            "Mengontrol minyak",
-            "Menenangkan kulit",
-            "Add-on sempurna"
+            "Membunuh bakteri penyebab jerawat",
+            "Mengurangi peradangan",
+            "Mengangkat komedo",
+            "Mengontrol produksi minyak",
+            "Menenangkan kulit berjerawat",
+            "Efek tambahan untuk treatment jerawat",
+            "Mempercepat penyembuhan",
+            "Mencegah jerawat baru"
           ]
         },
         {
           "id": "masker-pdt-glow",
           "name": "Masker PDT Glow",
-          "description": "Masker peel off & PDT untuk kulit tidak berjerawat",
+          "description": "Masker PDT Glow adalah suatu tindakan tambahan berupa pemberian masker peel off dan PDT untuk kondisi kulit tidak berjerawat",
           "duration": "15 menit",
-          "price": "Rp 50.000",
+          "price": "Rp50.000",
+          "priceNumeric": 50000,
           "benefits": [
-            "Mencerahkan kulit",
-            "Efek glowing instant",
-            "Merawat kulit",
-            "Cocok untuk semua jenis kulit"
+            "Mencerahkan kulit instan",
+            "Memberikan efek glowing",
+            "Merangsang produksi kolagen",
+            "Meningkatkan penyerapan produk",
+            "Membuat kulit lebih halus",
+            "Efek tambahan untuk hasil maksimal",
+            "Kulit lebih segar dan cerah",
+            "Perfect finishing touch"
           ]
         },
         {
           "id": "subsisi",
           "name": "Subsisi",
-          "description": "Bedah minor untuk memperbaiki bekas luka cekung/bopeng",
+          "description": "Subsisi adalah prosedur bedah minor yang dilakukan untuk memperbaiki bekas luka cekung atau bopeng pada kulit menggunakan jarum atau cannula yang digerakkan memotong jaringan parut di bawah lapisan kulit",
           "duration": "45 menit",
-          "price": "Rp 400.000",
+          "price": "Rp400.000",
+          "priceNumeric": 400000,
           "benefits": [
-            "Memperbaiki bekas jerawat dalam",
-            "Meratakan tekstur kulit",
-            "Hasil permanen",
-            "Prosedur medis aman"
-          ]
-        },
-        {
-          "id": "cauter",
-          "name": "Cauter",
-          "description": "Elektrokauter untuk lesi tertentu",
-          "duration": "45 menit",
-          "price": "Rp 300.000",
-          "benefits": [
-            "Menghilangkan lesi kulit",
-            "Prosedur presisi",
-            "Hasil bersih",
-            "Downtime ringan"
+            "Mengatasi bekas jerawat bopeng (atrophic scar)",
+            "Meratakan tekstur kulit yang tidak rata",
+            "Memutus jaringan fibrous di bawah kulit",
+            "Merangsang pembentukan kolagen baru",
+            "Hasil permanen untuk bopeng",
+            "Cocok dikombinasi dengan treatment lain",
+            "Memperbaiki rolling scar dan boxcar scar",
+            "Kulit lebih halus dan rata"
           ]
         }
       ]
     }
   ],
-  "whatsapp": {
-    "number": "081138800071",
-    "url": "https://wa.me/6281138800071"
+  "contact": {
+    "whatsapp": {
+      "number": "081138800071",
+      "url": "https://wa.me/6281138800071",
+      "displayNumber": "0811 3880 0071"
+    },
+    "socialMedia": {
+      "tiktok": "@DRWPrimeAestheticClinic",
+      "instagram": "@DRWPrimeAestheticClinic"
+    }
+  },
+  "metadata": {
+    "lastUpdated": "2025-11-05",
+    "version": "2.0",
+    "totalCategories": 14,
+    "totalTreatments": 65,
+    "currency": "IDR"
   }
 }
