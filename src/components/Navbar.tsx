@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,6 +47,39 @@ export default function Navbar() {
               KONTAK
             </Link>
           </li>
+          
+          {/* Member Section - Only visible when signed in */}
+          <SignedIn>
+            <li>
+              <Link 
+                href="/my-prime" 
+                className="text-primary hover:text-primary/80 transition-colors duration-300 text-sm font-medium tracking-wide"
+              >
+                MY PRIME
+              </Link>
+            </li>
+            <li>
+              <UserButton 
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    avatarBox: "w-9 h-9"
+                  }
+                }}
+              />
+            </li>
+          </SignedIn>
+          
+          {/* Sign In Button - Only visible when signed out */}
+          <SignedOut>
+            <li>
+              <SignInButton mode="modal">
+                <button className="bg-primary/20 border border-primary text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary/30 transition-colors">
+                  Sign In
+                </button>
+              </SignInButton>
+            </li>
+          </SignedOut>
         </ul>
 
         {/* Hamburger Button */}
@@ -103,6 +137,39 @@ export default function Navbar() {
                 KONTAK
               </Link>
             </li>
+            
+            {/* Mobile Auth Menu */}
+            <SignedIn>
+              <li>
+                <Link 
+                  href="/my-prime"
+                  onClick={() => setIsOpen(false)}
+                  className="block px-5 py-3 text-primary hover:text-primary/80 hover:bg-primary/10 transition-colors duration-300 text-sm font-medium tracking-wide"
+                >
+                  MY PRIME
+                </Link>
+              </li>
+              <li className="px-5 py-3">
+                <UserButton 
+                  afterSignOutUrl="/"
+                  appearance={{
+                    elements: {
+                      avatarBox: "w-9 h-9"
+                    }
+                  }}
+                />
+              </li>
+            </SignedIn>
+            
+            <SignedOut>
+              <li className="px-5 py-3">
+                <SignInButton mode="modal">
+                  <button className="w-full bg-primary/20 border border-primary text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary/30 transition-colors">
+                    Sign In
+                  </button>
+                </SignInButton>
+              </li>
+            </SignedOut>
           </ul>
         </div>
       )}
