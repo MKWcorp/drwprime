@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
@@ -23,7 +23,7 @@ interface Category {
   treatments: Treatment[];
 }
 
-export default function TreatmentsPage() {
+function TreatmentsContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get('category');
   
@@ -370,5 +370,17 @@ export default function TreatmentsPage() {
 
       <Footer />
     </>
+  );
+}
+
+export default function TreatmentsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-dark flex items-center justify-center">
+        <div className="text-primary text-xl">Loading...</div>
+      </div>
+    }>
+      <TreatmentsContent />
+    </Suspense>
   );
 }
