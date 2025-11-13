@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Navbar from '@/components/Navbar';
 
 interface Voucher {
   id: number;
@@ -137,8 +138,10 @@ export default function MyPrimePage() {
   };
 
   return (
-    <div className="min-h-screen bg-black pt-20">
-      <div className="max-w-7xl mx-auto px-5 py-10">
+    <div className="min-h-screen bg-black">
+      <Navbar />
+      <div className="pt-20">
+        <div className="max-w-7xl mx-auto px-5 py-10">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="font-playfair text-4xl md:text-5xl font-bold text-primary mb-4">
@@ -364,6 +367,7 @@ export default function MyPrimePage() {
               </div>
             ))}
           </div>
+        </div>
         </div>
       </div>
     </div>
