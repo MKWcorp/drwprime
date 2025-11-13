@@ -1,13 +1,23 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextRequest } from "next/server";
 
 const isPublicRoute = createRouteMatcher([
   '/',
   '/treatments(.*)',
   '/sign-in(.*)',
   '/sign-up(.*)',
+  '/my-prime(.*)',
+  // Static files
+  '/(.*\\.mp4$)',
+  '/(.*\\.webm$)',
+  '/(.*\\.png$)',
+  '/(.*\\.jpg$)',
+  '/(.*\\.jpeg$)',
+  '/(.*\\.svg$)',
+  '/(.*\\.ico$)',
 ]);
 
-export default clerkMiddleware(async (auth, req) => {
+export default clerkMiddleware(async (auth, req: NextRequest) => {
   if (!isPublicRoute(req)) {
     await auth.protect();
   }

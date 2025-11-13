@@ -69,15 +69,14 @@ export default function Navbar() {
               />
             </li>
           </SignedIn>
-          
-          {/* Sign In Button - Only visible when signed out */}
+            {/* Sign In Button - Only visible when signed out */}
           <SignedOut>
             <li>
-              <SignInButton mode="modal">
+              <Link href="/sign-in">
                 <button className="bg-primary/20 border border-primary text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary/30 transition-colors">
                   Sign In
                 </button>
-              </SignInButton>
+              </Link>
             </li>
           </SignedOut>
         </ul>
@@ -160,14 +159,16 @@ export default function Navbar() {
                 />
               </li>
             </SignedIn>
-            
-            <SignedOut>
+              <SignedOut>
               <li className="px-5 py-3">
-                <SignInButton mode="modal">
-                  <button className="w-full bg-primary/20 border border-primary text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary/30 transition-colors">
+                <Link href="/sign-in">
+                  <button 
+                    onClick={() => setIsOpen(false)}
+                    className="w-full bg-primary/20 border border-primary text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary/30 transition-colors"
+                  >
                     Sign In
                   </button>
-                </SignInButton>
+                </Link>
               </li>
             </SignedOut>
           </ul>

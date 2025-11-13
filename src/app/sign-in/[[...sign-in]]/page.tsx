@@ -13,47 +13,33 @@ export default function SignInPage() {
       {/* Content Container */}
       <div className="relative w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-block">
+        <div className="text-center mb-8">          <Link href="/" className="inline-block">
             <Image
               src="/drwprime-logo.png"
               alt="DRW Prime Logo"
               width={200}
               height={60}
-              className="mx-auto mb-4"
+              className="mx-auto"
             />
           </Link>
-          <h1 className="font-playfair text-3xl font-bold text-primary mb-2">
-            Admin Portal
-          </h1>
-          <p className="text-white/70">
-            Sign in to access the dashboard
-          </p>
-        </div>
-
-        {/* Sign In Component with Custom Styling */}
-        <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/30 rounded-2xl p-8 shadow-2xl shadow-primary/10">
+        </div>        {/* Sign In Component with Dark Theme & Gold Accents */}
+        <div className="bg-gradient-to-br from-gray-900 to-black border border-primary/30 rounded-2xl p-8 shadow-2xl shadow-primary/20">
           <SignIn
             appearance={{
               elements: {
                 rootBox: "w-full",
                 card: "bg-transparent shadow-none",
                 headerTitle: "hidden",
-                headerSubtitle: "hidden",
-                socialButtonsBlockButton: 
-                  "bg-primary/20 border-primary/30 text-white hover:bg-primary/30",
-                formButtonPrimary: 
-                  "bg-gradient-to-r from-primary to-primary-light text-dark hover:shadow-lg hover:shadow-primary/30",
-                formFieldInput: 
-                  "bg-black/50 border-primary/30 text-white focus:border-primary",
-                formFieldLabel: "text-white/90",
-                footerActionLink: "text-primary hover:text-primary/80",
+                headerSubtitle: "hidden",                socialButtonsBlockButton: 
+                  "bg-primary/20 border-primary/40 text-primary hover:bg-primary/30 hover:text-primary-light transition-colors",                formButtonPrimary: 
+                  "bg-gradient-to-r from-primary to-primary-light text-black font-semibold hover:shadow-lg hover:shadow-primary/40 hover:scale-105 transition-all",                formFieldInput: 
+                  "bg-gray-800/50 border-primary/30 text-white placeholder-gray-400 focus:border-primary focus:ring-primary/50 focus:bg-gray-700/50 transition-colors",
+                formFieldLabel: "text-primary font-medium",                footerActionLink: "text-primary hover:text-primary-light transition-colors",
                 identityPreviewText: "text-white",
-                formFieldInputShowPasswordButton: "text-primary",
-                formFieldSuccessText: "text-primary",
+                formFieldInputShowPasswordButton: "text-primary hover:text-primary-light",                formFieldSuccessText: "text-primary",
                 formFieldErrorText: "text-red-400",
                 otpCodeFieldInput: 
-                  "bg-black/50 border-primary/30 text-white focus:border-primary",
+                  "bg-gray-800/50 border-primary/30 text-white focus:border-primary focus:ring-primary/50",
                 alertText: "text-white/90",
               },
               layout: {
@@ -64,10 +50,10 @@ export default function SignInPage() {
             routing="path"
             path="/sign-in"
             signUpUrl="/sign-up"
+            fallbackRedirectUrl="/my-prime"
+            forceRedirectUrl="/my-prime"
           />
-        </div>
-
-        {/* Back to Home Link */}
+        </div>        {/* Back to Home Link */}
         <div className="text-center mt-6">
           <Link 
             href="/"
