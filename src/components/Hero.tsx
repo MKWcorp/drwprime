@@ -16,13 +16,13 @@ export default function Hero() {
       </video>
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/60 z-10"></div>
+      <div className="absolute inset-0 bg-black/30 z-10"></div>
 
       {/* Content */}
       <div className="relative z-20 max-w-4xl text-center">
         <h1 className="font-bold text-primary mb-10 leading-tight drop-shadow-2xl">
-          <div className="font-playfair text-3xl md:text-4xl mb-2">The Art of</div>
-          <div className="font-jakarta text-5xl md:text-7xl">Timeless Beauty</div>
+          <div className="font-playfair text-3xl md:text-4xl mb-2 drop-shadow-lg">The Art of</div>
+          <div className="font-jakarta text-5xl md:text-7xl drop-shadow-lg">Timeless Beauty</div>
         </h1>
         <Link 
           href="/treatments" 

@@ -24,14 +24,6 @@ export default function Navbar() {
         <ul className="hidden md:flex gap-8 items-center">
           <li>
             <Link 
-              href="/#about" 
-              className="text-white hover:text-primary transition-colors duration-300 text-sm font-medium tracking-wide"
-            >
-              TENTANG KAMI
-            </Link>
-          </li>
-          <li>
-            <Link 
               href="/treatments" 
               className="text-white hover:text-primary transition-colors duration-300 text-sm font-medium tracking-wide"
             >
@@ -84,15 +76,6 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-black/98 border-t border-primary/20">
           <ul className="flex flex-col py-4">
-            <li>
-              <Link 
-                href="/#about"
-                onClick={() => setIsOpen(false)}
-                className="block px-5 py-3 text-white hover:text-primary hover:bg-primary/10 transition-colors duration-300 text-sm font-medium tracking-wide"
-              >
-                TENTANG KAMI
-              </Link>
-            </li>
             <li>
               <Link 
                 href="/treatments"

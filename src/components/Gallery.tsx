@@ -15,20 +15,18 @@ export default function Gallery() {
   ];
 
   return (
-    <section id="gallery" className="py-20 bg-dark/50 overflow-hidden">
+    <section id="gallery" className="py-20 bg-dark/50">
       <div className="max-w-7xl mx-auto px-5">
         <h2 className="font-playfair text-4xl md:text-5xl font-bold text-primary text-center mb-16">
           GALERI
         </h2>
-      </div>
-      
-      {/* Horizontal Scroll Gallery */}
-      <div className="relative">
-        <div className="flex gap-6 overflow-x-auto pb-4 px-5 md:px-10 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        
+        {/* Grid Gallery - 3 Rows */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {galleryImages.map((image, index) => (
             <div 
               key={index} 
-              className="flex-shrink-0 w-64 h-64 md:w-80 md:h-80 relative group cursor-pointer"
+              className="w-full aspect-square relative group cursor-pointer"
             >
               {/* Gold Circle Frame */}
               <div className="absolute inset-0 rounded-full border-4 border-primary shadow-lg shadow-primary/30 z-10 group-hover:scale-105 transition-transform duration-300" />
@@ -45,11 +43,6 @@ export default function Gallery() {
               </div>
             </div>
           ))}
-        </div>
-        
-        {/* Scroll Indicator */}
-        <div className="text-center mt-6">
-          <p className="text-white/50 text-sm">← Geser untuk melihat lebih banyak →</p>
         </div>
       </div>
     </section>
