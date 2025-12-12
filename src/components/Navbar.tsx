@@ -1,12 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/nextjs';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { user, isLoaded } = useUser();
+
+  useEffect(() => {
+    if (isLoaded && user) {
+      checkAdminStatus();
+    }
+  }, [isLoaded, user]);
+
+  const checkAdminStatus = async () => {
+    try {
+      const response = await fetch('/api/user');
+      const data = await response.json();
+      setIsAdmin(data.user?.isAdmin || false);
+    } catch (error) {
+      console.error('Error checking admin status:', error);
+    }
+  };
 
   return (
     <nav className="fixed top-0 w-full bg-black/95 backdrop-blur-md z-50 border-b border-primary/20">
@@ -58,6 +76,16 @@ export default function Navbar() {
                 MY PRIME
               </Link>
             </li>
+            {isAdmin && (
+              <li>
+                <Link 
+                  href="/front-office" 
+                  className="text-primary hover:text-primary/80 transition-colors duration-300 text-sm font-medium tracking-wide"
+                >
+                  FRONT OFFICE
+                </Link>
+              </li>
+            )}
             <li>
               <UserButton 
                 afterSignOutUrl="/"
@@ -148,6 +176,17 @@ export default function Navbar() {
                   MY PRIME
                 </Link>
               </li>
+              {isAdmin && (
+                <li>
+                  <Link 
+                    href="/front-office"
+                    onClick={() => setIsOpen(false)}
+                    className="block px-5 py-3 text-primary hover:text-primary/80 hover:bg-primary/10 transition-colors duration-300 text-sm font-medium tracking-wide"
+                  >
+                    FRONT OFFICE
+                  </Link>
+                </li>
+              )}
               <li className="px-5 py-3">
                 <UserButton 
                   afterSignOutUrl="/"

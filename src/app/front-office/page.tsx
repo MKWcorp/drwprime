@@ -1,0 +1,637 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+
+interface Reservation {
+  id: string;
+  patientName: string;
+  patientEmail: string;
+  patientPhone: string;
+  patientNotes?: string;
+  reservationDate: string;
+  reservationTime: string;
+  status: string;
+  originalPrice: number;
+  finalPrice: number;
+  commissionAmount: number;
+  adminNotes?: string;
+  treatment: {
+    name: string;
+    category: {
+      name: string;
+    };
+  };
+  user: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    affiliateCode: string;
+  };
+  referrer?: {
+    firstName: string;
+    lastName: string;
+    affiliateCode: string;
+  };
+  createdAt: string;
+}
+
+export default function FrontOfficePage() {
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterDate, setFilterDate] = useState('');
+  const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentAmount, setPaymentAmount] = useState('');
+  const [expandedReservation, setExpandedReservation] = useState<string | null>(null);
+
+  const checkAdminAccess = async () => {
+    if (!user) {
+      router.push('/sign-in');
+      return;
+    }
+
+    try {
+      // Sync user with database
+      await fetch('/api/user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: user.emailAddresses[0]?.emailAddress,
+          firstName: user.firstName,
+          lastName: user.lastName
+        })
+      });
+
+      // Fetch user data to check admin status
+      const response = await fetch('/api/user');
+      const data = await response.json();
+      
+      if (data.user?.isAdmin) {
+        setIsAdmin(true);
+      } else {
+        router.push('/');
+      }
+    } catch (error) {
+      console.error('Error checking admin access:', error);
+      router.push('/');
+    } finally {
+      setCheckingAuth(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoaded) {
+      checkAdminAccess();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoaded]);
+
+  const fetchReservations = async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (filterStatus !== 'all') params.append('status', filterStatus);
+      if (filterDate) params.append('date', filterDate);
+
+      const response = await fetch(`/api/front-office/reservations?${params}`);
+      const data = await response.json();
+      setReservations(data.reservations || []);
+    } catch (error) {
+      console.error('Error fetching reservations:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isAdmin) {
+      fetchReservations();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterStatus, filterDate, isAdmin]);
+
+  const updateReservationStatus = async (id: string, status: string, adminNotes?: string, finalPrice?: number) => {
+    try {
+      const response = await fetch('/api/front-office/reservations', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reservationId: id, status, adminNotes, finalPrice })
+      });
+
+      if (response.ok) {
+        fetchReservations();
+        setSelectedReservation(null);
+        setShowPaymentModal(false);
+        setPaymentAmount('');
+      }
+    } catch (error) {
+      console.error('Error updating reservation:', error);
+    }
+  };
+
+  const handleCompleteWithPayment = () => {
+    if (!selectedReservation || !paymentAmount) return;
+    
+    const amount = parseFloat(paymentAmount);
+    if (isNaN(amount) || amount <= 0) {
+      alert('Please enter a valid payment amount');
+      return;
+    }
+
+    updateReservationStatus(selectedReservation.id, 'completed', undefined, amount);
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'pending': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+      case 'confirmed': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+      case 'completed': return 'bg-green-500/20 text-green-400 border-green-500/30';
+      case 'cancelled': return 'bg-red-500/20 text-red-400 border-red-500/30';
+      default: return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+    }
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+    }).format(amount);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('id-ID', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  if (checkingAuth || !isLoaded) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+          <p className="text-white/60">Checking access...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return null;
+  }
+
+  return (
+    <div className="min-h-screen bg-black">
+      <div className="max-w-7xl mx-auto px-5 py-10">
+        {/* Header */}
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="font-playfair text-4xl md:text-5xl font-bold text-primary mb-2">
+                Front Office Dashboard
+              </h1>
+              <p className="text-white/70 text-lg">
+                Manage reservations and appointments
+              </p>
+            </div>
+            <Image 
+              src="/drwprime-logo.png" 
+              alt="DRW Prime" 
+              width={120}
+              height={40}
+              className="h-10 w-auto"
+            />
+          </div>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
+          <div className="bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border border-yellow-500/30 rounded-xl p-6">
+            <p className="text-yellow-400 text-sm mb-2">Pending</p>
+            <p className="font-playfair text-3xl font-bold text-yellow-400">
+              {reservations.filter(r => r.status === 'pending').length}
+            </p>
+          </div>
+          <div className="bg-gradient-to-br from-blue-500/20 to-blue-500/5 border border-blue-500/30 rounded-xl p-6">
+            <p className="text-blue-400 text-sm mb-2">Confirmed</p>
+            <p className="font-playfair text-3xl font-bold text-blue-400">
+              {reservations.filter(r => r.status === 'confirmed').length}
+            </p>
+          </div>
+          <div className="bg-gradient-to-br from-green-500/20 to-green-500/5 border border-green-500/30 rounded-xl p-6">
+            <p className="text-green-400 text-sm mb-2">Completed</p>
+            <p className="font-playfair text-3xl font-bold text-green-400">
+              {reservations.filter(r => r.status === 'completed').length}
+            </p>
+          </div>
+          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl p-6">
+            <p className="text-primary text-sm mb-2">Total Today</p>
+            <p className="font-playfair text-3xl font-bold text-primary">
+              {reservations.length}
+            </p>
+          </div>
+        </div>
+
+        {/* Reservations List */}
+        <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="font-playfair text-2xl font-bold text-white">Reservations</h2>
+          </div>
+
+          {/* Filters */}
+          <div className="flex flex-wrap gap-4 mb-6 pb-6 border-b border-white/10">
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="bg-primary/10 border border-primary/30 text-white px-4 py-2 rounded-lg focus:outline-none focus:border-primary [&>option]:text-black"
+            >
+              <option value="all">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+
+            <input
+              type="date"
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+              className="bg-primary/10 border border-primary/30 text-white px-4 py-2 rounded-lg focus:outline-none focus:border-primary [color-scheme:dark]"
+            />
+
+            {filterDate && (
+              <button
+                onClick={() => setFilterDate('')}
+                className="bg-red-500/20 border border-red-500/30 text-red-400 px-4 py-2 rounded-lg hover:bg-red-500/30 transition-colors"
+              >
+                Clear Date
+              </button>
+            )}
+          </div>
+
+          {loading ? (
+            <div className="text-center py-10">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+              <p className="text-white/60 mt-4">Loading...</p>
+            </div>
+          ) : reservations.length === 0 ? (
+            <div className="text-center py-10">
+              <p className="text-white/60">No reservations found</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {reservations.map((reservation) => (
+                <div
+                  key={reservation.id}
+                  className="bg-black/30 rounded-lg border border-white/5 overflow-hidden"
+                >
+                  {/* Collapsed Header */}
+                  <div
+                    className="flex items-center justify-between p-4 cursor-pointer hover:bg-black/40 transition-all"
+                    onClick={() => setExpandedReservation(expandedReservation === reservation.id ? null : reservation.id)}
+                  >
+                    <div className="flex items-center gap-4 flex-1">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-1">
+                          <h3 className="font-semibold text-white">
+                            {reservation.patientName}
+                          </h3>
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${getStatusColor(reservation.status)}`}>
+                            {reservation.status.toUpperCase()}
+                          </span>
+                        </div>
+                        <p className="text-white/60 text-xs">
+                          {reservation.treatment.name}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-white text-sm font-semibold">{formatDate(reservation.reservationDate)}</p>
+                        <p className="text-primary text-xs">{reservation.reservationTime}</p>
+                      </div>
+                    </div>
+                    <svg 
+                      className={`w-5 h-5 text-white/60 ml-4 transition-transform ${expandedReservation === reservation.id ? 'rotate-180' : ''}`}
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+
+                  {/* Expanded Content */}
+                  {expandedReservation === reservation.id && (
+                    <div className="p-4 pt-0 space-y-3 border-t border-white/5">
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <p className="text-white/40 text-xs mb-1">Phone</p>
+                          <p className="text-white">{reservation.patientPhone}</p>
+                        </div>
+                        <div>
+                          <p className="text-white/40 text-xs mb-1">Email</p>
+                          <p className="text-white text-sm">{reservation.patientEmail}</p>
+                        </div>
+                        <div>
+                          <p className="text-white/40 text-xs mb-1">Category</p>
+                          <p className="text-white">{reservation.treatment.category.name}</p>
+                        </div>
+                        <div>
+                          <p className="text-white/40 text-xs mb-1">Price</p>
+                          <p className="text-primary font-semibold">{formatCurrency(reservation.finalPrice)}</p>
+                        </div>
+                      </div>
+
+                      {reservation.patientNotes && (
+                        <div>
+                          <p className="text-white/40 text-xs mb-1">Notes</p>
+                          <p className="text-white text-sm">{reservation.patientNotes}</p>
+                        </div>
+                      )}
+
+                      {reservation.referrer && (
+                        <div className="bg-primary/10 border border-primary/30 rounded-lg p-3">
+                          <p className="text-primary text-xs font-semibold mb-1">Affiliate</p>
+                          <p className="text-white text-sm">
+                            {reservation.referrer.firstName} {reservation.referrer.lastName} ({reservation.referrer.affiliateCode})
+                          </p>
+                          {reservation.commissionAmount > 0 && (
+                            <p className="text-green-400 text-sm mt-1">
+                              Commission: {formatCurrency(reservation.commissionAmount)}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-2 pt-2">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedReservation(reservation);
+                          }}
+                          className="flex-1 bg-primary/20 border border-primary/30 text-primary py-2 rounded-lg hover:bg-primary/30 transition-colors text-sm font-semibold"
+                        >
+                          View Details
+                        </button>
+                        {reservation.status === 'pending' && (
+                          <>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updateReservationStatus(reservation.id, 'confirmed');
+                              }}
+                              className="flex-1 bg-blue-500/20 border border-blue-500/30 text-blue-400 py-2 rounded-lg hover:bg-blue-500/30 transition-colors text-sm font-semibold"
+                            >
+                              Confirm
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updateReservationStatus(reservation.id, 'cancelled');
+                              }}
+                              className="flex-1 bg-red-500/20 border border-red-500/30 text-red-400 py-2 rounded-lg hover:bg-red-500/30 transition-colors text-sm font-semibold"
+                            >
+                              Cancel
+                            </button>
+                          </>
+                        )}
+                        {reservation.status === 'confirmed' && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedReservation(reservation);
+                              setShowPaymentModal(true);
+                            }}
+                            className="flex-1 bg-green-500/20 border border-green-500/30 text-green-400 py-2 rounded-lg hover:bg-green-500/30 transition-colors text-sm font-semibold"
+                          >
+                            Complete
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Detail Modal */}
+      {selectedReservation && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-white">
+                Reservation Details
+              </h3>
+              <button
+                onClick={() => setSelectedReservation(null)}
+                className="text-white/60 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div>
+                <p className="text-white/60 text-sm mb-1">Patient Name</p>
+                <p className="text-white font-semibold">{selectedReservation.patientName}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Phone</p>
+                  <p className="text-white">{selectedReservation.patientPhone}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Email</p>
+                  <p className="text-white">{selectedReservation.patientEmail}</p>
+                </div>
+              </div>
+              <div>
+                <p className="text-white/60 text-sm mb-1">Treatment</p>
+                <p className="text-white font-semibold">
+                  {selectedReservation.treatment.category.name} - {selectedReservation.treatment.name}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Date</p>
+                  <p className="text-white">{formatDate(selectedReservation.reservationDate)}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Time</p>
+                  <p className="text-white">{selectedReservation.reservationTime}</p>
+                </div>
+              </div>
+              <div>
+                <p className="text-white/60 text-sm mb-1">Price</p>
+                <p className="text-primary font-bold text-xl">
+                  {formatCurrency(selectedReservation.finalPrice)}
+                </p>
+              </div>
+              {selectedReservation.patientNotes && (
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Patient Notes</p>
+                  <p className="text-white">{selectedReservation.patientNotes}</p>
+                </div>
+              )}
+              {selectedReservation.referrer && (
+                <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
+                  <p className="text-primary font-semibold mb-2">Affiliate Information</p>
+                  <p className="text-white text-sm">
+                    Referred by: {selectedReservation.referrer.firstName} {selectedReservation.referrer.lastName}
+                  </p>
+                  <p className="text-white text-sm">
+                    Code: <span className="font-mono text-primary">{selectedReservation.referrer.affiliateCode}</span>
+                  </p>
+                  <p className="text-green-400 text-sm mt-2">
+                    Commission: {formatCurrency(selectedReservation.commissionAmount)}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            {selectedReservation.status === 'pending' && (
+              <div className="flex gap-3">
+                <button
+                  onClick={() => updateReservationStatus(selectedReservation.id, 'confirmed')}
+                  className="flex-1 bg-blue-500/20 border border-blue-500/30 text-blue-400 py-3 rounded-lg hover:bg-blue-500/30 transition-colors font-semibold"
+                >
+                  Confirm
+                </button>
+                <button
+                  onClick={() => updateReservationStatus(selectedReservation.id, 'cancelled')}
+                  className="flex-1 bg-red-500/20 border border-red-500/30 text-red-400 py-3 rounded-lg hover:bg-red-500/30 transition-colors font-semibold"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+            {selectedReservation.status === 'confirmed' && (
+              <button
+                onClick={() => setShowPaymentModal(true)}
+                className="w-full bg-green-500/20 border border-green-500/30 text-green-400 py-3 rounded-lg hover:bg-green-500/30 transition-colors font-semibold"
+              >
+                Complete with Payment
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Payment Modal */}
+      {showPaymentModal && selectedReservation && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-white">
+                Input Total Pembayaran
+              </h3>
+              <button
+                onClick={() => {
+                  setShowPaymentModal(false);
+                  setPaymentAmount('');
+                }}
+                className="text-white/60 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div>
+                <p className="text-white/60 text-sm mb-1">Patient</p>
+                <p className="text-white font-semibold">{selectedReservation.patientName}</p>
+              </div>
+              <div>
+                <p className="text-white/60 text-sm mb-1">Treatment</p>
+                <p className="text-white">{selectedReservation.treatment.name}</p>
+              </div>
+              <div>
+                <p className="text-white/60 text-sm mb-1">Original Price</p>
+                <p className="text-primary font-bold">{formatCurrency(selectedReservation.originalPrice)}</p>
+              </div>
+              
+              {selectedReservation.referrer && (
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+                  <p className="text-green-400 text-sm font-semibold mb-1">
+                    ✓ Ada Referral dari {selectedReservation.referrer.firstName}
+                  </p>
+                  <p className="text-white/60 text-xs">
+                    Komisi 10% akan otomatis dihitung dari total pembayaran
+                  </p>
+                </div>
+              )}
+
+              <div>
+                <label className="text-white font-semibold mb-2 block">
+                  Total Pembayaran Aktual *
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-semibold">
+                    Rp
+                  </span>
+                  <input
+                    type="number"
+                    value={paymentAmount}
+                    onChange={(e) => setPaymentAmount(e.target.value)}
+                    placeholder="0"
+                    className="w-full bg-black/50 border-2 border-primary/30 text-white pl-12 pr-4 py-3 rounded-lg focus:outline-none focus:border-primary text-lg font-semibold"
+                  />
+                </div>
+                <p className="text-white/40 text-xs mt-1">
+                  Masukkan jumlah yang dibayarkan pasien (bisa berbeda dari harga asli karena promo/diskon)
+                </p>
+              </div>
+
+              {paymentAmount && parseFloat(paymentAmount) > 0 && selectedReservation.referrer && (
+                <div className="bg-primary/10 border border-primary/30 rounded-lg p-3">
+                  <p className="text-white/60 text-xs mb-1">Komisi untuk Afiliator:</p>
+                  <p className="text-primary font-bold text-lg">
+                    {formatCurrency(parseFloat(paymentAmount) * 0.10)}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowPaymentModal(false);
+                  setPaymentAmount('');
+                }}
+                className="flex-1 bg-white/5 border border-white/10 text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleCompleteWithPayment}
+                disabled={!paymentAmount || parseFloat(paymentAmount) <= 0}
+                className="flex-1 bg-green-500/20 border border-green-500/30 text-green-400 py-3 rounded-lg hover:bg-green-500/30 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Selesaikan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
