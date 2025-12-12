@@ -6,7 +6,11 @@ const isPublicRoute = createRouteMatcher([
   '/treatments(.*)',
   '/sign-in(.*)',
   '/sign-up(.*)',
-  '/my-prime(.*)',
+  '/reservation(.*)',
+  '/api/treatments(.*)',
+  '/api/reservations(.*)',
+  '/api/categories(.*)',
+  '/api/vouchers(.*)',
   // Static files
   '/(.*\\.mp4$)',
   '/(.*\\.webm$)',

@@ -51,7 +51,6 @@ export default function SignInPage() {
             path="/sign-in"
             signUpUrl="/sign-up"
             fallbackRedirectUrl="/my-prime"
-            forceRedirectUrl="/my-prime"
           />
         </div>        {/* Back to Home Link */}
         <div className="text-center mt-6">
