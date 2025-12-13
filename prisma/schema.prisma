@@ -14,7 +14,7 @@ datasource db {
 model User {
   id                String         @id @default(cuid())
   clerkUserId       String         @unique
-  email             String         @unique
+  email             String         // Not unique - same email can have multiple accounts
   firstName         String?
   lastName          String?
   affiliateCode     String         @unique
