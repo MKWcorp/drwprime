@@ -30,17 +30,54 @@ export default function SignInPage() {
                 rootBox: "w-full",
                 card: "bg-transparent shadow-none",
                 headerTitle: "hidden",
-                headerSubtitle: "hidden",                socialButtonsBlockButton: 
-                  "bg-primary/20 border-primary/40 text-primary hover:bg-primary/30 hover:text-primary-light transition-colors",                formButtonPrimary: 
-                  "bg-gradient-to-r from-primary to-primary-light text-black font-semibold hover:shadow-lg hover:shadow-primary/40 hover:scale-105 transition-all",                formFieldInput: 
-                  "bg-gray-800/50 border-primary/30 text-white placeholder-gray-400 focus:border-primary focus:ring-primary/50 focus:bg-gray-700/50 transition-colors",
-                formFieldLabel: "text-primary font-medium",                footerActionLink: "text-primary hover:text-primary-light transition-colors",
+                headerSubtitle: "hidden",
+                
+                // Social buttons (Google, etc) - terang dan kontras
+                socialButtonsBlockButton: 
+                  "bg-white/10 border-primary/50 text-white hover:bg-primary/20 hover:border-primary hover:text-primary transition-colors",
+                socialButtonsBlockButtonText: "text-white font-medium",
+                
+                // Primary button (Sign In)
+                formButtonPrimary: 
+                  "bg-gradient-to-r from-primary to-primary-light text-black font-semibold hover:shadow-lg hover:shadow-primary/40 hover:scale-105 transition-all",
+                
+                // Input fields - lebih terang
+                formFieldInput: 
+                  "bg-white/10 border-primary/40 text-white placeholder-gray-300 focus:border-primary focus:ring-primary/50 focus:bg-white/15 transition-colors",
+                formFieldLabel: "text-white font-medium",
+                
+                // Links
+                footerActionLink: "text-primary hover:text-primary-light transition-colors font-medium",
+                footerActionText: "text-white/70",
+                
+                // Text elements
                 identityPreviewText: "text-white",
-                formFieldInputShowPasswordButton: "text-primary hover:text-primary-light",                formFieldSuccessText: "text-primary",
+                identityPreviewEditButton: "text-primary hover:text-primary-light",
+                formHeaderTitle: "text-white",
+                formHeaderSubtitle: "text-white/70",
+                
+                // Divider
+                dividerLine: "bg-white/20",
+                dividerText: "text-white/50",
+                
+                // Password visibility button
+                formFieldInputShowPasswordButton: "text-white/70 hover:text-primary",
+                
+                // Status messages
+                formFieldSuccessText: "text-primary",
                 formFieldErrorText: "text-red-400",
+                
+                // OTP input
                 otpCodeFieldInput: 
-                  "bg-gray-800/50 border-primary/30 text-white focus:border-primary focus:ring-primary/50",
-                alertText: "text-white/90",
+                  "bg-white/10 border-primary/40 text-white focus:border-primary focus:ring-primary/50",
+                
+                // Alert boxes
+                alertText: "text-white",
+                alert: "bg-white/10 border-primary/30",
+                
+                // Internal card elements
+                main: "text-white",
+                formFieldAction: "text-primary hover:text-primary-light",
               },
               layout: {
                 socialButtonsPlacement: "top",

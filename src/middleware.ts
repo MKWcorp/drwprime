@@ -11,6 +11,9 @@ const isPublicRoute = createRouteMatcher([
   '/api/reservations(.*)',
   '/api/categories(.*)',
   '/api/vouchers(.*)',
+  '/api/webhooks(.*)',
+  // Clerk OAuth callbacks
+  '/api/auth(.*)',
   // Static files
   '/(.*\\.mp4$)',
   '/(.*\\.webm$)',

@@ -3,7 +3,7 @@
  * Format: 2 letters from first name + 3 random alphanumeric
  * Example: "John Doe" -> "JO5X9"
  */
-export function generateAffiliateCode(firstName: string = '', lastName: string = ''): string {
+export function generateAffiliateCode(firstName: string = ''): string {
   // Get first 2 letters from first name, uppercase
   const firstPart = firstName.slice(0, 2).toUpperCase() || 'XX';
   
@@ -25,7 +25,7 @@ export async function ensureUniqueAffiliateCode(
   lastName: string,
   checkUnique: (code: string) => Promise<boolean>
 ): Promise<string> {
-  let code = generateAffiliateCode(firstName, lastName);
+  let code = generateAffiliateCode(firstName);
   let attempts = 0;
   const maxAttempts = 10;
   
@@ -34,7 +34,7 @@ export async function ensureUniqueAffiliateCode(
     if (isUnique) {
       return code;
     }
-    code = generateAffiliateCode(firstName, lastName);
+    code = generateAffiliateCode(firstName);
     attempts++;
   }
   
@@ -75,4 +75,63 @@ export function generateVoucherCode(): string {
   const timestamp = Date.now().toString(36).toUpperCase();
   const random = Math.random().toString(36).substring(2, 6).toUpperCase();
   return `VC-${timestamp}-${random}`;
+}
+
+/**
+ * Validate affiliate code format and content
+ * Rules:
+ * - Length: 5-10 characters
+ * - Only alphanumeric (A-Z, 0-9)
+ * - No forbidden words
+ */
+export function validateAffiliateCode(code: string): { valid: boolean; error?: string } {
+  // Check length
+  if (!code || code.length < 5 || code.length > 10) {
+    return { valid: false, error: 'Kode affiliate harus 5-10 karakter' };
+  }
+
+  // Check format (only alphanumeric)
+  const alphanumericRegex = /^[A-Z0-9]+$/;
+  if (!alphanumericRegex.test(code.toUpperCase())) {
+    return { valid: false, error: 'Kode hanya boleh huruf dan angka (A-Z, 0-9)' };
+  }
+
+  // Forbidden words/patterns
+  const forbiddenWords = [
+    'ADMIN', 'STAFF', 'SYSTEM', 'NULL', 'UNDEFINED',
+    'FUCK', 'SHIT', 'DAMN', 'BASTARD', 'BITCH',
+    'ANJING', 'KONTOL', 'MEMEK', 'BANGSAT', 'TOLOL'
+  ];
+
+  const upperCode = code.toUpperCase();
+  for (const word of forbiddenWords) {
+    if (upperCode.includes(word)) {
+      return { valid: false, error: 'Kode mengandung kata yang tidak diperbolehkan' };
+    }
+  }
+
+  return { valid: true };
+}
+
+/**
+ * Check if user can update affiliate code based on last update time
+ * Rule: Can only update once every 90 days (3 months)
+ */
+export function canUpdateAffiliateCode(lastUpdatedAt: Date | null): { allowed: boolean; daysRemaining?: number } {
+  if (!lastUpdatedAt) {
+    return { allowed: true }; // Never updated before
+  }
+
+  const now = new Date();
+  const daysSinceUpdate = Math.floor((now.getTime() - lastUpdatedAt.getTime()) / (1000 * 60 * 60 * 24));
+  const requiredDays = 90;
+
+  if (daysSinceUpdate >= requiredDays) {
+    return { allowed: true };
+  }
+
+  return {
+    allowed: false,
+    daysRemaining: requiredDays - daysSinceUpdate
+  };
 }

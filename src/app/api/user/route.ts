@@ -4,6 +4,18 @@ import { prisma } from '@/lib/prisma';
 import { ensureUniqueAffiliateCode } from '@/lib/affiliate';
 import { ADMIN_USER_IDS } from '@/lib/admin';
 
+// Handle CORS preflight
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  });
+}
+
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
@@ -61,7 +73,7 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
     const { userId } = await auth();
     
@@ -97,8 +109,12 @@ export async function GET(req: Request) {
       }
     });
 
+    // If user doesn't exist, return null data (client will sync via POST)
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ 
+        user: null,
+        needsSync: true 
+      }, { status: 200 });
     }
 
     // Calculate additional fields

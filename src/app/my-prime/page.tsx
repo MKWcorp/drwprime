@@ -37,24 +37,48 @@ export default function MyPrimePage() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [editingCode, setEditingCode] = useState(false);
+  const [newCode, setNewCode] = useState('');
+  const [codeError, setCodeError] = useState('');
+  const [codeSuccess, setCodeSuccess] = useState('');
+  const [canUpdateCode, setCanUpdateCode] = useState(false);
+  const [daysRemaining, setDaysRemaining] = useState(0);
 
   const syncAndFetchUser = useCallback(async () => {
     try {
-      // Sync user with database
-      await fetch('/api/user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: user?.emailAddresses[0]?.emailAddress,
-          firstName: user?.firstName,
-          lastName: user?.lastName
-        })
-      });
+      setLoading(true);
+      
+      // First, try to fetch user data
+      const fetchResponse = await fetch('/api/user');
+      const fetchData = await fetchResponse.json();
+      
+      // If user needs sync (doesn't exist), sync first
+      if (fetchData.needsSync) {
+        await fetch('/api/user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: user?.emailAddresses[0]?.emailAddress,
+            firstName: user?.firstName,
+            lastName: user?.lastName
+          })
+        });
+        
+        // Fetch again after sync
+        const response = await fetch('/api/user');
+        const data = await response.json();
+        setUserData(data.user);
+      } else {
+        setUserData(fetchData.user);
+      }
 
-      // Fetch user data
-      const response = await fetch('/api/user');
-      const data = await response.json();
-      setUserData(data.user);
+      // Fetch affiliate code info
+      const codeInfoResponse = await fetch('/api/user/affiliate-code');
+      if (codeInfoResponse.ok) {
+        const codeInfo = await codeInfoResponse.json();
+        setCanUpdateCode(codeInfo.canUpdate);
+        setDaysRemaining(codeInfo.daysRemaining || 0);
+      }
     } catch (error) {
       console.error('Error fetching user data:', error);
     } finally {
@@ -81,6 +105,58 @@ export default function MyPrimePage() {
       currency: 'IDR',
       minimumFractionDigits: 0
     }).format(amount);
+  };
+
+  const handleEditCode = () => {
+    setEditingCode(true);
+    setNewCode('');
+    setCodeError('');
+    setCodeSuccess('');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCode(false);
+    setNewCode('');
+    setCodeError('');
+    setCodeSuccess('');
+  };
+
+  const handleUpdateCode = async () => {
+    setCodeError('');
+    setCodeSuccess('');
+
+    if (!newCode.trim()) {
+      setCodeError('Kode tidak boleh kosong');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/user/affiliate-code', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newAffiliateCode: newCode.trim() })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setCodeError(data.error || 'Gagal memperbarui kode');
+        return;
+      }
+
+      setCodeSuccess('Kode berhasil diperbarui!');
+      setEditingCode(false);
+      setNewCode('');
+      
+      // Refresh user data
+      await syncAndFetchUser();
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => setCodeSuccess(''), 3000);
+    } catch (error) {
+      console.error('Error updating code:', error);
+      setCodeError('Terjadi kesalahan. Silakan coba lagi.');
+    }
   };
 
   if (loading) {
@@ -114,10 +190,83 @@ export default function MyPrimePage() {
             <div className="bg-gradient-to-br from-primary/30 to-primary/10 border border-primary rounded-xl p-4 relative overflow-hidden">
               <div className="relative z-10">
                 <div className="mb-3">
-                  <p className="text-white/60 text-xs mb-1">Kode Affiliate</p>
-                  <div className="font-mono text-3xl font-bold text-primary tracking-wider mb-3">
-                    {userData.affiliateCode}
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="text-white/60 text-xs">Kode Affiliate</p>
+                    {!editingCode && (
+                      <button
+                        onClick={handleEditCode}
+                        disabled={!canUpdateCode}
+                        className={`text-xs px-2 py-1 rounded transition-colors ${
+                          canUpdateCode 
+                            ? 'bg-primary/20 text-primary hover:bg-primary/30' 
+                            : 'bg-white/5 text-white/30 cursor-not-allowed'
+                        }`}
+                        title={!canUpdateCode ? `Dapat diubah dalam ${daysRemaining} hari` : 'Edit kode'}
+                      >
+                        <svg className="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                        Edit
+                      </button>
+                    )}
                   </div>
+                  
+                  {!editingCode ? (
+                    <>
+                      <div className="font-mono text-3xl font-bold text-primary tracking-wider mb-3">
+                        {userData.affiliateCode}
+                      </div>
+                      {!canUpdateCode && (
+                        <p className="text-yellow-400/80 text-[10px] mb-2">
+                          ⏳ Kode dapat diubah dalam {daysRemaining} hari
+                        </p>
+                      )}
+                    </>
+                  ) : (
+                    <div className="mb-3">
+                      <input
+                        type="text"
+                        value={newCode}
+                        onChange={(e) => {
+                          setNewCode(e.target.value.toUpperCase());
+                          setCodeError('');
+                        }}
+                        placeholder="Masukkan kode baru (5-10 karakter)"
+                        maxLength={10}
+                        className="w-full bg-black/30 border border-primary/50 text-white text-lg font-mono px-3 py-2 rounded-lg mb-2 focus:outline-none focus:border-primary"
+                      />
+                      <div className="flex gap-2 mb-2">
+                        <button
+                          onClick={handleUpdateCode}
+                          className="flex-1 bg-primary hover:bg-primary/90 text-dark font-semibold py-2 px-3 rounded text-xs transition-colors"
+                        >
+                          Simpan
+                        </button>
+                        <button
+                          onClick={handleCancelEdit}
+                          className="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-2 px-3 rounded text-xs transition-colors"
+                        >
+                          Batal
+                        </button>
+                      </div>
+                      <p className="text-white/50 text-[10px]">
+                        ⚠️ Kode hanya bisa diubah 1x setiap 90 hari. Gunakan huruf & angka saja.
+                      </p>
+                    </div>
+                  )}
+
+                  {codeError && (
+                    <div className="bg-red-500/20 border border-red-500/50 text-red-400 text-xs px-3 py-2 rounded-lg mb-2">
+                      {codeError}
+                    </div>
+                  )}
+
+                  {codeSuccess && (
+                    <div className="bg-green-500/20 border border-green-500/50 text-green-400 text-xs px-3 py-2 rounded-lg mb-2">
+                      {codeSuccess}
+                    </div>
+                  )}
+
                   <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-3">
                     <p className="text-white/60 text-xs mb-1.5">Link Referral:</p>
                     <div className="flex items-center gap-2">

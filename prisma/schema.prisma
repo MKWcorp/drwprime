@@ -18,6 +18,8 @@ model User {
   firstName         String?
   lastName          String?
   affiliateCode     String         @unique
+  affiliateCodeUpdatedAt DateTime?  // Track last time affiliate code was changed
+  affiliateCodeHistory String[]     @default([]) // Track history of previous codes
   isAdmin           Boolean        @default(false)
   points            Int            @default(0)
   loyaltyPoints     Int            @default(0)
