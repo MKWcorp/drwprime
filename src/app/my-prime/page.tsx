@@ -50,11 +50,19 @@ export default function MyPrimePage() {
       
       // First, try to fetch user data
       const fetchResponse = await fetch('/api/user');
+      
+      if (!fetchResponse.ok) {
+        console.error('Failed to fetch user:', fetchResponse.status);
+        setUserData(null);
+        return;
+      }
+      
       const fetchData = await fetchResponse.json();
       
       // If user needs sync (doesn't exist), sync first
       if (fetchData.needsSync) {
-        await fetch('/api/user', {
+        console.log('User needs sync, creating user...');
+        const syncResponse = await fetch('/api/user', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -64,20 +72,43 @@ export default function MyPrimePage() {
           })
         });
         
+        if (!syncResponse.ok) {
+          const errorData = await syncResponse.json();
+          console.error('Sync error:', errorData);
+          setUserData(null);
+          return;
+        }
+        
         // Fetch again after sync
         const response = await fetch('/api/user');
+        if (!response.ok) {
+          console.error('Failed to fetch after sync:', response.status);
+          setUserData(null);
+          return;
+        }
         const data = await response.json();
         setUserData(data.user);
       } else {
         setUserData(fetchData.user);
       }
 
-      // Fetch affiliate code info
-      const codeInfoResponse = await fetch('/api/user/affiliate-code');
-      if (codeInfoResponse.ok) {
-        const codeInfo = await codeInfoResponse.json();
-        setCanUpdateCode(codeInfo.canUpdate);
-        setDaysRemaining(codeInfo.daysRemaining || 0);
+      // Fetch affiliate code info (optional - don't fail if it errors)
+      try {
+        const codeInfoResponse = await fetch('/api/user/affiliate-code');
+        if (codeInfoResponse.ok) {
+          const codeInfo = await codeInfoResponse.json();
+          setCanUpdateCode(codeInfo.canUpdate);
+          setDaysRemaining(codeInfo.daysRemaining || 0);
+        } else {
+          // Default values if endpoint doesn't exist yet
+          setCanUpdateCode(true);
+          setDaysRemaining(0);
+        }
+      } catch (error) {
+        console.error('Error fetching affiliate code info:', error);
+        // Set defaults, don't fail the whole load
+        setCanUpdateCode(true);
+        setDaysRemaining(0);
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
