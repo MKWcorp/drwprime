@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -31,6 +32,21 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="id" className={`${inter.variable} ${playfair.variable}`}>
+        <head>
+          <Script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-Z4M7H1T0NQ"
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-Z4M7H1T0NQ');
+            `}
+          </Script>
+        </head>
         <body className="antialiased">
           {children}
         </body>
