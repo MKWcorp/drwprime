@@ -97,6 +97,9 @@ export async function GET() {
           }
         },
         referrals: {
+          where: {
+            status: 'completed'
+          },
           include: {
             treatment: true
           },
