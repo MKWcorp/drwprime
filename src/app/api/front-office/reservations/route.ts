@@ -93,6 +93,10 @@ export async function PATCH(req: Request) {
     if (status === 'completed' && reservation.referrerId && !reservation.commissionPaid) {
       const commissionAmount = reservation.commissionAmount;
 
+      console.log(`[COMMISSION] Paying commission for reservation ${reservationId}`);
+      console.log(`[COMMISSION] Referrer ID: ${reservation.referrerId}`);
+      console.log(`[COMMISSION] Amount: ${commissionAmount}`);
+
       // Update referrer earnings
       await prisma.user.update({
         where: { id: reservation.referrerId },
@@ -120,6 +124,8 @@ export async function PATCH(req: Request) {
         where: { id: reservationId },
         data: { commissionPaid: true }
       });
+
+      console.log(`[COMMISSION] Successfully paid commission to referrer`);
     }
 
     return NextResponse.json({ reservation });
@@ -127,6 +133,141 @@ export async function PATCH(req: Request) {
     console.error('Error updating reservation:', error);
     return NextResponse.json(
       { error: 'Failed to update reservation' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: Request) {
+  try {
+    const body = await req.json();
+    const { reservationId, affiliateCode, action } = body;
+
+    if (action !== 'addAffiliate') {
+      return NextResponse.json(
+        { error: 'Invalid action' },
+        { status: 400 }
+      );
+    }
+
+    if (!affiliateCode || !reservationId) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
+    // Find user by affiliate code
+    const referrer = await prisma.user.findUnique({
+      where: { affiliateCode: affiliateCode.toUpperCase() }
+    });
+
+    if (!referrer) {
+      console.log(`[AFFILIATE] Code not found: ${affiliateCode}`);
+      return NextResponse.json(
+        { error: 'Kode affiliate tidak ditemukan' },
+        { status: 404 }
+      );
+    }
+
+    console.log(`[AFFILIATE] Adding referrer: ${referrer.firstName} ${referrer.lastName} (${affiliateCode})`);
+
+    // Get current reservation
+    const currentReservation = await prisma.reservation.findUnique({
+      where: { id: reservationId }
+    });
+
+    if (!currentReservation) {
+      return NextResponse.json(
+        { error: 'Reservasi tidak ditemukan' },
+        { status: 404 }
+      );
+    }
+
+    // Check if user trying to use their own affiliate code
+    if (currentReservation.userId === referrer.id) {
+      console.log(`[AFFILIATE] Self-referral blocked for user ${referrer.id}`);
+      return NextResponse.json(
+        { error: 'Tidak bisa menggunakan kode affiliate sendiri' },
+        { status: 400 }
+      );
+    }
+
+    // Calculate commission
+    const commissionRate = 0.10; // 10%
+    const commissionAmount = Number(currentReservation.finalPrice) * commissionRate;
+
+    console.log(`[AFFILIATE] Commission calculated: Rp ${commissionAmount} for reservation ${reservationId}`);
+
+    // Update reservation with referrer
+    const reservation = await prisma.reservation.update({
+      where: { id: reservationId },
+      data: {
+        referredBy: affiliateCode.toUpperCase(),
+        referrerId: referrer.id,
+        commissionAmount
+      },
+      include: {
+        treatment: {
+          include: {
+            category: true
+          }
+        },
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+            affiliateCode: true
+          }
+        },
+        referrer: {
+          select: {
+            firstName: true,
+            lastName: true,
+            affiliateCode: true
+          }
+        }
+      }
+    });
+
+    // If reservation already completed, pay commission immediately
+    if (reservation.status === 'completed' && !reservation.commissionPaid) {
+      console.log(`[COMMISSION] Reservation already completed, paying commission now...`);
+      
+      await prisma.user.update({
+        where: { id: referrer.id },
+        data: {
+          totalEarnings: { increment: commissionAmount },
+          totalReferrals: { increment: 1 },
+          points: { increment: Math.floor(commissionAmount / 100) }
+        }
+      });
+
+      await prisma.transaction.create({
+        data: {
+          userId: referrer.id,
+          type: 'commission',
+          amount: commissionAmount,
+          points: Math.floor(commissionAmount / 100),
+          description: `Commission from referral: ${reservation.patientName}`,
+          referenceId: reservation.id
+        }
+      });
+
+      await prisma.reservation.update({
+        where: { id: reservationId },
+        data: { commissionPaid: true }
+      });
+
+      console.log(`[COMMISSION] Successfully paid Rp ${commissionAmount} to ${referrer.firstName} ${referrer.lastName}`);
+    }
+
+    return NextResponse.json({ reservation, message: 'Affiliate berhasil ditambahkan' });
+  } catch (error) {
+    console.error('Error adding affiliate:', error);
+    return NextResponse.json(
+      { error: 'Failed to add affiliate' },
       { status: 500 }
     );
   }

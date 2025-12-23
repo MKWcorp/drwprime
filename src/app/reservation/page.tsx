@@ -81,8 +81,8 @@ function ReservationContent() {
           patientPhone: formData.patientPhone,
           reservationDate: formData.reservationDate,
           reservationTime: formData.reservationTime,
-          notes: formData.notes,
-          affiliateCode: affiliateCode || undefined
+          patientNotes: formData.notes,
+          referredBy: affiliateCode || undefined
         })
       });
 

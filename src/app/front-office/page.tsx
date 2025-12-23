@@ -51,6 +51,10 @@ export default function FrontOfficePage() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentAmount, setPaymentAmount] = useState('');
   const [expandedReservation, setExpandedReservation] = useState<string | null>(null);
+  const [showAffiliateModal, setShowAffiliateModal] = useState(false);
+  const [affiliateCode, setAffiliateCode] = useState('');
+  const [affiliateError, setAffiliateError] = useState('');
+
 
   const checkAdminAccess = async () => {
     if (!user) {
@@ -147,6 +151,42 @@ export default function FrontOfficePage() {
     }
 
     updateReservationStatus(selectedReservation.id, 'completed', undefined, amount);
+  };
+
+  const handleAddAffiliate = async () => {
+    if (!selectedReservation || !affiliateCode) {
+      setAffiliateError('Masukkan kode affiliate');
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/front-office/reservations`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reservationId: selectedReservation.id,
+          affiliateCode: affiliateCode.trim().toUpperCase(),
+          action: 'addAffiliate'
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setAffiliateError(data.error || 'Gagal menambahkan affiliate');
+        return;
+      }
+
+      // Success - refresh data
+      await fetchReservations();
+      setShowAffiliateModal(false);
+      setAffiliateCode('');
+      setAffiliateError('');
+      setSelectedReservation(null);
+    } catch (error) {
+      console.error('Error adding affiliate:', error);
+      setAffiliateError('Terjadi kesalahan. Silakan coba lagi.');
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -489,7 +529,7 @@ export default function FrontOfficePage() {
                   <p className="text-white">{selectedReservation.patientNotes}</p>
                 </div>
               )}
-              {selectedReservation.referrer && (
+              {selectedReservation.referrer ? (
                 <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
                   <p className="text-primary font-semibold mb-2">Affiliate Information</p>
                   <p className="text-white text-sm">
@@ -501,6 +541,21 @@ export default function FrontOfficePage() {
                   <p className="text-green-400 text-sm mt-2">
                     Commission: {formatCurrency(selectedReservation.commissionAmount)}
                   </p>
+                </div>
+              ) : (
+                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-yellow-400 font-semibold mb-1">No Affiliate</p>
+                      <p className="text-white/60 text-xs">Reservasi ini belum memiliki referrer</p>
+                    </div>
+                    <button
+                      onClick={() => setShowAffiliateModal(true)}
+                      className="bg-primary/20 border border-primary/30 text-primary px-4 py-2 rounded-lg hover:bg-primary/30 transition-colors text-sm font-semibold whitespace-nowrap"
+                    >
+                      + Add Referrer
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -530,6 +585,91 @@ export default function FrontOfficePage() {
                 Complete with Payment
               </button>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Add Affiliate Modal */}
+      {showAffiliateModal && selectedReservation && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-white">
+                Tambah Affiliate
+              </h3>
+              <button
+                onClick={() => {
+                  setShowAffiliateModal(false);
+                  setAffiliateCode('');
+                  setAffiliateError('');
+                }}
+                className="text-white/60 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div>
+                <p className="text-white/60 text-sm mb-1">Patient</p>
+                <p className="text-white font-semibold">{selectedReservation.patientName}</p>
+              </div>
+              <div>
+                <p className="text-white/60 text-sm mb-1">Treatment</p>
+                <p className="text-white">{selectedReservation.treatment.name}</p>
+              </div>
+
+              <div>
+                <label className="text-white font-semibold mb-2 block">
+                  Kode Affiliate *
+                </label>
+                <input
+                  type="text"
+                  value={affiliateCode}
+                  onChange={(e) => {
+                    setAffiliateCode(e.target.value.toUpperCase());
+                    setAffiliateError('');
+                  }}
+                  placeholder="Contoh: JO5X9"
+                  className="w-full bg-black/50 border-2 border-primary/30 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-primary text-lg font-mono uppercase"
+                  maxLength={10}
+                />
+                <p className="text-white/40 text-xs mt-1">
+                  Masukkan kode affiliate untuk menambahkan referrer ke reservasi ini
+                </p>
+                {affiliateError && (
+                  <p className="text-red-400 text-sm mt-2">{affiliateError}</p>
+                )}
+              </div>
+
+              <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
+                <p className="text-yellow-400 text-xs">
+                  ⚠️ Pastikan kode affiliate valid. Komisi akan dihitung berdasarkan final price reservasi.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowAffiliateModal(false);
+                  setAffiliateCode('');
+                  setAffiliateError('');
+                }}
+                className="flex-1 bg-white/5 border border-white/10 text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleAddAffiliate}
+                disabled={!affiliateCode}
+                className="flex-1 bg-primary/20 border border-primary/30 text-primary py-3 rounded-lg hover:bg-primary/30 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Simpan
+              </button>
+            </div>
           </div>
         </div>
       )}

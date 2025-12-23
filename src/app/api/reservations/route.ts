@@ -44,14 +44,30 @@ export async function POST(req: Request) {
     let commissionAmount = 0;
 
     // Check if there's a referrer
-    if (referredBy && referredBy !== user.affiliateCode) {
+    if (referredBy) {
+      // Validate: cannot use own affiliate code
+      if (referredBy === user.affiliateCode) {
+        return NextResponse.json(
+          { error: 'Tidak dapat menggunakan kode affiliate sendiri' },
+          { status: 400 }
+        );
+      }
+
+      // Find referrer by affiliate code
       referrer = await prisma.user.findUnique({
-        where: { affiliateCode: referredBy }
+        where: { affiliateCode: referredBy.toUpperCase() }
       });
 
-      if (referrer) {
-        commissionAmount = calculateCommission(Number(treatment.price));
+      // Validate: affiliate code must exist
+      if (!referrer) {
+        return NextResponse.json(
+          { error: `Kode affiliate '${referredBy}' tidak ditemukan` },
+          { status: 404 }
+        );
       }
+
+      commissionAmount = calculateCommission(Number(treatment.price));
+      console.log(`[AFFILIATE] Referral tracked: ${referredBy} -> Commission: ${commissionAmount}`);
     }
 
     // Create reservation
