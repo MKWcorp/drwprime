@@ -83,7 +83,7 @@ model Treatment {
 // Reservation system
 model Reservation {
   id              String    @id @default(cuid())
-  userId          String
+  userId          String?   // Nullable for guest reservations
   treatmentId     String
   referredBy      String?   // Affiliate code of referrer
   referrerId      String?   // User ID of referrer
