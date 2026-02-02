@@ -402,8 +402,8 @@ export default function FrontOfficePage() {
                       {reservation.referrer && (
                         <div className="bg-primary/10 border border-primary/30 rounded-lg p-3">
                           <p className="text-primary text-xs font-semibold mb-1">Affiliate</p>
-                          <p className="text-white text-sm">
-                            {reservation.referrer.firstName} {reservation.referrer.lastName} ({reservation.referrer.affiliateCode})
+                          <p className="text-white text-sm font-semibold">
+                            {reservation.referrer.affiliateCode}
                           </p>
                           {reservation.commissionAmount > 0 && (
                             <p className="text-green-400 text-sm mt-1">
@@ -531,12 +531,9 @@ export default function FrontOfficePage() {
               )}
               {selectedReservation.referrer ? (
                 <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
-                  <p className="text-primary font-semibold mb-2">Affiliate Information</p>
-                  <p className="text-white text-sm">
-                    Referred by: {selectedReservation.referrer.firstName} {selectedReservation.referrer.lastName}
-                  </p>
-                  <p className="text-white text-sm">
-                    Code: <span className="font-mono text-primary">{selectedReservation.referrer.affiliateCode}</span>
+                  <p className="text-primary font-semibold mb-2">Affiliate</p>
+                  <p className="text-white text-lg font-bold font-mono">
+                    {selectedReservation.referrer.affiliateCode}
                   </p>
                   <p className="text-green-400 text-sm mt-2">
                     Commission: {formatCurrency(selectedReservation.commissionAmount)}
