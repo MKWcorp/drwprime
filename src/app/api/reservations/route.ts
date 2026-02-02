@@ -58,16 +58,16 @@ export async function POST(req: Request) {
         where: { affiliateCode: referredBy.toUpperCase() }
       });
 
-      // Validate: affiliate code must exist
-      if (!referrer) {
-        return NextResponse.json(
-          { error: `Kode affiliate '${referredBy}' tidak ditemukan` },
-          { status: 404 }
-        );
+      // Allow unclaimed codes - no validation error if referrer not found
+      // Commission will be tracked and can be claimed later
+      if (referrer) {
+        commissionAmount = calculateCommission(Number(treatment.price));
+        console.log(`[AFFILIATE] Referral tracked: ${referredBy} -> Commission: ${commissionAmount}`);
+      } else {
+        // Code not claimed yet, but still track it
+        commissionAmount = calculateCommission(Number(treatment.price));
+        console.log(`[AFFILIATE] Unclaimed code used: ${referredBy} -> Commission pending: ${commissionAmount}`);
       }
-
-      commissionAmount = calculateCommission(Number(treatment.price));
-      console.log(`[AFFILIATE] Referral tracked: ${referredBy} -> Commission: ${commissionAmount}`);
     }
 
     // Create reservation (with or without userId)

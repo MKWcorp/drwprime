@@ -41,21 +41,22 @@ export async function POST(req: Request) {
 
     // Check if user is joining with a referral code
     if (referralCode) {
-      // Validate referral code exists
-      const referrer = await prisma.user.findFirst({
+      // Check if this code already exists
+      const existingCodeUser = await prisma.user.findFirst({
         where: { affiliateCode: referralCode }
       });
 
-      if (!referrer) {
-        return NextResponse.json(
-          { error: 'Kode afiliasi tidak valid' },
-          { status: 400 }
-        );
+      if (existingCodeUser) {
+        // Code already claimed - join as team member
+        affiliateCode = referralCode;
+        isTeamLeader = false;
+      } else {
+        // Code not claimed yet - claim it as team leader
+        // This allows pre-generated codes to be claimed
+        affiliateCode = referralCode;
+        isTeamLeader = true;
+        console.log(`[AFFILIATE] Claiming unclaimed code: ${referralCode}`);
       }
-
-      // Use the same affiliate code as the referrer (team-based system)
-      affiliateCode = referralCode;
-      isTeamLeader = false;
     } else {
       // Generate unique affiliate code for new team leader
       affiliateCode = await ensureUniqueAffiliateCode(
@@ -86,6 +87,32 @@ export async function POST(req: Request) {
         isAdmin
       }
     });
+
+    // If claiming an unclaimed code, transfer all pending reservations
+    if (referralCode && isTeamLeader) {
+      // Find all reservations with this referral code but no referrerId
+      const pendingReservations = await prisma.reservation.findMany({
+        where: {
+          referredBy: referralCode,
+          referrerId: null
+        }
+      });
+
+      if (pendingReservations.length > 0) {
+        // Update all pending reservations to link to this user
+        await prisma.reservation.updateMany({
+          where: {
+            referredBy: referralCode,
+            referrerId: null
+          },
+          data: {
+            referrerId: user.id
+          }
+        });
+
+        console.log(`[AFFILIATE] Transferred ${pendingReservations.length} pending reservations to user ${user.id}`);
+      }
+    }
 
     return NextResponse.json({ user });
   } catch (error) {
