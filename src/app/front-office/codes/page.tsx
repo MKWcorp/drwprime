@@ -214,7 +214,7 @@ export default function AffiliateCodesPage() {
   };
 
   const handleCopyLink = async (code: string) => {
-    const referralLink = `https://drwprime.com/?ref=${code}`;
+    const referralLink = `https://drwprime.com/reservation?ref=${code}`;
     
     try {
       await navigator.clipboard.writeText(referralLink);
