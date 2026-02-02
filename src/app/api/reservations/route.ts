@@ -7,18 +7,6 @@ export async function POST(req: Request) {
   try {
     const { userId } = await auth();
     
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { clerkUserId: userId }
-    });
-
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
-
     const body = await req.json();
     const {
       treatmentId,
@@ -40,19 +28,31 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Treatment not found' }, { status: 404 });
     }
 
+    let user = null;
     let referrer = null;
     let commissionAmount = 0;
 
-    // Check if there's a referrer
-    if (referredBy) {
+    // If user is logged in, get their data
+    if (userId) {
+      user = await prisma.user.findUnique({
+        where: { clerkUserId: userId }
+      });
+
+      if (!user) {
+        return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      }
+
       // Validate: cannot use own affiliate code
-      if (referredBy === user.affiliateCode) {
+      if (referredBy && referredBy === user.affiliateCode) {
         return NextResponse.json(
           { error: 'Tidak dapat menggunakan kode affiliate sendiri' },
           { status: 400 }
         );
       }
+    }
 
+    // Check if there's a referrer (for both logged-in and guest users)
+    if (referredBy) {
       // Find referrer by affiliate code
       referrer = await prisma.user.findFirst({
         where: { affiliateCode: referredBy.toUpperCase() }
@@ -70,10 +70,10 @@ export async function POST(req: Request) {
       console.log(`[AFFILIATE] Referral tracked: ${referredBy} -> Commission: ${commissionAmount}`);
     }
 
-    // Create reservation
+    // Create reservation (with or without userId)
     const reservation = await prisma.reservation.create({
       data: {
-        userId: user.id,
+        userId: user?.id || null, // null for guest users
         treatmentId: treatment.id,
         referredBy: referredBy || null,
         referrerId: referrer?.id || null,
@@ -89,26 +89,28 @@ export async function POST(req: Request) {
       }
     });
 
-    // Add loyalty points for user making reservation
-    const loyaltyPoints = calculateLoyaltyPoints(Number(treatment.price));
-    await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        loyaltyPoints: { increment: loyaltyPoints }
-      }
-    });
+    // Only add loyalty points and transaction if user is logged in
+    if (user) {
+      const loyaltyPoints = calculateLoyaltyPoints(Number(treatment.price));
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          loyaltyPoints: { increment: loyaltyPoints }
+        }
+      });
 
-    // Create transaction record
-    await prisma.transaction.create({
-      data: {
-        userId: user.id,
-        type: 'points_earned',
-        amount: treatment.price,
-        points: loyaltyPoints,
-        description: `Earned ${loyaltyPoints} loyalty points from reservation`,
-        referenceId: reservation.id
-      }
-    });
+      // Create transaction record
+      await prisma.transaction.create({
+        data: {
+          userId: user.id,
+          type: 'points_earned',
+          amount: treatment.price,
+          points: loyaltyPoints,
+          description: `Earned ${loyaltyPoints} loyalty points from reservation`,
+          referenceId: reservation.id
+        }
+      });
+    }
 
     return NextResponse.json({ reservation });
   } catch (error) {
