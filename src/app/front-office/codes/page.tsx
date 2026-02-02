@@ -19,6 +19,22 @@ interface AffiliateCode {
   totalCommission: number;
 }
 
+interface CodeReservation {
+  id: string;
+  patientName: string;
+  patientEmail: string;
+  patientPhone: string;
+  status: string;
+  treatment: {
+    name: string;
+  };
+  reservationDate: string;
+  finalPrice: number;
+  commissionAmount: number;
+  patientNotes?: string;
+  referredBy?: string;
+}
+
 export default function AffiliateCodesPage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
@@ -42,6 +58,11 @@ export default function AffiliateCodesPage() {
   
   // Copy link
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  
+  // Detail modal
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [selectedCodeDetail, setSelectedCodeDetail] = useState<AffiliateCode | null>(null);
+  const [codeReservations, setCodeReservations] = useState<CodeReservation[]>([]);
 
   const checkAdminAccess = async () => {
     if (!user) {
@@ -168,6 +189,27 @@ export default function AffiliateCodesPage() {
     } catch (error) {
       console.error('Error deleting code:', error);
       setDeleteError('Terjadi kesalahan. Silakan coba lagi.');
+    }
+  };
+
+  const handleViewDetails = async (code: AffiliateCode) => {
+    setSelectedCodeDetail(code);
+    setShowDetailModal(true);
+    
+    try {
+      // Fetch reservations that use this code
+      const response = await fetch(`/api/front-office/reservations`);
+      const data = await response.json();
+      
+      // Filter reservations by this affiliate code
+      const filteredReservations = data.reservations.filter(
+        (res: CodeReservation) => res.referredBy === code.code
+      );
+      
+      setCodeReservations(filteredReservations);
+    } catch (error) {
+      console.error('Error fetching reservations:', error);
+      setCodeReservations([]);
     }
   };
 
@@ -347,9 +389,17 @@ export default function AffiliateCodesPage() {
                   {codes.map((code) => (
                     <tr key={code.id} className="border-b border-white/5 hover:bg-white/5">
                       <td className="py-4 px-4">
-                        <span className="text-primary font-bold font-mono text-lg">
+                        <button
+                          onClick={() => handleViewDetails(code)}
+                          className="text-primary font-bold font-mono text-lg hover:text-primary/80 underline decoration-dotted cursor-pointer"
+                        >
                           {code.code}
-                        </span>
+                        </button>
+                        {code.reservationCount > 0 && (
+                          <span className="ml-2 text-xs text-white/40">
+                            (klik untuk detail)
+                          </span>
+                        )}
                       </td>
                       <td className="py-4 px-4">
                         <button
@@ -576,6 +626,117 @@ export default function AffiliateCodesPage() {
               >
                 Ya, Hapus
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Detail Modal - Show reservations using this code */}
+      {showDetailModal && selectedCodeDetail && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b border-white/10">
+              <div>
+                <h3 className="font-playfair text-2xl font-bold text-white mb-1">
+                  Detail Kode: <span className="text-primary font-mono">{selectedCodeDetail.code}</span>
+                </h3>
+                <p className="text-white/60 text-sm">
+                  {codeReservations.length} reservasi menggunakan kode ini
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowDetailModal(false);
+                  setSelectedCodeDetail(null);
+                  setCodeReservations([]);
+                }}
+                className="text-white/60 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto flex-1">
+              {codeReservations.length === 0 ? (
+                <div className="text-center py-10">
+                  <p className="text-white/60">Belum ada reservasi yang menggunakan kode ini</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {codeReservations.map((reservation: CodeReservation) => (
+                    <div key={reservation.id} className="bg-black/30 border border-white/10 rounded-lg p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <h4 className="text-white font-semibold text-lg">{reservation.patientName}</h4>
+                          <p className="text-white/60 text-sm">{reservation.patientEmail}</p>
+                          <p className="text-white/60 text-sm">{reservation.patientPhone}</p>
+                        </div>
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${
+                          reservation.status === 'completed' ? 'bg-green-500/20 text-green-400 border-green-500/30' :
+                          reservation.status === 'confirmed' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
+                          reservation.status === 'cancelled' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
+                          'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+                        }`}>
+                          {reservation.status.toUpperCase()}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                        <div>
+                          <p className="text-white/40 text-xs mb-1">Treatment</p>
+                          <p className="text-white font-semibold">{reservation.treatment.name}</p>
+                        </div>
+                        <div>
+                          <p className="text-white/40 text-xs mb-1">Tanggal</p>
+                          <p className="text-white">{formatDate(reservation.reservationDate)}</p>
+                        </div>
+                        <div>
+                          <p className="text-white/40 text-xs mb-1">Harga Final</p>
+                          <p className="text-primary font-semibold">{formatCurrency(reservation.finalPrice)}</p>
+                        </div>
+                        <div>
+                          <p className="text-white/40 text-xs mb-1">Komisi (10%)</p>
+                          <p className="text-green-400 font-semibold">{formatCurrency(reservation.commissionAmount)}</p>
+                        </div>
+                      </div>
+
+                      {reservation.patientNotes && (
+                        <div className="mt-3 pt-3 border-t border-white/5">
+                          <p className="text-white/40 text-xs mb-1">Catatan Pasien</p>
+                          <p className="text-white/80 text-sm">{reservation.patientNotes}</p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="p-6 border-t border-white/10 bg-black/20">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <p className="text-white/60 text-xs mb-1">Total Reservasi</p>
+                  <p className="text-white font-bold text-xl">{codeReservations.length}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-xs mb-1">Completed</p>
+                  <p className="text-green-400 font-bold text-xl">
+                    {codeReservations.filter((r: CodeReservation) => r.status === 'completed').length}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-xs mb-1">Total Komisi</p>
+                  <p className="text-primary font-bold text-xl">
+                    {formatCurrency(
+                      codeReservations
+                        .filter((r: CodeReservation) => r.status === 'completed')
+                        .reduce((sum: number, r: CodeReservation) => sum + Number(r.commissionAmount), 0)
+                    )}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

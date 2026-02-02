@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import Script from "next/script";
-import AffiliatePopup from "@/components/AffiliatePopup";
 import "./globals.css";
 
 const inter = Inter({
@@ -64,7 +63,6 @@ export default function RootLayout({
               style={{ display: 'none', visibility: 'hidden' }}
             />
           </noscript>
-          <AffiliatePopup />
           {children}
         </body>
       </html>
