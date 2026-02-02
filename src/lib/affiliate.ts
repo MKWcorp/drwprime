@@ -115,23 +115,9 @@ export function validateAffiliateCode(code: string): { valid: boolean; error?: s
 
 /**
  * Check if user can update affiliate code based on last update time
- * Rule: Can only update once every 90 days (3 months)
+ * Rule: No time limit - users can update anytime
  */
 export function canUpdateAffiliateCode(lastUpdatedAt: Date | null): { allowed: boolean; daysRemaining?: number } {
-  if (!lastUpdatedAt) {
-    return { allowed: true }; // Never updated before
-  }
-
-  const now = new Date();
-  const daysSinceUpdate = Math.floor((now.getTime() - lastUpdatedAt.getTime()) / (1000 * 60 * 60 * 24));
-  const requiredDays = 90;
-
-  if (daysSinceUpdate >= requiredDays) {
-    return { allowed: true };
-  }
-
-  return {
-    allowed: false,
-    daysRemaining: requiredDays - daysSinceUpdate
-  };
+  // Always allow updates - no time restriction
+  return { allowed: true };
 }

@@ -282,7 +282,7 @@ export default function MyPrimePage() {
                         </button>
                       </div>
                       <p className="text-white/50 text-[10px]">
-                        ⚠️ Kode hanya bisa diubah 1x setiap 90 hari. Gunakan huruf & angka saja.
+                        ⚠️ Gunakan huruf & angka saja untuk kode afiliasi Anda.
                       </p>
                     </div>
                   )}
