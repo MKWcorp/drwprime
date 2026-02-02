@@ -87,7 +87,7 @@ export async function PUT(req: NextRequest) {
     }
 
     // Check if code already exists (uniqueness)
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.user.findFirst({
       where: { affiliateCode: normalizedCode }
     });
 

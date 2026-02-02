@@ -158,7 +158,7 @@ export async function PUT(req: Request) {
     }
 
     // Find user by affiliate code
-    const referrer = await prisma.user.findUnique({
+    const referrer = await prisma.user.findFirst({
       where: { affiliateCode: affiliateCode.toUpperCase() }
     });
 
