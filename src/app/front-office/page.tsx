@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface Reservation {
   id: string;
@@ -372,6 +373,12 @@ export default function FrontOfficePage() {
               <p className="text-white/70 text-lg">
                 Manage reservations and appointments
               </p>
+              <Link 
+                href="/front-office/codes"
+                className="text-primary hover:text-primary/80 text-sm mt-2 inline-block"
+              >
+                → Manage Affiliate Codes
+              </Link>
             </div>
             <Image 
               src="/drwprime-logo.png" 

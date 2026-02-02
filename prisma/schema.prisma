@@ -41,6 +41,23 @@ model User {
   @@map("users")
 }
 
+// Pre-claim affiliate codes - codes created by admin that can be claimed later
+model PreClaimAffiliateCode {
+  id              String    @id @default(cuid())
+  code            String    @unique // The affiliate code (e.g., AFMRCH1)
+  claimedBy       String?   // User ID who claimed this code
+  claimedAt       DateTime? // When the code was claimed
+  usageCount      Int       @default(0) // How many times used in reservations
+  status          String    @default("unclaimed") // unclaimed, claimed
+  notes           String?   // Admin notes about this code
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  createdBy       String?   // Admin who created this code
+
+  @@map("pre_claim_affiliate_codes")
+}
+
 // Treatment categories and items
 model TreatmentCategory {
   id          String      @id @default(cuid())

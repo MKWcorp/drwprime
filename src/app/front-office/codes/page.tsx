@@ -1,0 +1,531 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+
+interface AffiliateCode {
+  id: string;
+  code: string;
+  claimedBy: string | null;
+  claimedAt: string | null;
+  usageCount: number;
+  status: string;
+  notes: string | null;
+  createdAt: string;
+  reservationCount: number;
+  totalCommission: number;
+}
+
+export default function AffiliateCodesPage() {
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [codes, setCodes] = useState<AffiliateCode[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filterStatus, setFilterStatus] = useState('all');
+  
+  // Generate code form
+  const [showGenerateModal, setShowGenerateModal] = useState(false);
+  const [customCode, setCustomCode] = useState('');
+  const [codeNotes, setCodeNotes] = useState('');
+  const [generateError, setGenerateError] = useState('');
+  const [generateSuccess, setGenerateSuccess] = useState('');
+  
+  // Delete code
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [codeToDelete, setCodeToDelete] = useState<AffiliateCode | null>(null);
+  const [deleteError, setDeleteError] = useState('');
+
+  const checkAdminAccess = async () => {
+    if (!user) {
+      router.push('/sign-in');
+      return;
+    }
+
+    try {
+      await fetch('/api/user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: user.emailAddresses[0]?.emailAddress,
+          firstName: user.firstName,
+          lastName: user.lastName
+        })
+      });
+
+      const response = await fetch('/api/user');
+      const data = await response.json();
+      
+      if (data.user?.isAdmin) {
+        setIsAdmin(true);
+      } else {
+        router.push('/');
+      }
+    } catch (error) {
+      console.error('Error checking admin access:', error);
+      router.push('/');
+    } finally {
+      setCheckingAuth(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoaded) {
+      checkAdminAccess();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoaded]);
+
+  const fetchCodes = async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (filterStatus !== 'all') params.append('status', filterStatus);
+
+      const response = await fetch(`/api/affiliate-codes?${params}`);
+      const data = await response.json();
+      setCodes(data.codes || []);
+    } catch (error) {
+      console.error('Error fetching codes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isAdmin) {
+      fetchCodes();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterStatus, isAdmin]);
+
+  const handleGenerateCode = async () => {
+    try {
+      setGenerateError('');
+      setGenerateSuccess('');
+
+      const response = await fetch('/api/affiliate-codes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customCode: customCode || null,
+          notes: codeNotes || null,
+          createdBy: user?.emailAddresses[0]?.emailAddress
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setGenerateError(data.error || 'Gagal generate kode');
+        return;
+      }
+
+      setGenerateSuccess(`Kode ${data.code.code} berhasil dibuat!`);
+      await fetchCodes();
+      
+      setTimeout(() => {
+        setShowGenerateModal(false);
+        setCustomCode('');
+        setCodeNotes('');
+        setGenerateError('');
+        setGenerateSuccess('');
+      }, 1500);
+    } catch (error) {
+      console.error('Error generating code:', error);
+      setGenerateError('Terjadi kesalahan. Silakan coba lagi.');
+    }
+  };
+
+  const handleDeleteCode = async () => {
+    if (!codeToDelete) return;
+
+    try {
+      setDeleteError('');
+
+      const response = await fetch(`/api/affiliate-codes?id=${codeToDelete.id}`, {
+        method: 'DELETE'
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setDeleteError(data.error || 'Gagal menghapus kode');
+        return;
+      }
+
+      await fetchCodes();
+      setShowDeleteModal(false);
+      setCodeToDelete(null);
+      setDeleteError('');
+    } catch (error) {
+      console.error('Error deleting code:', error);
+      setDeleteError('Terjadi kesalahan. Silakan coba lagi.');
+    }
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+    }).format(amount);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('id-ID', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const getStatusColor = (status: string) => {
+    return status === 'claimed' 
+      ? 'bg-green-500/20 text-green-400 border-green-500/30'
+      : 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+  };
+
+  if (checkingAuth || !isLoaded) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+          <p className="text-white/60">Checking access...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return null;
+  }
+
+  return (
+    <div className="min-h-screen bg-black">
+      <div className="max-w-7xl mx-auto px-5 py-10">
+        {/* Header */}
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <Link 
+                href="/front-office"
+                className="text-primary hover:text-primary/80 text-sm mb-2 inline-block"
+              >
+                ← Back to Reservations
+              </Link>
+              <h1 className="font-playfair text-4xl md:text-5xl font-bold text-primary mb-2">
+                Affiliate Codes
+              </h1>
+              <p className="text-white/70 text-lg">
+                Generate and manage pre-claim affiliate codes
+              </p>
+            </div>
+            <Image 
+              src="/drwprime-logo.png" 
+              alt="DRW Prime" 
+              width={120}
+              height={40}
+              className="h-10 w-auto"
+            />
+          </div>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
+          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl p-6">
+            <p className="text-primary text-sm mb-2">Total Codes</p>
+            <p className="font-playfair text-3xl font-bold text-primary">
+              {codes.length}
+            </p>
+          </div>
+          <div className="bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border border-yellow-500/30 rounded-xl p-6">
+            <p className="text-yellow-400 text-sm mb-2">Unclaimed</p>
+            <p className="font-playfair text-3xl font-bold text-yellow-400">
+              {codes.filter(c => c.status === 'unclaimed').length}
+            </p>
+          </div>
+          <div className="bg-gradient-to-br from-green-500/20 to-green-500/5 border border-green-500/30 rounded-xl p-6">
+            <p className="text-green-400 text-sm mb-2">Claimed</p>
+            <p className="font-playfair text-3xl font-bold text-green-400">
+              {codes.filter(c => c.status === 'claimed').length}
+            </p>
+          </div>
+          <div className="bg-gradient-to-br from-blue-500/20 to-blue-500/5 border border-blue-500/30 rounded-xl p-6">
+            <p className="text-blue-400 text-sm mb-2">Total Usage</p>
+            <p className="font-playfair text-3xl font-bold text-blue-400">
+              {codes.reduce((sum, c) => sum + c.reservationCount, 0)}
+            </p>
+          </div>
+        </div>
+
+        {/* Codes List */}
+        <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="font-playfair text-2xl font-bold text-white">Codes</h2>
+            <button
+              onClick={() => setShowGenerateModal(true)}
+              className="bg-primary/20 border border-primary/30 text-primary px-6 py-2 rounded-lg hover:bg-primary/30 transition-colors font-semibold"
+            >
+              + Generate Code
+            </button>
+          </div>
+
+          {/* Filters */}
+          <div className="flex flex-wrap gap-4 mb-6 pb-6 border-b border-white/10">
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="bg-primary/10 border border-primary/30 text-white px-4 py-2 rounded-lg focus:outline-none focus:border-primary [&>option]:text-black"
+            >
+              <option value="all">All Status</option>
+              <option value="unclaimed">Unclaimed</option>
+              <option value="claimed">Claimed</option>
+            </select>
+          </div>
+
+          {loading ? (
+            <div className="text-center py-10">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+              <p className="text-white/60 mt-4">Loading...</p>
+            </div>
+          ) : codes.length === 0 ? (
+            <div className="text-center py-10">
+              <p className="text-white/60">No codes found</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-white/10">
+                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Code</th>
+                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Status</th>
+                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Usage</th>
+                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Commission</th>
+                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Created</th>
+                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Notes</th>
+                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {codes.map((code) => (
+                    <tr key={code.id} className="border-b border-white/5 hover:bg-white/5">
+                      <td className="py-4 px-4">
+                        <span className="text-primary font-bold font-mono text-lg">
+                          {code.code}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${getStatusColor(code.status)}`}>
+                          {code.status.toUpperCase()}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-white font-semibold">
+                          {code.reservationCount}
+                        </span>
+                        <span className="text-white/40 text-sm ml-1">reservations</span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-green-400 font-semibold">
+                          {formatCurrency(code.totalCommission)}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-white/60 text-sm">
+                          {formatDate(code.createdAt)}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-white/60 text-sm">
+                          {code.notes || '-'}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        {code.status === 'unclaimed' && code.reservationCount === 0 && (
+                          <button
+                            onClick={() => {
+                              setCodeToDelete(code);
+                              setShowDeleteModal(true);
+                            }}
+                            className="text-red-400 hover:text-red-300 text-sm font-semibold"
+                          >
+                            Delete
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Generate Code Modal */}
+      {showGenerateModal && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-white">
+                Generate Affiliate Code
+              </h3>
+              <button
+                onClick={() => {
+                  setShowGenerateModal(false);
+                  setCustomCode('');
+                  setCodeNotes('');
+                  setGenerateError('');
+                  setGenerateSuccess('');
+                }}
+                className="text-white/60 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div>
+                <label className="text-white font-semibold mb-2 block">
+                  Custom Code (opsional)
+                </label>
+                <input
+                  type="text"
+                  value={customCode}
+                  onChange={(e) => setCustomCode(e.target.value.toUpperCase())}
+                  placeholder="Kosongkan untuk generate random"
+                  className="w-full bg-black/50 border border-primary/30 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-primary font-mono uppercase"
+                  maxLength={10}
+                />
+                <p className="text-white/40 text-xs mt-1">
+                  4-10 karakter (huruf kapital & angka). Kosongkan untuk generate otomatis.
+                </p>
+              </div>
+
+              <div>
+                <label className="text-white font-semibold mb-2 block">
+                  Notes (opsional)
+                </label>
+                <textarea
+                  value={codeNotes}
+                  onChange={(e) => setCodeNotes(e.target.value)}
+                  placeholder="Catatan tentang kode ini..."
+                  rows={2}
+                  className="w-full bg-black/50 border border-primary/30 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-primary resize-none"
+                />
+              </div>
+
+              {generateError && (
+                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                  <p className="text-red-400 text-sm">{generateError}</p>
+                </div>
+              )}
+
+              {generateSuccess && (
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+                  <p className="text-green-400 text-sm">{generateSuccess}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowGenerateModal(false);
+                  setCustomCode('');
+                  setCodeNotes('');
+                  setGenerateError('');
+                  setGenerateSuccess('');
+                }}
+                className="flex-1 bg-white/5 border border-white/10 text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleGenerateCode}
+                className="flex-1 bg-primary/20 border border-primary/30 text-primary py-3 rounded-lg hover:bg-primary/30 transition-colors font-semibold"
+              >
+                Generate
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && codeToDelete && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-red-500/20 to-red-500/5 border border-red-500/30 rounded-xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-white">
+                Konfirmasi Hapus
+              </h3>
+              <button
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setCodeToDelete(null);
+                  setDeleteError('');
+                }}
+                className="text-white/60 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                <p className="text-red-400 font-semibold mb-2">
+                  ⚠️ Peringatan
+                </p>
+                <p className="text-white/80 text-sm">
+                  Anda akan menghapus kode affiliate ini secara permanen.
+                </p>
+              </div>
+
+              <div className="bg-black/30 rounded-lg p-4">
+                <p className="text-white/60 text-xs mb-1">Kode</p>
+                <p className="text-primary font-bold font-mono text-2xl">
+                  {codeToDelete.code}
+                </p>
+              </div>
+
+              {deleteError && (
+                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                  <p className="text-red-400 text-sm">{deleteError}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setCodeToDelete(null);
+                  setDeleteError('');
+                }}
+                className="flex-1 bg-white/5 border border-white/10 text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleDeleteCode}
+                className="flex-1 bg-red-500/20 border border-red-500/30 text-red-400 py-3 rounded-lg hover:bg-red-500/30 transition-colors font-semibold"
+              >
+                Ya, Hapus
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
