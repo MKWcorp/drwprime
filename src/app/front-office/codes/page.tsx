@@ -39,6 +39,9 @@ export default function AffiliateCodesPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [codeToDelete, setCodeToDelete] = useState<AffiliateCode | null>(null);
   const [deleteError, setDeleteError] = useState('');
+  
+  // Copy link
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   const checkAdminAccess = async () => {
     if (!user) {
@@ -165,6 +168,34 @@ export default function AffiliateCodesPage() {
     } catch (error) {
       console.error('Error deleting code:', error);
       setDeleteError('Terjadi kesalahan. Silakan coba lagi.');
+    }
+  };
+
+  const handleCopyLink = async (code: string) => {
+    const referralLink = `https://drwprime.com/?ref=${code}`;
+    
+    try {
+      await navigator.clipboard.writeText(referralLink);
+      setCopiedCode(code);
+      
+      // Reset copied state after 2 seconds
+      setTimeout(() => {
+        setCopiedCode(null);
+      }, 2000);
+    } catch (error) {
+      console.error('Error copying to clipboard:', error);
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = referralLink;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      setCopiedCode(code);
+      setTimeout(() => {
+        setCopiedCode(null);
+      }, 2000);
     }
   };
 
@@ -303,6 +334,7 @@ export default function AffiliateCodesPage() {
                 <thead>
                   <tr className="border-b border-white/10">
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Code</th>
+                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Referral Link</th>
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Status</th>
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Usage</th>
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Commission</th>
@@ -318,6 +350,28 @@ export default function AffiliateCodesPage() {
                         <span className="text-primary font-bold font-mono text-lg">
                           {code.code}
                         </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <button
+                          onClick={() => handleCopyLink(code.code)}
+                          className="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary px-3 py-1.5 rounded-lg transition-colors text-sm font-semibold"
+                        >
+                          {copiedCode === code.code ? (
+                            <>
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              </svg>
+                              Copied!
+                            </>
+                          ) : (
+                            <>
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                              </svg>
+                              Copy Link
+                            </>
+                          )}
+                        </button>
                       </td>
                       <td className="py-4 px-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${getStatusColor(code.status)}`}>
