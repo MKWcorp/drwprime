@@ -1,8 +1,15 @@
+'use client';
+
 import { SignUp } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function SignUpPage() {
+function SignUpContent() {
+  const searchParams = useSearchParams();
+  const referralCode = searchParams.get('ref');
+
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-5 py-10">
       {/* Background Pattern */}
@@ -13,7 +20,8 @@ export default function SignUpPage() {
       {/* Content Container */}
       <div className="relative w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-8">          <Link href="/" className="inline-block">
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-block">
             <Image
               src="/drwprime-logo.png"
               alt="DRW Prime Logo"
@@ -22,7 +30,18 @@ export default function SignUpPage() {
               className="mx-auto"
             />
           </Link>
-        </div>        {/* Sign Up Component with Dark Theme & Gold Accents */}
+        </div>
+
+        {/* Referral Code Notice */}
+        {referralCode && (
+          <div className="mb-4 p-4 bg-primary/10 border border-primary/30 rounded-lg">
+            <p className="text-white text-sm text-center">
+              🎉 Bergabung dengan tim <span className="font-bold text-primary">{referralCode}</span>
+            </p>
+          </div>
+        )}
+
+        {/* Sign Up Component with Dark Theme & Gold Accents */}
         <div className="bg-gradient-to-br from-gray-900 to-black border border-primary/30 rounded-2xl p-8 shadow-2xl shadow-primary/20">
           <SignUp
             appearance={{
@@ -88,8 +107,22 @@ export default function SignUpPage() {
             path="/sign-up"
             signInUrl="/sign-in"
             fallbackRedirectUrl="/my-prime"
+            unsafeMetadata={{
+              referralCode: referralCode || undefined
+            }}
           />
-        </div>        {/* Back to Home Link */}
+        </div>
+
+        {/* Info about referral code */}
+        {!referralCode && (
+          <div className="mt-4 p-3 bg-white/5 border border-white/10 rounded-lg">
+            <p className="text-white/60 text-xs text-center">
+              💡 Punya kode afiliasi? Gunakan link: <span className="text-primary">drwprime.com/sign-up?ref=KODE</span>
+            </p>
+          </div>
+        )}
+
+        {/* Back to Home Link */}
         <div className="text-center mt-6">
           <Link 
             href="/"
@@ -103,5 +136,13 @@ export default function SignUpPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center"><div className="text-white">Loading...</div></div>}>
+      <SignUpContent />
+    </Suspense>
   );
 }

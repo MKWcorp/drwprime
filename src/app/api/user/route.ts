@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { email, firstName, lastName } = body;
+    const { email, firstName, lastName, referralCode } = body;
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
@@ -36,17 +36,40 @@ export async function POST(req: Request) {
       return NextResponse.json({ user: existingUser });
     }
 
-    // Generate unique affiliate code
-    const affiliateCode = await ensureUniqueAffiliateCode(
-      firstName || '',
-      lastName || '',
-      async (code) => {
-        const exists = await prisma.user.findUnique({
-          where: { affiliateCode: code }
-        });
-        return !exists;
+    let affiliateCode: string;
+    let isTeamLeader = false;
+
+    // Check if user is joining with a referral code
+    if (referralCode) {
+      // Validate referral code exists
+      const referrer = await prisma.user.findFirst({
+        where: { affiliateCode: referralCode }
+      });
+
+      if (!referrer) {
+        return NextResponse.json(
+          { error: 'Kode afiliasi tidak valid' },
+          { status: 400 }
+        );
       }
-    );
+
+      // Use the same affiliate code as the referrer (team-based system)
+      affiliateCode = referralCode;
+      isTeamLeader = false;
+    } else {
+      // Generate unique affiliate code for new team leader
+      affiliateCode = await ensureUniqueAffiliateCode(
+        firstName || '',
+        lastName || '',
+        async (code) => {
+          const exists = await prisma.user.findFirst({
+            where: { affiliateCode: code }
+          });
+          return !exists;
+        }
+      );
+      isTeamLeader = true;
+    }
 
     // Check if user is admin
     const isAdmin = ADMIN_USER_IDS.includes(userId);
@@ -59,6 +82,7 @@ export async function POST(req: Request) {
         firstName,
         lastName,
         affiliateCode,
+        isTeamLeader,
         isAdmin
       }
     });
@@ -128,11 +152,20 @@ export async function GET() {
     const totalReferrals = user.referrals.length;
     const loyaltyLevel = getLoyaltyLevel(user.loyaltyPoints);
 
+    // Get team members count (users with same affiliate code)
+    const teamMembersCount = await prisma.user.count({
+      where: { 
+        affiliateCode: user.affiliateCode,
+        clerkUserId: { not: userId } // Exclude self
+      }
+    });
+
     return NextResponse.json({ 
       user: {
         ...user,
         totalReferrals,
-        loyaltyLevel
+        loyaltyLevel,
+        teamMembersCount
       }
     });
   } catch (error) {

@@ -17,7 +17,8 @@ model User {
   email             String         // Not unique - same email can have multiple accounts
   firstName         String?
   lastName          String?
-  affiliateCode     String         @unique
+  affiliateCode     String         // Removed @unique to allow shared codes
+  isTeamLeader      Boolean        @default(false) // True if this user created the affiliate code
   affiliateCodeUpdatedAt DateTime?  // Track last time affiliate code was changed
   affiliateCodeHistory String[]     @default([]) // Track history of previous codes
   isAdmin           Boolean        @default(false)

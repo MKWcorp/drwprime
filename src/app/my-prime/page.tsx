@@ -68,7 +68,8 @@ export default function MyPrimePage() {
           body: JSON.stringify({
             email: user?.emailAddresses[0]?.emailAddress,
             firstName: user?.firstName,
-            lastName: user?.lastName
+            lastName: user?.lastName,
+            referralCode: user?.unsafeMetadata?.referralCode as string | undefined
           })
         });
         
