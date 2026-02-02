@@ -272,3 +272,116 @@ export async function PUT(req: Request) {
     );
   }
 }
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const { 
+      reservationId, 
+      patientName,
+      patientEmail,
+      patientPhone,
+      reservationDate,
+      reservationTime,
+      treatmentId,
+      finalPrice,
+      status,
+      adminNotes,
+      patientNotes,
+      affiliateCode
+    } = body;
+
+    if (!reservationId) {
+      return NextResponse.json(
+        { error: 'Reservation ID required' },
+        { status: 400 }
+      );
+    }
+
+    // Prepare update data
+    const updateData: Record<string, unknown> = {};
+
+    if (patientName !== undefined) updateData.patientName = patientName;
+    if (patientEmail !== undefined) updateData.patientEmail = patientEmail;
+    if (patientPhone !== undefined) updateData.patientPhone = patientPhone;
+    if (reservationDate !== undefined) updateData.reservationDate = new Date(reservationDate);
+    if (reservationTime !== undefined) updateData.reservationTime = reservationTime;
+    if (treatmentId !== undefined) updateData.treatmentId = treatmentId;
+    if (status !== undefined) {
+      updateData.status = status;
+      if (status === 'completed') {
+        updateData.completedAt = new Date();
+      }
+    }
+    if (adminNotes !== undefined) updateData.adminNotes = adminNotes;
+    if (patientNotes !== undefined) updateData.patientNotes = patientNotes;
+
+    // Handle finalPrice and commission
+    if (finalPrice !== undefined) {
+      const commissionRate = 0.10; // 10%
+      updateData.finalPrice = finalPrice;
+      updateData.commissionAmount = finalPrice * commissionRate;
+    }
+
+    // Handle affiliate code change
+    if (affiliateCode !== undefined && affiliateCode !== null && affiliateCode !== '') {
+      const referrer = await prisma.user.findFirst({
+        where: { affiliateCode: affiliateCode.toUpperCase() }
+      });
+
+      if (referrer) {
+        updateData.referredBy = affiliateCode.toUpperCase();
+        updateData.referrerId = referrer.id;
+        
+        // Recalculate commission if finalPrice exists
+        const currentReservation = await prisma.reservation.findUnique({
+          where: { id: reservationId }
+        });
+        
+        if (currentReservation) {
+          const price = finalPrice !== undefined ? finalPrice : currentReservation.finalPrice;
+          updateData.commissionAmount = Number(price) * 0.10;
+        }
+      }
+    }
+
+    // Update reservation
+    const reservation = await prisma.reservation.update({
+      where: { id: reservationId },
+      data: updateData,
+      include: {
+        treatment: {
+          include: {
+            category: true
+          }
+        },
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+            affiliateCode: true
+          }
+        },
+        referrer: {
+          select: {
+            firstName: true,
+            lastName: true,
+            affiliateCode: true
+          }
+        }
+      }
+    });
+
+    return NextResponse.json({ 
+      reservation, 
+      message: 'Reservation updated successfully' 
+    });
+  } catch (error) {
+    console.error('Error updating reservation:', error);
+    return NextResponse.json(
+      { error: 'Failed to update reservation' },
+      { status: 500 }
+    );
+  }
+}

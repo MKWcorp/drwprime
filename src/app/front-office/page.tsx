@@ -38,6 +38,27 @@ interface Reservation {
   createdAt: string;
 }
 
+interface Treatment {
+  id: string;
+  name: string;
+  categoryName: string;
+}
+
+interface EditFormData {
+  reservationId: string;
+  patientName: string;
+  patientEmail: string;
+  patientPhone: string;
+  reservationDate: string;
+  reservationTime: string;
+  treatmentId: string;
+  finalPrice: number;
+  status: string;
+  adminNotes: string;
+  patientNotes: string;
+  affiliateCode: string;
+}
+
 export default function FrontOfficePage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
@@ -54,6 +75,11 @@ export default function FrontOfficePage() {
   const [showAffiliateModal, setShowAffiliateModal] = useState(false);
   const [affiliateCode, setAffiliateCode] = useState('');
   const [affiliateError, setAffiliateError] = useState('');
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editFormData, setEditFormData] = useState<EditFormData | null>(null);
+  const [treatments, setTreatments] = useState<Treatment[]>([]);
+  const [editError, setEditError] = useState('');
+  const [editSuccess, setEditSuccess] = useState('');
 
 
   const checkAdminAccess = async () => {
@@ -115,9 +141,23 @@ export default function FrontOfficePage() {
     }
   };
 
+  const fetchTreatments = async () => {
+    try {
+      const response = await fetch('/api/treatments');
+      const data = await response.json();
+      const allTreatments = data.categories.flatMap((cat: { name: string; treatments: Treatment[] }) => 
+        cat.treatments.map((t: Treatment) => ({ ...t, categoryName: cat.name }))
+      );
+      setTreatments(allTreatments);
+    } catch (error) {
+      console.error('Error fetching treatments:', error);
+    }
+  };
+
   useEffect(() => {
     if (isAdmin) {
       fetchReservations();
+      fetchTreatments();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterStatus, filterDate, isAdmin]);
@@ -186,6 +226,63 @@ export default function FrontOfficePage() {
     } catch (error) {
       console.error('Error adding affiliate:', error);
       setAffiliateError('Terjadi kesalahan. Silakan coba lagi.');
+    }
+  };
+
+  const handleOpenEditModal = (reservation: Reservation) => {
+    setEditFormData({
+      reservationId: reservation.id,
+      patientName: reservation.patientName,
+      patientEmail: reservation.patientEmail,
+      patientPhone: reservation.patientPhone,
+      reservationDate: new Date(reservation.reservationDate).toISOString().split('T')[0],
+      reservationTime: reservation.reservationTime,
+      treatmentId: reservation.treatment ? (treatments.find(t => t.name === reservation.treatment.name)?.id || '') : '',
+      finalPrice: reservation.finalPrice,
+      status: reservation.status,
+      adminNotes: reservation.adminNotes || '',
+      patientNotes: reservation.patientNotes || '',
+      affiliateCode: reservation.referrer?.affiliateCode || ''
+    });
+    setShowEditModal(true);
+    setEditError('');
+    setEditSuccess('');
+  };
+
+  const handleEditReservation = async () => {
+    if (!editFormData) return;
+
+    try {
+      setEditError('');
+      setEditSuccess('');
+
+      const response = await fetch('/api/front-office/reservations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editFormData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setEditError(data.error || 'Gagal mengupdate reservasi');
+        return;
+      }
+
+      // Success
+      setEditSuccess('Reservasi berhasil diupdate!');
+      await fetchReservations();
+      
+      // Close modal after 1 second
+      setTimeout(() => {
+        setShowEditModal(false);
+        setEditFormData(null);
+        setEditError('');
+        setEditSuccess('');
+      }, 1000);
+    } catch (error) {
+      console.error('Error updating reservation:', error);
+      setEditError('Terjadi kesalahan. Silakan coba lagi.');
     }
   };
 
@@ -415,6 +512,15 @@ export default function FrontOfficePage() {
 
                       {/* Action Buttons */}
                       <div className="flex gap-2 pt-2">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenEditModal(reservation);
+                          }}
+                          className="flex-1 bg-purple-500/20 border border-purple-500/30 text-purple-400 py-2 rounded-lg hover:bg-purple-500/30 transition-colors text-sm font-semibold"
+                        >
+                          ✏️ Edit
+                        </button>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -665,6 +771,207 @@ export default function FrontOfficePage() {
                 className="flex-1 bg-primary/20 border border-primary/30 text-primary py-3 rounded-lg hover:bg-primary/30 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Simpan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {showEditModal && editFormData && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-white">
+                Edit Reservasi
+              </h3>
+              <button
+                onClick={() => {
+                  setShowEditModal(false);
+                  setEditFormData(null);
+                  setEditError('');
+                  setEditSuccess('');
+                }}
+                className="text-white/60 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              {/* Patient Info */}
+              <div className="bg-black/30 rounded-lg p-4 space-y-3">
+                <h4 className="text-white font-semibold mb-2">Informasi Pasien</h4>
+                <div>
+                  <label className="text-white/60 text-sm mb-1 block">Nama Pasien *</label>
+                  <input
+                    type="text"
+                    value={editFormData.patientName}
+                    onChange={(e) => setEditFormData({...editFormData, patientName: e.target.value})}
+                    className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-white/60 text-sm mb-1 block">Email *</label>
+                    <input
+                      type="email"
+                      value={editFormData.patientEmail}
+                      onChange={(e) => setEditFormData({...editFormData, patientEmail: e.target.value})}
+                      className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-white/60 text-sm mb-1 block">Phone *</label>
+                    <input
+                      type="tel"
+                      value={editFormData.patientPhone}
+                      onChange={(e) => setEditFormData({...editFormData, patientPhone: e.target.value})}
+                      className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Reservation Details */}
+              <div className="bg-black/30 rounded-lg p-4 space-y-3">
+                <h4 className="text-white font-semibold mb-2">Detail Reservasi</h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-white/60 text-sm mb-1 block">Tanggal *</label>
+                    <input
+                      type="date"
+                      value={editFormData.reservationDate}
+                      onChange={(e) => setEditFormData({...editFormData, reservationDate: e.target.value})}
+                      className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary [color-scheme:dark]"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-white/60 text-sm mb-1 block">Waktu *</label>
+                    <input
+                      type="time"
+                      value={editFormData.reservationTime}
+                      onChange={(e) => setEditFormData({...editFormData, reservationTime: e.target.value})}
+                      className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary [color-scheme:dark]"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-white/60 text-sm mb-1 block">Treatment *</label>
+                  <select
+                    value={editFormData.treatmentId}
+                    onChange={(e) => setEditFormData({...editFormData, treatmentId: e.target.value})}
+                    className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary [&>option]:text-black"
+                  >
+                    <option value="">Pilih Treatment</option>
+                    {treatments.map((treatment) => (
+                      <option key={treatment.id} value={treatment.id}>
+                        {treatment.categoryName} - {treatment.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-white/60 text-sm mb-1 block">Status *</label>
+                    <select
+                      value={editFormData.status}
+                      onChange={(e) => setEditFormData({...editFormData, status: e.target.value})}
+                      className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary [&>option]:text-black"
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="completed">Completed</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-white/60 text-sm mb-1 block">Final Price *</label>
+                    <input
+                      type="number"
+                      value={editFormData.finalPrice}
+                      onChange={(e) => setEditFormData({...editFormData, finalPrice: parseFloat(e.target.value)})}
+                      className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Affiliate Code */}
+              <div className="bg-black/30 rounded-lg p-4">
+                <h4 className="text-white font-semibold mb-2">Kode Affiliate</h4>
+                <div>
+                  <label className="text-white/60 text-sm mb-1 block">Kode Affiliate (opsional)</label>
+                  <input
+                    type="text"
+                    value={editFormData.affiliateCode}
+                    onChange={(e) => setEditFormData({...editFormData, affiliateCode: e.target.value.toUpperCase()})}
+                    placeholder="Contoh: JO5X9"
+                    className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary font-mono uppercase"
+                    maxLength={10}
+                  />
+                  <p className="text-white/40 text-xs mt-1">
+                    Kosongkan jika tidak ada affiliate. Komisi 10% akan dihitung otomatis.
+                  </p>
+                </div>
+              </div>
+
+              {/* Notes */}
+              <div className="bg-black/30 rounded-lg p-4 space-y-3">
+                <h4 className="text-white font-semibold mb-2">Catatan</h4>
+                <div>
+                  <label className="text-white/60 text-sm mb-1 block">Catatan Pasien</label>
+                  <textarea
+                    value={editFormData.patientNotes}
+                    onChange={(e) => setEditFormData({...editFormData, patientNotes: e.target.value})}
+                    rows={2}
+                    className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary resize-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-white/60 text-sm mb-1 block">Catatan Admin</label>
+                  <textarea
+                    value={editFormData.adminNotes}
+                    onChange={(e) => setEditFormData({...editFormData, adminNotes: e.target.value})}
+                    rows={2}
+                    className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary resize-none"
+                  />
+                </div>
+              </div>
+
+              {/* Error/Success Messages */}
+              {editError && (
+                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                  <p className="text-red-400 text-sm">{editError}</p>
+                </div>
+              )}
+              {editSuccess && (
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+                  <p className="text-green-400 text-sm">{editSuccess}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowEditModal(false);
+                  setEditFormData(null);
+                  setEditError('');
+                  setEditSuccess('');
+                }}
+                className="flex-1 bg-white/5 border border-white/10 text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleEditReservation}
+                disabled={!editFormData.patientName || !editFormData.patientEmail || !editFormData.treatmentId}
+                className="flex-1 bg-primary/20 border border-primary/30 text-primary py-3 rounded-lg hover:bg-primary/30 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Simpan Perubahan
               </button>
             </div>
           </div>
