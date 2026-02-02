@@ -385,3 +385,45 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const reservationId = searchParams.get('id');
+
+    if (!reservationId) {
+      return NextResponse.json(
+        { error: 'Reservation ID required' },
+        { status: 400 }
+      );
+    }
+
+    // Check if reservation exists
+    const reservation = await prisma.reservation.findUnique({
+      where: { id: reservationId }
+    });
+
+    if (!reservation) {
+      return NextResponse.json(
+        { error: 'Reservation not found' },
+        { status: 404 }
+      );
+    }
+
+    // Delete the reservation
+    await prisma.reservation.delete({
+      where: { id: reservationId }
+    });
+
+    return NextResponse.json({ 
+      message: 'Reservation deleted successfully',
+      deletedId: reservationId
+    });
+  } catch (error) {
+    console.error('Error deleting reservation:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete reservation' },
+      { status: 500 }
+    );
+  }
+}

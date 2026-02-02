@@ -80,6 +80,9 @@ export default function FrontOfficePage() {
   const [treatments, setTreatments] = useState<Treatment[]>([]);
   const [editError, setEditError] = useState('');
   const [editSuccess, setEditSuccess] = useState('');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [reservationToDelete, setReservationToDelete] = useState<Reservation | null>(null);
+  const [deleteError, setDeleteError] = useState('');
 
 
   const checkAdminAccess = async () => {
@@ -283,6 +286,34 @@ export default function FrontOfficePage() {
     } catch (error) {
       console.error('Error updating reservation:', error);
       setEditError('Terjadi kesalahan. Silakan coba lagi.');
+    }
+  };
+
+  const handleDeleteReservation = async () => {
+    if (!reservationToDelete) return;
+
+    try {
+      setDeleteError('');
+
+      const response = await fetch(`/api/front-office/reservations?id=${reservationToDelete.id}`, {
+        method: 'DELETE'
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setDeleteError(data.error || 'Gagal menghapus reservasi');
+        return;
+      }
+
+      // Success - refresh data and close modal
+      await fetchReservations();
+      setShowDeleteModal(false);
+      setReservationToDelete(null);
+      setDeleteError('');
+    } catch (error) {
+      console.error('Error deleting reservation:', error);
+      setDeleteError('Terjadi kesalahan. Silakan coba lagi.');
     }
   };
 
@@ -520,6 +551,16 @@ export default function FrontOfficePage() {
                           className="flex-1 bg-purple-500/20 border border-purple-500/30 text-purple-400 py-2 rounded-lg hover:bg-purple-500/30 transition-colors text-sm font-semibold"
                         >
                           ✏️ Edit
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setReservationToDelete(reservation);
+                            setShowDeleteModal(true);
+                          }}
+                          className="flex-1 bg-red-500/20 border border-red-500/30 text-red-400 py-2 rounded-lg hover:bg-red-500/30 transition-colors text-sm font-semibold"
+                        >
+                          🗑️ Delete
                         </button>
                         <button
                           onClick={(e) => {
@@ -972,6 +1013,88 @@ export default function FrontOfficePage() {
                 className="flex-1 bg-primary/20 border border-primary/30 text-primary py-3 rounded-lg hover:bg-primary/30 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Simpan Perubahan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && reservationToDelete && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-red-500/20 to-red-500/5 border border-red-500/30 rounded-xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-white">
+                Konfirmasi Hapus
+              </h3>
+              <button
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setReservationToDelete(null);
+                  setDeleteError('');
+                }}
+                className="text-white/60 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                <p className="text-red-400 font-semibold mb-2">
+                  ⚠️ Peringatan
+                </p>
+                <p className="text-white/80 text-sm">
+                  Anda akan menghapus reservasi ini secara permanen. Tindakan ini tidak dapat dibatalkan.
+                </p>
+              </div>
+
+              <div className="bg-black/30 rounded-lg p-4 space-y-2">
+                <div>
+                  <p className="text-white/60 text-xs">Pasien</p>
+                  <p className="text-white font-semibold">{reservationToDelete.patientName}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-xs">Treatment</p>
+                  <p className="text-white">{reservationToDelete.treatment.name}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-xs">Tanggal</p>
+                  <p className="text-white">{formatDate(reservationToDelete.reservationDate)} - {reservationToDelete.reservationTime}</p>
+                </div>
+                {reservationToDelete.referrer && (
+                  <div>
+                    <p className="text-white/60 text-xs">Affiliate</p>
+                    <p className="text-primary font-semibold">{reservationToDelete.referrer.affiliateCode}</p>
+                  </div>
+                )}
+              </div>
+
+              {deleteError && (
+                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                  <p className="text-red-400 text-sm">{deleteError}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setReservationToDelete(null);
+                  setDeleteError('');
+                }}
+                className="flex-1 bg-white/5 border border-white/10 text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleDeleteReservation}
+                className="flex-1 bg-red-500/20 border border-red-500/30 text-red-400 py-3 rounded-lg hover:bg-red-500/30 transition-colors font-semibold"
+              >
+                Ya, Hapus
               </button>
             </div>
           </div>
