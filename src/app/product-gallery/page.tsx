@@ -15,7 +15,7 @@ interface ProductPhoto {
 }
 
 const productPhotos: ProductPhoto[] = [
-  // Acne Specialized Series
+  // Acne Specialized Series (Green)
   {
     id: 'acne-banner',
     src: '/products/002.webp',
@@ -34,7 +34,31 @@ const productPhotos: ProductPhoto[] = [
     alt: 'Acne Specialized Series Products',
     category: 'acne'
   },
-  // Lumièra Series
+  {
+    id: 'acne-cleanser',
+    src: '/products/individual/acne-cleanser.jpeg',
+    alt: 'Specialized Acne Control Cleanser',
+    category: 'acne'
+  },
+  {
+    id: 'acne-moisturizer',
+    src: '/products/individual/acne-moisturizer.jpeg',
+    alt: 'Specialized Acne Soothing Moisturizer',
+    category: 'acne'
+  },
+  {
+    id: 'acne-glow-cream',
+    src: '/products/individual/acne-glow-cream.jpeg',
+    alt: 'Specialized Acne Glow Bright Cream',
+    category: 'acne'
+  },
+  {
+    id: 'acne-uv-protect',
+    src: '/products/individual/acne-uv-protect.jpeg',
+    alt: 'Specialized Acne Shield UV Protect',
+    category: 'acne'
+  },
+  // Lumièra Series (Pink)
   {
     id: 'lumiera-banner',
     src: '/products/005.webp',
@@ -53,7 +77,31 @@ const productPhotos: ProductPhoto[] = [
     alt: 'Lumièra Series Products',
     category: 'lumiera'
   },
-  // Anti Aging Series
+  {
+    id: 'lumiera-cleanser',
+    src: '/products/individual/lumiera-cleanser.jpeg',
+    alt: 'Lumièra Gentle Cleansing Gel',
+    category: 'lumiera'
+  },
+  {
+    id: 'lumiera-toner',
+    src: '/products/individual/lumiera-toner.jpeg',
+    alt: 'Crystal Glow Hydrating Toner',
+    category: 'lumiera'
+  },
+  {
+    id: 'lumiera-glow-serum',
+    src: '/products/individual/lumiera-glow-serum.jpeg',
+    alt: 'Glow Serum',
+    category: 'lumiera'
+  },
+  {
+    id: 'lumiera-uv-defense',
+    src: '/products/individual/lumiera-uv-defense.jpeg',
+    alt: 'Lumièra UV Defense Creme',
+    category: 'lumiera'
+  },
+  // Anti Aging Series (Gold)
   {
     id: 'antiaging-banner',
     src: '/products/008.webp',
@@ -70,6 +118,30 @@ const productPhotos: ProductPhoto[] = [
     id: 'antiaging-products',
     src: '/products/010.webp',
     alt: 'Anti Aging Series Products',
+    category: 'antiaging'
+  },
+  {
+    id: 'antiaging-facial-wash',
+    src: '/products/individual/antiaging-facial-wash.jpeg',
+    alt: 'Gentle Brightening Facial Wash',
+    category: 'antiaging'
+  },
+  {
+    id: 'antiaging-moisturizer',
+    src: '/products/individual/antiaging-moisturizer.jpeg',
+    alt: 'Brightening Moisturizer with Tranexamic Acid',
+    category: 'antiaging'
+  },
+  {
+    id: 'antiaging-gold-serum',
+    src: '/products/individual/antiaging-gold-serum.jpeg',
+    alt: 'Gold Serum with 6 Jewelry Complex',
+    category: 'antiaging'
+  },
+  {
+    id: 'antiaging-dna-serum',
+    src: '/products/individual/antiaging-dna-serum.jpeg',
+    alt: 'RevivAge DNA Serum',
     category: 'antiaging'
   },
 ];
@@ -125,7 +197,7 @@ export default function ProductGalleryPage() {
         {/* Photo Gallery Grid */}
         <section className="px-5">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredPhotos.map((photo) => (
                 <div
                   key={photo.id}
