@@ -534,15 +534,18 @@ export default function FrontOfficePage() {
                         </div>
                       )}
 
-                      {reservation.referrer && (
+                      {(reservation.referrer || reservation.referredBy) && (
                         <div className="bg-primary/10 border border-primary/30 rounded-lg p-3">
                           <p className="text-primary text-xs font-semibold mb-1">Affiliate</p>
                           <p className="text-white text-sm font-semibold">
-                            {reservation.referrer.affiliateCode}
+                            {reservation.referrer?.affiliateCode || reservation.referredBy}
                           </p>
+                          {!reservation.referrer && reservation.referredBy && (
+                            <p className="text-yellow-400 text-xs mt-1">Unclaimed</p>
+                          )}
                           {reservation.commissionAmount > 0 && (
                             <p className="text-green-400 text-sm mt-1">
-                              Commission: {formatCurrency(reservation.commissionAmount)}
+                              +{formatCurrency(reservation.commissionAmount)}
                             </p>
                           )}
                         </div>
@@ -683,12 +686,15 @@ export default function FrontOfficePage() {
                   <p className="text-white">{selectedReservation.patientNotes}</p>
                 </div>
               )}
-              {selectedReservation.referrer ? (
+              {selectedReservation.referrer || selectedReservation.referredBy ? (
                 <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
                   <p className="text-primary font-semibold mb-2">Affiliate</p>
                   <p className="text-white text-lg font-bold font-mono">
-                    {selectedReservation.referrer.affiliateCode}
+                    {selectedReservation.referrer?.affiliateCode || selectedReservation.referredBy}
                   </p>
+                  {!selectedReservation.referrer && selectedReservation.referredBy && (
+                    <p className="text-yellow-400 text-sm mt-1">Unclaimed Code</p>
+                  )}
                   <p className="text-green-400 text-sm mt-2">
                     Commission: {formatCurrency(selectedReservation.commissionAmount)}
                   </p>
@@ -1071,10 +1077,15 @@ export default function FrontOfficePage() {
                   <p className="text-white/60 text-xs">Tanggal</p>
                   <p className="text-white">{formatDate(reservationToDelete.reservationDate)} - {reservationToDelete.reservationTime}</p>
                 </div>
-                {reservationToDelete.referrer && (
+                {(reservationToDelete.referrer || reservationToDelete.referredBy) && (
                   <div>
                     <p className="text-white/60 text-xs">Affiliate</p>
-                    <p className="text-primary font-semibold">{reservationToDelete.referrer.affiliateCode}</p>
+                    <p className="text-primary font-semibold">
+                      {reservationToDelete.referrer?.affiliateCode || reservationToDelete.referredBy}
+                      {!reservationToDelete.referrer && reservationToDelete.referredBy && (
+                        <span className="text-yellow-400 text-xs ml-2">(Unclaimed)</span>
+                      )}
+                    </p>
                   </div>
                 )}
               </div>
