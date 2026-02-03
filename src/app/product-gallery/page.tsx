@@ -12,6 +12,7 @@ interface ProductPhoto {
   src: string;
   alt: string;
   category: ProductCategory;
+  sigUrl?: string; // SIG certification document URL
 }
 
 const productPhotos: ProductPhoto[] = [
@@ -38,25 +39,29 @@ const productPhotos: ProductPhoto[] = [
     id: 'acne-cleanser',
     src: '/products/individual/acne-cleanser.jpeg',
     alt: 'Specialized Acne Control Cleanser',
-    category: 'acne'
+    category: 'acne',
+    sigUrl: '/sig/acne-control-cleanser.pdf'
   },
   {
     id: 'acne-moisturizer',
     src: '/products/individual/acne-moisturizer.jpeg',
     alt: 'Specialized Acne Soothing Moisturizer',
-    category: 'acne'
+    category: 'acne',
+    sigUrl: '/sig/acne-soothing-moisturizer.pdf'
   },
   {
     id: 'acne-glow-cream',
     src: '/products/individual/acne-glow-cream.jpeg',
     alt: 'Specialized Acne Glow Bright Cream',
-    category: 'acne'
+    category: 'acne',
+    sigUrl: '/sig/acne-glow-bright-cream.pdf'
   },
   {
     id: 'acne-uv-protect',
     src: '/products/individual/acne-uv-protect.jpeg',
     alt: 'Specialized Acne Shield UV Protect',
-    category: 'acne'
+    category: 'acne',
+    sigUrl: '/sig/acne-shield-uv-protect.pdf'
   },
   // Lumièra Series (Pink)
   {
@@ -247,10 +252,26 @@ export default function ProductGalleryPage() {
               className="object-contain"
             />
           </div>
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/80 px-6 py-3 rounded-full max-w-2xl">
-            <p className="text-white font-semibold text-center">
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/80 px-6 py-4 rounded-2xl max-w-2xl">
+            <p className="text-white font-semibold text-center mb-3">
               {selectedPhoto.alt}
             </p>
+            {selectedPhoto.sigUrl && (
+              <div className="flex justify-center">
+                <a
+                  href={selectedPhoto.sigUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-dark font-bold px-6 py-2 rounded-lg transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Download SIG Certificate
+                </a>
+              </div>
+            )}
           </div>
         </div>
       )}
