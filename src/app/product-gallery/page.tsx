@@ -18,9 +18,9 @@ const productPhotos: ProductPhoto[] = [
     alt: 'DRW Prime Product Catalog Cover'
   },
   {
-    id: 'intro',
+    id: 'acne-banner',
     src: '/products/002.webp',
-    alt: 'Product Introduction'
+    alt: 'Acne Specialized Series Banner'
   },
   {
     id: 'acne-package',
@@ -33,9 +33,9 @@ const productPhotos: ProductPhoto[] = [
     alt: 'Acne Specialized Series Products'
   },
   {
-    id: 'acne-banner',
+    id: 'lumiera-banner',
     src: '/products/005.webp',
-    alt: 'Acne Series Banner'
+    alt: 'Lumièra Series Banner'
   },
   {
     id: 'lumiera-package',
@@ -48,7 +48,7 @@ const productPhotos: ProductPhoto[] = [
     alt: 'Lumièra Series Products'
   },
   {
-    id: 'antiaging-banner',
+    id: 'antiaging-banner-couple',
     src: '/products/008.webp',
     alt: 'Anti Aging Series Banner'
   },
