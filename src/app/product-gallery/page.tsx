@@ -5,67 +5,86 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
+type ProductCategory = 'acne' | 'lumiera' | 'antiaging';
+
 interface ProductPhoto {
   id: string;
   src: string;
   alt: string;
+  category: ProductCategory;
 }
 
 const productPhotos: ProductPhoto[] = [
-  {
-    id: 'cover',
-    src: '/products/001.webp',
-    alt: 'DRW Prime Product Catalog Cover'
-  },
+  // Acne Specialized Series
   {
     id: 'acne-banner',
     src: '/products/002.webp',
-    alt: 'Acne Specialized Series Banner'
+    alt: 'Acne Specialized Series Banner',
+    category: 'acne'
   },
   {
     id: 'acne-package',
     src: '/products/003.webp',
-    alt: 'Acne Specialized Series Package'
+    alt: 'Acne Specialized Series Package',
+    category: 'acne'
   },
   {
     id: 'acne-products',
     src: '/products/004.webp',
-    alt: 'Acne Specialized Series Products'
+    alt: 'Acne Specialized Series Products',
+    category: 'acne'
   },
+  // Lumièra Series
   {
     id: 'lumiera-banner',
     src: '/products/005.webp',
-    alt: 'Lumièra Series Banner'
+    alt: 'Lumièra Series Banner',
+    category: 'lumiera'
   },
   {
     id: 'lumiera-package',
     src: '/products/006.webp',
-    alt: 'Lumièra Series Package'
+    alt: 'Lumièra Series Package',
+    category: 'lumiera'
   },
   {
     id: 'lumiera-products',
     src: '/products/007.webp',
-    alt: 'Lumièra Series Products'
+    alt: 'Lumièra Series Products',
+    category: 'lumiera'
   },
+  // Anti Aging Series
   {
-    id: 'antiaging-banner-couple',
+    id: 'antiaging-banner',
     src: '/products/008.webp',
-    alt: 'Anti Aging Series Banner'
+    alt: 'Anti Aging Series Banner',
+    category: 'antiaging'
   },
   {
     id: 'antiaging-package',
     src: '/products/009.webp',
-    alt: 'Anti Aging Series Package'
+    alt: 'Anti Aging Series Package',
+    category: 'antiaging'
   },
   {
     id: 'antiaging-products',
     src: '/products/010.webp',
-    alt: 'Anti Aging Series Products'
+    alt: 'Anti Aging Series Products',
+    category: 'antiaging'
   },
 ];
 
+const categories = [
+  { id: 'acne' as ProductCategory, name: 'Acne Specialized' },
+  { id: 'lumiera' as ProductCategory, name: 'Lumièra Series' },
+  { id: 'antiaging' as ProductCategory, name: 'Anti Aging Series' },
+];
+
 export default function ProductGalleryPage() {
+  const [selectedCategory, setSelectedCategory] = useState<ProductCategory>('acne');
   const [selectedPhoto, setSelectedPhoto] = useState<ProductPhoto | null>(null);
+
+  const filteredPhotos = productPhotos.filter(photo => photo.category === selectedCategory);
 
   return (
     <>
@@ -82,11 +101,32 @@ export default function ProductGalleryPage() {
           </p>
         </section>
 
+        {/* Category Tabs */}
+        <section className="px-5 mb-12">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-wrap justify-center gap-4">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
+                    selectedCategory === category.id
+                      ? 'bg-gradient-to-r from-primary to-primary-light text-dark shadow-lg shadow-primary/30'
+                      : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white'
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Photo Gallery Grid */}
         <section className="px-5">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {productPhotos.map((photo) => (
+              {filteredPhotos.map((photo) => (
                 <div
                   key={photo.id}
                   className="group relative aspect-[3/4] bg-white/5 rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-300 cursor-pointer hover:shadow-2xl hover:shadow-primary/20"
