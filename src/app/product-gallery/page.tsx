@@ -96,13 +96,7 @@ const productPhotos: ProductPhoto[] = [
     category: 'lumiera',
     sigUrl: '/sig/lumiera-toner.pdf'
   },
-  {
-    id: 'lumiera-glow-serum',
-    src: '/products/individual/lumiera-glow-serum.jpeg',
-    alt: 'Glow Serum',
-    category: 'lumiera',
-    sigUrl: '/sig/lumiera-glow-serum.pdf'
-  },
+
   {
     id: 'lumiera-uv-defense',
     src: '/products/individual/lumiera-uv-defense.jpeg',
@@ -140,6 +134,13 @@ const productPhotos: ProductPhoto[] = [
     src: '/products/individual/antiaging-moisturizer.jpeg',
     alt: 'Brightening Moisturizer with Tranexamic Acid',
     category: 'antiaging'
+  },
+  {
+    id: 'antiaging-glow-serum',
+    src: '/products/individual/lumiera-glow-serum.jpeg',
+    alt: 'Glow Serum',
+    category: 'antiaging',
+    sigUrl: '/sig/lumiera-glow-serum.pdf'
   },
   {
     id: 'antiaging-gold-serum',
