@@ -90,13 +90,12 @@ const productPhotos: ProductPhoto[] = [
     sigUrl: '/sig/lumiera-cleansing-gel.pdf'
   },
   {
-    id: 'lumiera-toner',
-    src: '/products/individual/lumiera-toner.jpeg',
-    alt: 'Crystal Glow Hydrating Toner',
+    id: 'lumiera-glow-serum',
+    src: '/products/individual/lumiera-glow-serum.jpeg',
+    alt: 'Glow Serum',
     category: 'lumiera',
-    sigUrl: '/sig/lumiera-toner.pdf'
+    sigUrl: '/sig/lumiera-glow-serum.pdf'
   },
-
   {
     id: 'lumiera-uv-defense',
     src: '/products/individual/lumiera-uv-defense.jpeg',
@@ -136,11 +135,11 @@ const productPhotos: ProductPhoto[] = [
     category: 'antiaging'
   },
   {
-    id: 'antiaging-glow-serum',
-    src: '/products/individual/lumiera-glow-serum.jpeg',
-    alt: 'Glow Serum',
+    id: 'antiaging-toner',
+    src: '/products/individual/lumiera-toner.jpeg',
+    alt: 'Crystal Glow Hydrating Toner',
     category: 'antiaging',
-    sigUrl: '/sig/lumiera-glow-serum.pdf'
+    sigUrl: '/sig/lumiera-toner.pdf'
   },
   {
     id: 'antiaging-gold-serum',
