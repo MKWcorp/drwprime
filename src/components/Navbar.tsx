@@ -51,7 +51,7 @@ export default function Navbar() {
           </li>
           <li>
             <Link 
-              href="/galeri" 
+              href="/#gallery" 
               className="text-white hover:text-primary transition-colors duration-300 text-sm font-medium tracking-wide"
             >
               GALERI
@@ -148,7 +148,7 @@ export default function Navbar() {
             </li>
             <li>
               <Link 
-                href="/galeri"
+                href="/#gallery"
                 onClick={() => setIsOpen(false)}
                 className="block px-5 py-3 text-white hover:text-primary hover:bg-primary/10 transition-colors duration-300 text-sm font-medium tracking-wide"
               >
