@@ -19,6 +19,7 @@ interface Reservation {
   finalPrice: number;
   commissionAmount: number;
   adminNotes?: string;
+  referredBy?: string | null;
   treatment: {
     name: string;
     category: {
