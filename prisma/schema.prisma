@@ -45,6 +45,7 @@ model User {
 model PreClaimAffiliateCode {
   id              String    @id @default(cuid())
   code            String    @unique // The affiliate code (e.g., AFMRCH1)
+  assignedEmail   String?   // Email assigned by FO for ownership
   claimedBy       String?   // User ID who claimed this code
   claimedAt       DateTime? // When the code was claimed
   usageCount      Int       @default(0) // How many times used in reservations

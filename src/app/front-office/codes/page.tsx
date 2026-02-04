@@ -10,6 +10,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 interface AffiliateCode {
   id: string;
   code: string;
+  assignedEmail: string | null;
   claimedBy: string | null;
   claimedAt: string | null;
   usageCount: number;
@@ -69,6 +70,17 @@ export default function AffiliateCodesPage() {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedCodeDetail, setSelectedCodeDetail] = useState<AffiliateCode | null>(null);
   const [codeReservations, setCodeReservations] = useState<CodeReservation[]>([]);
+  
+  // Assign/Claim/Transfer modals
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [showClaimModal, setShowClaimModal] = useState(false);
+  const [showTransferModal, setShowTransferModal] = useState(false);
+  const [selectedCode, setSelectedCode] = useState<AffiliateCode | null>(null);
+  const [assignEmail, setAssignEmail] = useState('');
+  const [claimEmail, setClaimEmail] = useState('');
+  const [transferEmail, setTransferEmail] = useState('');
+  const [actionError, setActionError] = useState('');
+  const [actionSuccess, setActionSuccess] = useState('');
 
   const checkAdminAccess = async () => {
     if (!user) {
@@ -292,6 +304,120 @@ export default function AffiliateCodesPage() {
     }
   };
 
+  const handleAssignOwner = async () => {
+    if (!selectedCode || !assignEmail.trim()) {
+      setActionError('Email tidak boleh kosong');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/affiliate-codes/assign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          codeId: selectedCode.id,
+          email: assignEmail.trim()
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setActionError(data.error || 'Gagal assign kode');
+        return;
+      }
+
+      setActionSuccess('Kode berhasil di-assign!');
+      await fetchCodes();
+      setTimeout(() => {
+        setShowAssignModal(false);
+        setSelectedCode(null);
+        setAssignEmail('');
+        setActionError('');
+        setActionSuccess('');
+      }, 1500);
+    } catch (error) {
+      console.error('Error assigning code:', error);
+      setActionError('Terjadi kesalahan. Silakan coba lagi.');
+    }
+  };
+
+  const handleClaimCode = async () => {
+    if (!selectedCode || !claimEmail.trim()) {
+      setActionError('Email tidak boleh kosong');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/affiliate-codes/claim', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          codeId: selectedCode.id,
+          email: claimEmail.trim()
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setActionError(data.error || 'Gagal claim kode');
+        return;
+      }
+
+      setActionSuccess('Kode berhasil di-claim!');
+      await fetchCodes();
+      setTimeout(() => {
+        setShowClaimModal(false);
+        setSelectedCode(null);
+        setClaimEmail('');
+        setActionError('');
+        setActionSuccess('');
+      }, 1500);
+    } catch (error) {
+      console.error('Error claiming code:', error);
+      setActionError('Terjadi kesalahan. Silakan coba lagi.');
+    }
+  };
+
+  const handleTransferOwnership = async () => {
+    if (!selectedCode || !transferEmail.trim()) {
+      setActionError('Email tidak boleh kosong');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/affiliate-codes/transfer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          codeId: selectedCode.id,
+          newEmail: transferEmail.trim()
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setActionError(data.error || 'Gagal transfer kode');
+        return;
+      }
+
+      setActionSuccess('Kode berhasil di-transfer!');
+      await fetchCodes();
+      setTimeout(() => {
+        setShowTransferModal(false);
+        setSelectedCode(null);
+        setTransferEmail('');
+        setActionError('');
+        setActionSuccess('');
+      }, 1500);
+    } catch (error) {
+      console.error('Error transferring code:', error);
+      setActionError('Terjadi kesalahan. Silakan coba lagi.');
+    }
+  };
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
@@ -427,12 +553,10 @@ export default function AffiliateCodesPage() {
                 <thead>
                   <tr className="border-b border-white/10">
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Code</th>
-                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Referral Link</th>
+                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Assigned Email</th>
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Status</th>
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Usage</th>
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Commission</th>
-                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Created</th>
-                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Notes</th>
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Actions</th>
                   </tr>
                 </thead>
@@ -453,26 +577,11 @@ export default function AffiliateCodesPage() {
                         )}
                       </td>
                       <td className="py-4 px-4">
-                        <button
-                          onClick={() => handleCopyLink(code.code)}
-                          className="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary px-3 py-1.5 rounded-lg transition-colors text-sm font-semibold"
-                        >
-                          {copiedCode === code.code ? (
-                            <>
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                              </svg>
-                              Copied!
-                            </>
-                          ) : (
-                            <>
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                              </svg>
-                              Copy Link
-                            </>
-                          )}
-                        </button>
+                        {code.assignedEmail ? (
+                          <span className="text-white/80 text-sm">{code.assignedEmail}</span>
+                        ) : (
+                          <span className="text-white/40 text-sm">-</span>
+                        )}
                       </td>
                       <td className="py-4 px-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${getStatusColor(code.status)}`}>
@@ -491,34 +600,61 @@ export default function AffiliateCodesPage() {
                         </span>
                       </td>
                       <td className="py-4 px-4">
-                        <span className="text-white/60 text-sm">
-                          {formatDate(code.createdAt)}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <span className="text-white/60 text-sm">
-                          {code.notes || '-'}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-3">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <button
+                            onClick={() => handleCopyLink(code.code)}
+                            className="bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary px-2 py-1 rounded text-xs font-semibold"
+                          >
+                            {copiedCode === code.code ? '✓ Copied' : 'Copy Link'}
+                          </button>
                           <button
                             onClick={() => handleShowQR(code)}
-                            className="text-primary hover:text-primary/80 text-sm font-semibold flex items-center gap-1"
+                            className="text-primary hover:text-primary/80 text-xs font-semibold"
                             title="Show QR Code"
                           >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                            </svg>
                             QR
                           </button>
+                          {!code.assignedEmail && (
+                            <button
+                              onClick={() => {
+                                setSelectedCode(code);
+                                setShowAssignModal(true);
+                              }}
+                              className="bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 text-blue-400 px-2 py-1 rounded text-xs font-semibold"
+                            >
+                              Assign
+                            </button>
+                          )}
+                          {code.assignedEmail && code.status === 'unclaimed' && (
+                            <button
+                              onClick={() => {
+                                setSelectedCode(code);
+                                setClaimEmail(code.assignedEmail || '');
+                                setShowClaimModal(true);
+                              }}
+                              className="bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 text-green-400 px-2 py-1 rounded text-xs font-semibold"
+                            >
+                              Claim
+                            </button>
+                          )}
+                          {code.status === 'claimed' && (
+                            <button
+                              onClick={() => {
+                                setSelectedCode(code);
+                                setShowTransferModal(true);
+                              }}
+                              className="bg-yellow-500/20 hover:bg-yellow-500/30 border border-yellow-500/30 text-yellow-400 px-2 py-1 rounded text-xs font-semibold"
+                            >
+                              Transfer
+                            </button>
+                          )}
                           {code.status === 'unclaimed' && code.reservationCount === 0 && (
                             <button
                               onClick={() => {
                                 setCodeToDelete(code);
                                 setShowDeleteModal(true);
                               }}
-                              className="text-red-400 hover:text-red-300 text-sm font-semibold"
+                              className="text-red-400 hover:text-red-300 text-xs font-semibold"
                             >
                               Delete
                             </button>
@@ -800,6 +936,248 @@ export default function AffiliateCodesPage() {
                   </p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Assign Owner Modal */}
+      {showAssignModal && selectedCode && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-white">
+                Assign Owner
+              </h3>
+              <button
+                onClick={() => {
+                  setShowAssignModal(false);
+                  setSelectedCode(null);
+                  setAssignEmail('');
+                  setActionError('');
+                  setActionSuccess('');
+                }}
+                className="text-white/60 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-white/60 text-sm mb-4">
+                Assign kode <span className="text-primary font-bold">{selectedCode.code}</span> ke email berikut:
+              </p>
+              
+              <input
+                type="email"
+                value={assignEmail}
+                onChange={(e) => {
+                  setAssignEmail(e.target.value);
+                  setActionError('');
+                }}
+                placeholder="Email pemilik kode"
+                className="w-full bg-black/30 border border-primary/50 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-primary"
+              />
+            </div>
+
+            {actionError && (
+              <div className="bg-red-500/20 border border-red-500/50 text-red-400 text-sm px-4 py-3 rounded-lg mb-4">
+                {actionError}
+              </div>
+            )}
+
+            {actionSuccess && (
+              <div className="bg-green-500/20 border border-green-500/50 text-green-400 text-sm px-4 py-3 rounded-lg mb-4">
+                {actionSuccess}
+              </div>
+            )}
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleAssignOwner}
+                className="flex-1 bg-primary hover:bg-primary/90 text-dark font-semibold py-3 px-6 rounded-lg transition-colors"
+              >
+                Assign
+              </button>
+              <button
+                onClick={() => {
+                  setShowAssignModal(false);
+                  setSelectedCode(null);
+                  setAssignEmail('');
+                  setActionError('');
+                  setActionSuccess('');
+                }}
+                className="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+              >
+                Batal
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Claim Code Modal */}
+      {showClaimModal && selectedCode && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-white">
+                Claim Code
+              </h3>
+              <button
+                onClick={() => {
+                  setShowClaimModal(false);
+                  setSelectedCode(null);
+                  setClaimEmail('');
+                  setActionError('');
+                  setActionSuccess('');
+                }}
+                className="text-white/60 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-white/60 text-sm mb-4">
+                Claim kode <span className="text-primary font-bold">{selectedCode.code}</span> untuk user dengan email:
+              </p>
+              
+              <input
+                type="email"
+                value={claimEmail}
+                onChange={(e) => {
+                  setClaimEmail(e.target.value);
+                  setActionError('');
+                }}
+                placeholder="Email user"
+                className="w-full bg-black/30 border border-primary/50 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-primary"
+              />
+              
+              <p className="text-white/40 text-xs mt-2">
+                💡 Jika user belum punya akun, kode akan di-claim otomatis saat user login pertama kali
+              </p>
+            </div>
+
+            {actionError && (
+              <div className="bg-red-500/20 border border-red-500/50 text-red-400 text-sm px-4 py-3 rounded-lg mb-4">
+                {actionError}
+              </div>
+            )}
+
+            {actionSuccess && (
+              <div className="bg-green-500/20 border border-green-500/50 text-green-400 text-sm px-4 py-3 rounded-lg mb-4">
+                {actionSuccess}
+              </div>
+            )}
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleClaimCode}
+                className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+              >
+                Claim
+              </button>
+              <button
+                onClick={() => {
+                  setShowClaimModal(false);
+                  setSelectedCode(null);
+                  setClaimEmail('');
+                  setActionError('');
+                  setActionSuccess('');
+                }}
+                className="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+              >
+                Batal
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Transfer Ownership Modal */}
+      {showTransferModal && selectedCode && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-white">
+                Transfer Ownership
+              </h3>
+              <button
+                onClick={() => {
+                  setShowTransferModal(false);
+                  setSelectedCode(null);
+                  setTransferEmail('');
+                  setActionError('');
+                  setActionSuccess('');
+                }}
+                className="text-white/60 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-white/60 text-sm mb-2">
+                Transfer kode <span className="text-primary font-bold">{selectedCode.code}</span>
+              </p>
+              <p className="text-white/40 text-xs mb-4">
+                Pemilik saat ini: <span className="text-white">{selectedCode.assignedEmail || 'N/A'}</span>
+              </p>
+              
+              <input
+                type="email"
+                value={transferEmail}
+                onChange={(e) => {
+                  setTransferEmail(e.target.value);
+                  setActionError('');
+                }}
+                placeholder="Email pemilik baru"
+                className="w-full bg-black/30 border border-primary/50 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-primary"
+              />
+              
+              <p className="text-yellow-400/80 text-xs mt-2">
+                ⚠️ Semua komisi akan dipindahkan ke pemilik baru
+              </p>
+            </div>
+
+            {actionError && (
+              <div className="bg-red-500/20 border border-red-500/50 text-red-400 text-sm px-4 py-3 rounded-lg mb-4">
+                {actionError}
+              </div>
+            )}
+
+            {actionSuccess && (
+              <div className="bg-green-500/20 border border-green-500/50 text-green-400 text-sm px-4 py-3 rounded-lg mb-4">
+                {actionSuccess}
+              </div>
+            )}
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleTransferOwnership}
+                className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 px-6 rounded-lg transition-colors"
+              >
+                Transfer
+              </button>
+              <button
+                onClick={() => {
+                  setShowTransferModal(false);
+                  setSelectedCode(null);
+                  setTransferEmail('');
+                  setActionError('');
+                  setActionSuccess('');
+                }}
+                className="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+              >
+                Batal
+              </button>
             </div>
           </div>
         </div>

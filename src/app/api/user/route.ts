@@ -39,8 +39,20 @@ export async function POST(req: Request) {
     let affiliateCode: string;
     let isTeamLeader = false;
 
-    // Check if user is joining with a referral code
-    if (referralCode) {
+    // Check if there's a pre-assigned code for this email
+    const preAssignedCode = await prisma.preClaimAffiliateCode.findFirst({
+      where: {
+        assignedEmail: email,
+        status: 'unclaimed'
+      }
+    });
+
+    if (preAssignedCode) {
+      // Auto-claim the pre-assigned code
+      affiliateCode = preAssignedCode.code;
+      isTeamLeader = true;
+      console.log(`[AFFILIATE] Auto-claiming pre-assigned code ${affiliateCode} for email ${email}`);
+    } else if (referralCode) {
       // Check if this code already exists
       const existingCodeUser = await prisma.user.findFirst({
         where: { affiliateCode: referralCode }
@@ -88,12 +100,14 @@ export async function POST(req: Request) {
       }
     });
 
-    // If claiming an unclaimed code, transfer all pending reservations
-    if (referralCode && isTeamLeader) {
+    // If claiming an unclaimed code (either pre-assigned or referral), transfer all pending reservations
+    if (isTeamLeader && (preAssignedCode || referralCode)) {
+      const codeToUpdate = preAssignedCode?.code || referralCode;
+      
       // Update PreClaimAffiliateCode status to claimed
       await prisma.preClaimAffiliateCode.updateMany({
         where: {
-          code: referralCode,
+          code: codeToUpdate,
           status: 'unclaimed'
         },
         data: {
@@ -103,12 +117,12 @@ export async function POST(req: Request) {
         }
       });
 
-      console.log(`[AFFILIATE] Updated PreClaimAffiliateCode status to claimed for: ${referralCode}`);
+      console.log(`[AFFILIATE] Updated PreClaimAffiliateCode status to claimed for: ${codeToUpdate}`);
 
       // Find all reservations with this referral code but no referrerId
       const pendingReservations = await prisma.reservation.findMany({
         where: {
-          referredBy: referralCode,
+          referredBy: codeToUpdate,
           referrerId: null
         }
       });
@@ -117,7 +131,7 @@ export async function POST(req: Request) {
         // Update all pending reservations to link to this user
         await prisma.reservation.updateMany({
           where: {
-            referredBy: referralCode,
+            referredBy: codeToUpdate,
             referrerId: null
           },
           data: {
