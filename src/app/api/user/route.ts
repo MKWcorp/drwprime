@@ -90,6 +90,21 @@ export async function POST(req: Request) {
 
     // If claiming an unclaimed code, transfer all pending reservations
     if (referralCode && isTeamLeader) {
+      // Update PreClaimAffiliateCode status to claimed
+      await prisma.preClaimAffiliateCode.updateMany({
+        where: {
+          code: referralCode,
+          status: 'unclaimed'
+        },
+        data: {
+          status: 'claimed',
+          claimedBy: user.id,
+          claimedAt: new Date()
+        }
+      });
+
+      console.log(`[AFFILIATE] Updated PreClaimAffiliateCode status to claimed for: ${referralCode}`);
+
       // Find all reservations with this referral code but no referrerId
       const pendingReservations = await prisma.reservation.findMany({
         where: {
