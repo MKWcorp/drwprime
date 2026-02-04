@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { QRCodeCanvas } from 'qrcode.react';
 
 interface AffiliateCode {
   id: string;
@@ -48,6 +49,11 @@ export default function AffiliateCodesPage() {
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [customCode, setCustomCode] = useState('');
   const [codeNotes, setCodeNotes] = useState('');
+  
+  // QR Code modal
+  const [showQRModal, setShowQRModal] = useState(false);
+  const [selectedCodeForQR, setSelectedCodeForQR] = useState<AffiliateCode | null>(null);
+  const qrRef = useRef<HTMLCanvasElement>(null);
   const [generateError, setGenerateError] = useState('');
   const [generateSuccess, setGenerateSuccess] = useState('');
   
@@ -189,6 +195,51 @@ export default function AffiliateCodesPage() {
     } catch (error) {
       console.error('Error deleting code:', error);
       setDeleteError('Terjadi kesalahan. Silakan coba lagi.');
+    }
+  };
+
+  const handleShowQR = (code: AffiliateCode) => {
+    setSelectedCodeForQR(code);
+    setShowQRModal(true);
+  };
+
+  const handleDownloadQR = () => {
+    if (!qrRef.current) return;
+    
+    const canvas = qrRef.current;
+    const url = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = `QR-${selectedCodeForQR?.code}.png`;
+    link.href = url;
+    link.click();
+  };
+
+  const handleShareQR = async () => {
+    if (!qrRef.current || !selectedCodeForQR) return;
+
+    try {
+      const canvas = qrRef.current;
+      const blob = await new Promise<Blob>((resolve) => {
+        canvas.toBlob((blob) => resolve(blob!), 'image/png');
+      });
+
+      const file = new File([blob], `QR-${selectedCodeForQR.code}.png`, { type: 'image/png' });
+      const referralLink = `https://drwprime.com/reservation?ref=${selectedCodeForQR.code}`;
+
+      if (navigator.share && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          title: `Kode Affiliate: ${selectedCodeForQR.code}`,
+          text: `Gunakan kode affiliate ${selectedCodeForQR.code} untuk booking treatment di DRW Prime!\n\n${referralLink}`,
+          files: [file]
+        });
+      } else {
+        // Fallback: copy link to clipboard
+        await navigator.clipboard.writeText(referralLink);
+        alert('Link referral berhasil di-copy! Share QR code tidak didukung di browser ini.');
+      }
+    } catch (error) {
+      console.error('Error sharing QR:', error);
+      alert('Gagal share QR code. Silakan coba download.');
     }
   };
 
@@ -450,17 +501,29 @@ export default function AffiliateCodesPage() {
                         </span>
                       </td>
                       <td className="py-4 px-4">
-                        {code.status === 'unclaimed' && code.reservationCount === 0 && (
+                        <div className="flex items-center gap-3">
                           <button
-                            onClick={() => {
-                              setCodeToDelete(code);
-                              setShowDeleteModal(true);
-                            }}
-                            className="text-red-400 hover:text-red-300 text-sm font-semibold"
+                            onClick={() => handleShowQR(code)}
+                            className="text-primary hover:text-primary/80 text-sm font-semibold flex items-center gap-1"
+                            title="Show QR Code"
                           >
-                            Delete
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                            </svg>
+                            QR
                           </button>
-                        )}
+                          {code.status === 'unclaimed' && code.reservationCount === 0 && (
+                            <button
+                              onClick={() => {
+                                setCodeToDelete(code);
+                                setShowDeleteModal(true);
+                              }}
+                              className="text-red-400 hover:text-red-300 text-sm font-semibold"
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -738,6 +801,91 @@ export default function AffiliateCodesPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* QR Code Modal */}
+      {showQRModal && selectedCodeForQR && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-white">
+                QR Code - {selectedCodeForQR.code}
+              </h3>
+              <button
+                onClick={() => {
+                  setShowQRModal(false);
+                  setSelectedCodeForQR(null);
+                }}
+                className="text-white/60 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* QR Code Display */}
+            <div className="bg-white p-6 rounded-lg mb-6 flex justify-center">
+              <QRCodeCanvas
+                value={`https://drwprime.com/reservation?ref=${selectedCodeForQR.code}`}
+                size={256}
+                level="H"
+                includeMargin={true}
+                ref={qrRef}
+              />
+            </div>
+
+            {/* Code Info */}
+            <div className="mb-6 space-y-3">
+              <div className="bg-black/30 p-4 rounded-lg">
+                <p className="text-white/60 text-xs mb-1">Kode Affiliate</p>
+                <p className="text-primary font-bold font-mono text-xl">{selectedCodeForQR.code}</p>
+              </div>
+              <div className="bg-black/30 p-4 rounded-lg">
+                <p className="text-white/60 text-xs mb-1">Link Referral</p>
+                <p className="text-white text-sm break-all">
+                  https://drwprime.com/reservation?ref={selectedCodeForQR.code}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-black/30 p-3 rounded-lg">
+                  <p className="text-white/60 text-xs mb-1">Status</p>
+                  <p className="text-white font-semibold capitalize">{selectedCodeForQR.status}</p>
+                </div>
+                <div className="bg-black/30 p-3 rounded-lg">
+                  <p className="text-white/60 text-xs mb-1">Usage</p>
+                  <p className="text-white font-semibold">{selectedCodeForQR.reservationCount}x</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={handleShareQR}
+                className="flex-1 bg-gradient-to-r from-primary to-primary/80 text-black font-semibold py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-primary/50 transition-all flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+                Share QR
+              </button>
+              <button
+                onClick={handleDownloadQR}
+                className="flex-1 bg-white/10 border border-white/20 text-white font-semibold py-3 px-6 rounded-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download
+              </button>
+            </div>
+
+            <p className="text-white/40 text-xs text-center mt-4">
+              Scan QR code untuk langsung ke form reservasi dengan kode affiliate terisi otomatis
+            </p>
           </div>
         </div>
       )}
