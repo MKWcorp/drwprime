@@ -70,7 +70,7 @@ export default function BentoGrid() {
             href="/treatments?category=facial-basic"
             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
-            <div className="relative aspect-[4/5] p-5 flex flex-col justify-end">
+            <div className="relative aspect-[2/3] p-5 flex flex-col justify-end">
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/treatments/facial-basic.jpeg"
@@ -101,7 +101,7 @@ export default function BentoGrid() {
             href="/treatments?category=facial-prime"
             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
-            <div className="relative aspect-[4/5] p-5 flex flex-col justify-end">
+            <div className="relative aspect-[2/3] p-5 flex flex-col justify-end">
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/treatments/facial-prime.jpeg"
