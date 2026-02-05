@@ -15,50 +15,34 @@ export default function BentoGrid() {
           </p>
         </div>
 
-        {/* Grid Layout - 4 columns */}
+        {/* Grid Layout - 4 columns uniform */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           
-          {/* HIFU Ultraformer MPT - Featured (2 columns) */}
+          {/* HIFU Ultraformer MPT */}
           <Link 
             href="/treatments?category=hifu-ultraformer-mpt" 
-            className="lg:col-span-2 group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20"
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
-            <div className="relative aspect-[2/3] p-6 flex flex-col justify-between">
+            <div className="relative aspect-[4/5] p-5 flex flex-col justify-end">
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/treatments/hifu.png"
                   alt="HIFU Ultraformer MPT"
                   fill
-                  className="object-cover object-center group-hover:scale-105 transition-all duration-700"
+                  className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
-
-              <div className="relative z-10">
-                <div className="inline-block bg-primary/20 backdrop-blur-sm border border-primary px-4 py-2 rounded-full mb-4">
-                  <span className="text-primary text-sm font-semibold">FEATURED TREATMENT</span>
-                </div>
-              </div>
-
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
-                <div className="mb-4">
-                  <Image
-                    src="/ultraformermpt/ultraformermpt-logo.png"
-                    alt="Ultraformer MPT Logo"
-                    width={180}
-                    height={54}
-                    className="mb-4 brightness-0 invert"
-                  />
-                </div>
-                <h3 className="font-playfair text-2xl md:text-3xl font-bold text-primary mb-3">
+                <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
                   HIFU Ultraformer MPT
                 </h3>
-                <p className="text-white/80 text-sm md:text-base mb-6">
-                  Advanced HIFU technology for non-invasive skin tightening and facial rejuvenation.
+                <p className="text-white/70 text-sm mb-4">
+                  Advanced HIFU technology for skin tightening
                 </p>
-                <div className="flex items-center gap-2 text-primary font-semibold group-hover:gap-4 transition-all duration-300">
-                  <span>Discover More</span>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                <div className="flex items-center gap-2 text-primary text-sm font-semibold">
+                  <span>Explore</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </div>
               </div>
@@ -76,7 +60,7 @@ export default function BentoGrid() {
                   src="/treatments/facial-basic.jpeg"
                   alt="Facial Basic"
                   fill
-                  className="object-cover object-center group-hover:scale-105 transition-all duration-700"
+                  className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
@@ -107,7 +91,7 @@ export default function BentoGrid() {
                   src="/treatments/facial-prime.jpeg"
                   alt="Facial Prime"
                   fill
-                  className="object-cover object-center group-hover:scale-105 transition-all duration-700"
+                  className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
@@ -138,7 +122,7 @@ export default function BentoGrid() {
                   src="/treatments/chemical-peeling.png"
                   alt="Chemical Peeling"
                   fill
-                  className="object-cover object-center group-hover:scale-105 transition-all duration-700"
+                  className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
@@ -167,9 +151,9 @@ export default function BentoGrid() {
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/treatments/ipl.jpeg"
-                  alt="IPL"
+                  alt="IPL (Intense Pulsed Light)"
                   fill
-                  className="object-cover object-center group-hover:scale-105 transition-all duration-700"
+                  className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
@@ -200,7 +184,7 @@ export default function BentoGrid() {
                   src="/treatments/dermapen.png"
                   alt="Dermapen EPN"
                   fill
-                  className="object-cover object-center group-hover:scale-105 transition-all duration-700"
+                  className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
@@ -222,7 +206,7 @@ export default function BentoGrid() {
 
           {/* Injection Treatment */}
           <Link
-            href="/treatments?category=injection"
+            href="/treatments?category=injection-treatment"
             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
             <div className="relative aspect-[4/5] p-5 flex flex-col justify-end">
@@ -231,7 +215,7 @@ export default function BentoGrid() {
                   src="/treatments/injection.png"
                   alt="Injection Treatment"
                   fill
-                  className="object-cover object-center group-hover:scale-105 transition-all duration-700"
+                  className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
@@ -262,7 +246,7 @@ export default function BentoGrid() {
                   src="/treatments/botox.jpeg"
                   alt="Botox"
                   fill
-                  className="object-cover object-center group-hover:scale-105 transition-all duration-700"
+                  className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
