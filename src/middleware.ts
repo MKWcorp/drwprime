@@ -4,6 +4,7 @@ import { NextRequest } from "next/server";
 const isPublicRoute = createRouteMatcher([
   '/',
   '/treatments(.*)',
+  '/home-treatment(.*)',
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/reservation(.*)',
