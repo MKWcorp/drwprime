@@ -8,6 +8,7 @@ import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isTreatmentDropdownOpen, setIsTreatmentDropdownOpen] = useState(false);
   const { user, isLoaded } = useUser();
 
   useEffect(() => {
@@ -41,14 +42,47 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-8 items-center">
-          <li>
-            <Link 
-              href="/treatments" 
-              className="text-white hover:text-primary transition-colors duration-300 text-sm font-medium tracking-wide"
+          {/* Treatment Dropdown */}
+          <li className="relative">
+            <button
+              onMouseEnter={() => setIsTreatmentDropdownOpen(true)}
+              onMouseLeave={() => setIsTreatmentDropdownOpen(false)}
+              className="text-white hover:text-primary transition-colors duration-300 text-sm font-medium tracking-wide flex items-center gap-1"
             >
               TREATMENT
-            </Link>
+              <svg 
+                className={`w-4 h-4 transition-transform duration-300 ${isTreatmentDropdownOpen ? 'rotate-180' : ''}`}
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {/* Dropdown Menu */}
+            {isTreatmentDropdownOpen && (
+              <div 
+                onMouseEnter={() => setIsTreatmentDropdownOpen(true)}
+                onMouseLeave={() => setIsTreatmentDropdownOpen(false)}
+                className="absolute top-full left-0 mt-2 w-48 bg-[#1a1a1a] border-2 border-primary/30 rounded-lg shadow-2xl shadow-black/50 overflow-hidden"
+              >
+                <Link
+                  href="/treatments"
+                  className="block px-5 py-3 text-white hover:text-primary hover:bg-primary/10 transition-colors duration-200 text-sm font-medium"
+                >
+                  Treatment
+                </Link>
+                <Link
+                  href="/home-treatment"
+                  className="block px-5 py-3 text-white hover:text-primary hover:bg-primary/10 transition-colors duration-200 text-sm font-medium border-t border-primary/10"
+                >
+                  Home Treatment
+                </Link>
+              </div>
+            )}
           </li>
+          
           <li>
             <Link 
               href="/#gallery" 
@@ -145,6 +179,7 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-black/98 border-t border-primary/20">
           <ul className="flex flex-col py-4">
+            {/* Treatment submenu for mobile */}
             <li>
               <Link 
                 href="/treatments"
@@ -152,6 +187,15 @@ export default function Navbar() {
                 className="block px-5 py-3 text-white hover:text-primary hover:bg-primary/10 transition-colors duration-300 text-sm font-medium tracking-wide"
               >
                 TREATMENT
+              </Link>
+            </li>
+            <li>
+              <Link 
+                href="/home-treatment"
+                onClick={() => setIsOpen(false)}
+                className="block px-5 py-3 pl-8 text-white/80 hover:text-primary hover:bg-primary/10 transition-colors duration-300 text-sm font-medium tracking-wide"
+              >
+                HOME TREATMENT
               </Link>
             </li>
             <li>
