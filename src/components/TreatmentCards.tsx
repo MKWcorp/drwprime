@@ -14,8 +14,6 @@ export default function TreatmentCards() {
         </svg>
       ),
       href: "/treatments?category=facial",
-      bgColor: "bg-purple-500/10",
-      iconColor: "text-purple-400",
     },
     {
       id: 2,
@@ -27,8 +25,6 @@ export default function TreatmentCards() {
         </svg>
       ),
       href: "/treatments?category=body",
-      bgColor: "bg-orange-500/10",
-      iconColor: "text-orange-400",
     },
     {
       id: 3,
@@ -40,8 +36,6 @@ export default function TreatmentCards() {
         </svg>
       ),
       href: "/home-treatment",
-      bgColor: "bg-green-500/10",
-      iconColor: "text-green-400",
     },
     {
       id: 4,
@@ -53,13 +47,11 @@ export default function TreatmentCards() {
         </svg>
       ),
       href: "#contact",
-      bgColor: "bg-blue-500/10",
-      iconColor: "text-blue-400",
     },
   ];
 
   return (
-    <div className="lg:hidden px-4 py-6">
+    <div className="lg:hidden px-4 py-6 bg-black">
       {/* Greeting Section */}
       <div className="mb-6">
         <h2 className="text-xl font-bold text-white mb-1">
@@ -71,15 +63,15 @@ export default function TreatmentCards() {
       </div>
 
       {/* Treatment Cards */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 space-y-3">
+      <div className="bg-gradient-to-br from-black via-gray-900 to-black rounded-2xl p-4 space-y-3 border border-primary/20">
         {treatments.map((treatment) => (
           <Link
             key={treatment.id}
             href={treatment.href}
-            className="flex items-center gap-4 bg-black/40 backdrop-blur-sm p-4 rounded-xl border border-white/10 hover:border-primary/30 transition-all duration-300 group"
+            className="flex items-center gap-4 bg-black/60 backdrop-blur-sm p-4 rounded-xl border border-primary/20 hover:border-primary/50 hover:bg-black/80 transition-all duration-300 group"
           >
             {/* Icon */}
-            <div className={`${treatment.bgColor} ${treatment.iconColor} p-3 rounded-full flex-shrink-0`}>
+            <div className="bg-primary/10 text-primary p-3 rounded-full flex-shrink-0 border border-primary/30 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
               {treatment.icon}
             </div>
 
@@ -95,7 +87,7 @@ export default function TreatmentCards() {
 
             {/* Arrow */}
             <svg 
-              className="w-5 h-5 text-gray-400 group-hover:text-primary group-hover:translate-x-1 transition-all" 
+              className="w-5 h-5 text-primary/50 group-hover:text-primary group-hover:translate-x-1 transition-all" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
