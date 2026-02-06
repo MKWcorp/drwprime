@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import BentoGrid from "@/components/BentoGrid";
+import HomeTreatmentGrid from "@/components/HomeTreatmentGrid";
 // import Stats from "@/components/Stats";
 // import Excellence from "@/components/Excellence";
 // import ProblemSolution from "@/components/ProblemSolution";
@@ -16,6 +17,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <BentoGrid />
+      <HomeTreatmentGrid />
       {/* <Stats /> */}
       {/* <Excellence /> */}
       {/* <ProblemSolution /> */}
