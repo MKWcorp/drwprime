@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 
+import MobileLayout from '@/components/MobileLayout';
 interface Treatment {
   id: string;
   name: string;
@@ -115,8 +116,9 @@ function ReservationContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black">
-        <Navbar />
+      <MobileLayout>
+        <div className="min-h-screen bg-black">
+          <Navbar />
         <div className="pt-20 flex items-center justify-center min-h-[80vh]">
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
@@ -124,12 +126,14 @@ function ReservationContent() {
           </div>
         </div>
       </div>
+      </MobileLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <Navbar />
+    <MobileLayout>
+      <div className="min-h-screen bg-black">
+        <Navbar />
       <div className="pt-20 pb-10">
         <div className="max-w-lg mx-auto px-4">
           {/* Header */}
@@ -293,6 +297,7 @@ function ReservationContent() {
         </div>
       </div>
     </div>
+      </MobileLayout>
   );
 }
 

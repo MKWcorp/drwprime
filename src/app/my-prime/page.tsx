@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
+import MobileLayout from '@/components/MobileLayout';
 
 interface Reservation {
   id: string;
@@ -121,27 +122,32 @@ export default function MyPrimePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <MobileLayout>
+        <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
           <p className="text-white/60">Loading your dashboard...</p>
         </div>
-      </div>
+        </div>
+      </MobileLayout>
     );
   }
 
   if (!userData) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <MobileLayout>
+        <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <p className="text-white/60">Failed to load data. Please refresh the page.</p>
         </div>
-      </div>
+        </div>
+      </MobileLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <MobileLayout>
+      <div className="min-h-screen bg-black">
       <Navbar />
       <div className="pt-20">
         <div className="max-w-7xl mx-auto px-4 py-6">
@@ -305,5 +311,6 @@ export default function MyPrimePage() {
         </div>
       </div>
     </div>
+    </MobileLayout>
   );
 }

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import MobileLayout from '@/components/MobileLayout';
 
 type ProductCategory = 'acne' | 'lumiera' | 'antiaging';
 
@@ -168,7 +169,7 @@ export default function ProductGalleryPage() {
   const filteredPhotos = productPhotos.filter(photo => photo.category === selectedCategory);
 
   return (
-    <>
+    <MobileLayout>
       <Navbar />
       
       <main className="min-h-screen bg-dark pt-24 pb-16">
@@ -280,6 +281,6 @@ export default function ProductGalleryPage() {
           </div>
         </div>
       )}
-    </>
+    </MobileLayout>
   );
 }

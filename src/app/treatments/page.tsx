@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import MobileLayout from '@/components/MobileLayout';
 
 interface Treatment {
   id: string;
@@ -101,18 +102,18 @@ function TreatmentsContent() {
 
   if (loading) {
     return (
-      <>
+      <MobileLayout>
         <Navbar />
         <main className="pt-20 min-h-screen bg-dark flex items-center justify-center">
           <div className="text-primary text-xl">Loading treatments...</div>
         </main>
         <Footer />
-      </>
+      </MobileLayout>
     );
   }
 
   return (
-    <>
+    <MobileLayout>
       <Navbar />
       
       <main className="pt-20 min-h-screen bg-dark">
@@ -391,7 +392,7 @@ function TreatmentsContent() {
       </main>
 
       <Footer />
-    </>
+    </MobileLayout>
   );
 }
 

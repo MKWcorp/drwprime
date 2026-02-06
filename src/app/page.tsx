@@ -10,22 +10,25 @@ import Society from "@/components/Society";
 // import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import MobileLayout from "@/components/MobileLayout";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-black text-white overflow-x-hidden">
-      <Navbar />
-      <Hero />
-      <BentoGrid />
-      <HomeTreatmentGrid />
-      {/* <Stats /> */}
-      {/* <Excellence /> */}
-      {/* <ProblemSolution /> */}
-      <Gallery />
-      <Society />
-      {/* <Testimonials /> */}
-      <Contact />
-      <Footer />
-    </main>
+    <MobileLayout>
+      <main className="min-h-screen bg-black text-white overflow-x-hidden">
+        <Navbar />
+        <Hero />
+        <BentoGrid />
+        <HomeTreatmentGrid />
+        {/* <Stats /> */}
+        {/* <Excellence /> */}
+        {/* <ProblemSolution /> */}
+        <Gallery />
+        <Society />
+        {/* <Testimonials /> */}
+        <Contact />
+        <Footer />
+      </main>
+    </MobileLayout>
   );
 }

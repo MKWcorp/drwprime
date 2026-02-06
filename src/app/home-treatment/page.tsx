@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
+import MobileLayout from '@/components/MobileLayout';
 import Footer from '@/components/Footer';
 
 interface Treatment {
@@ -170,7 +171,7 @@ function HomeTreatmentContent() {
   );
 
   return (
-    <>
+    <MobileLayout>
       <Navbar />
       
       <main className="pt-20 min-h-screen bg-dark relative overflow-hidden">
@@ -413,7 +414,7 @@ function HomeTreatmentContent() {
       </main>
 
       <Footer />
-    </>
+    </MobileLayout>
   );
 }
 

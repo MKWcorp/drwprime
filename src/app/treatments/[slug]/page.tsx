@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import MobileLayout from '@/components/MobileLayout';
 import ReservationForm from '@/components/ReservationForm';
 import Link from 'next/link';
 
@@ -61,7 +62,7 @@ export default function TreatmentDetailPage() {
 
   if (loading) {
     return (
-      <>
+      <MobileLayout>
         <Navbar />
         <main className="pt-32 min-h-screen bg-dark px-5">
           <div className="max-w-4xl mx-auto text-center">
@@ -69,13 +70,13 @@ export default function TreatmentDetailPage() {
           </div>
         </main>
         <Footer />
-      </>
+      </MobileLayout>
     );
   }
 
   if (!treatment) {
     return (
-      <>
+      <MobileLayout>
         <Navbar />
         <main className="pt-32 min-h-screen bg-dark px-5">
           <div className="max-w-4xl mx-auto text-center">
@@ -89,12 +90,12 @@ export default function TreatmentDetailPage() {
           </div>
         </main>
         <Footer />
-      </>
+      </MobileLayout>
     );
   }
 
   return (
-    <>
+    <MobileLayout>
       <Navbar />
       
       <main className="pt-32 pb-20 min-h-screen bg-dark px-5">
@@ -196,6 +197,6 @@ export default function TreatmentDetailPage() {
       )}
 
       <Footer />
-    </>
+    </MobileLayout>
   );
 }
