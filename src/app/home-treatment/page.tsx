@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
@@ -98,12 +98,13 @@ const homeCategories: Category[] = [
   },
 ];
 
-export default function HomeTreatmentPage() {
+function HomeTreatmentContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get('category');
   
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
 
   // Set category from URL parameter on mount
   useEffect(() => {
@@ -121,7 +122,6 @@ export default function HomeTreatmentPage() {
       setActiveCategory(slug);
     }
   }, [categoryFromUrl]);
-  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
 
   // Get all treatments or filtered by category and search
   const displayedTreatments = useMemo(() => {
@@ -406,5 +406,17 @@ export default function HomeTreatmentPage() {
 
       <Footer />
     </>
+  );
+}
+
+export default function HomeTreatmentPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-dark flex items-center justify-center">
+        <div className="text-primary text-xl">Loading...</div>
+      </div>
+    }>
+      <HomeTreatmentContent />
+    </Suspense>
   );
 }
