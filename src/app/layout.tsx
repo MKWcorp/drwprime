@@ -17,10 +17,23 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "DRW Prime - Premium Beauty & Wellness",
   description: "Transform your beauty with our premium treatments and expert care",
+  manifest: "/manifest.json",
+  themeColor: "#D4AF37",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "DRW Prime",
+  },
   icons: {
     icon: "/drwprime-icon.ico",
     shortcut: "/drwprime-icon.ico",
-    apple: "/drwprime-icon.png",
+    apple: "/apple-touch-icon.png",
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
   },
 };
 
@@ -33,6 +46,11 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="id" className={`${inter.variable} ${playfair.variable}`}>
         <head>
+          <meta name="mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+          <meta name="apple-mobile-web-app-title" content="DRW Prime" />
+          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
           <Script id="google-tag-manager" strategy="afterInteractive">
             {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -51,6 +69,22 @@ export default function RootLayout({
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', 'G-Z4M7H1T0NQ');
+            `}
+          </Script>
+          <Script id="pwa-register" strategy="afterInteractive">
+            {`
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js').then(
+                    function(registration) {
+                      console.log('ServiceWorker registration successful');
+                    },
+                    function(err) {
+                      console.log('ServiceWorker registration failed: ', err);
+                    }
+                  );
+                });
+              }
             `}
           </Script>
         </head>
