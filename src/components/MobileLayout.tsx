@@ -20,10 +20,11 @@ export default function MobileLayout({
       {/* Mobile Header - only visible on mobile */}
       {showHeader && <MobileHeader />}
 
-      {/* Main Content with proper padding */}      <div className="
+      {/* Main Content with proper padding */}
+      <div className={`
         ${showHeader ? 'lg:pt-0 pt-14' : ''} 
         ${showBottomNav ? 'lg:pb-0 pb-20' : ''}
-      ">`}>
+      `}>
         {children}
       </div>
 
