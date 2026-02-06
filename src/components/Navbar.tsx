@@ -43,7 +43,7 @@ export default function Navbar() {
         <ul className="hidden md:flex gap-8 items-center">
           <li>
             <Link 
-              href="/home-treatment" 
+              href="/treatments" 
               className="text-white hover:text-primary transition-colors duration-300 text-sm font-medium tracking-wide"
             >
               TREATMENT
@@ -51,7 +51,7 @@ export default function Navbar() {
           </li>
           <li>
             <Link 
-              href="/treatments" 
+              href="/home-treatment" 
               className="text-white hover:text-primary transition-colors duration-300 text-sm font-medium tracking-wide"
             >
               HOME TREATMENT
@@ -155,7 +155,7 @@ export default function Navbar() {
           <ul className="flex flex-col py-4">
             <li>
               <Link 
-                href="/home-treatment"
+                href="/treatments"
                 onClick={() => setIsOpen(false)}
                 className="block px-5 py-3 text-white hover:text-primary hover:bg-primary/10 transition-colors duration-300 text-sm font-medium tracking-wide"
               >
@@ -164,7 +164,7 @@ export default function Navbar() {
             </li>
             <li>
               <Link 
-                href="/treatments"
+                href="/home-treatment"
                 onClick={() => setIsOpen(false)}
                 className="block px-5 py-3 text-white hover:text-primary hover:bg-primary/10 transition-colors duration-300 text-sm font-medium tracking-wide"
               >
