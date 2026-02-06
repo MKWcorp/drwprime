@@ -29,7 +29,7 @@ export default function BentoGrid() {
                   src="/treatments/hifu.png"
                   alt="HIFU Ultraformer MPT"
                   fill
-                  className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                  className="object-cover object-top opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
               <div className="relative z-10"></div>
@@ -157,7 +157,7 @@ export default function BentoGrid() {
                   src="/treatments/ipl.jpeg"
                   alt="IPL (Intense Pulsed Light)"
                   fill
-                  className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                  className="object-cover object-top opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
               <div className="relative z-10"></div>
