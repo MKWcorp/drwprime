@@ -16,17 +16,17 @@ export default function MobileHeader() {
   };
 
   return (
-    <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-black">
+    <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-black border-b border-primary/10">
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo & Brand */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
               <Image 
                 src="/drwprime-icon.png" 
                 alt="DRW Prime" 
-                width={20} 
-                height={20}
+                width={32} 
+                height={32}
                 className="object-contain"
               />
             </div>
@@ -35,19 +35,22 @@ export default function MobileHeader() {
 
           {/* User Profile Only */}
           <Link href={user ? "/my-prime" : "/sign-in"}>
-            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden border border-primary/30">
               {user?.imageUrl ? (
                 <Image 
                   src={user.imageUrl} 
                   alt={user.firstName || "User"} 
                   width={32} 
                   height={32}
-                  className="rounded-full object-cover"
+                  className="w-full h-full object-cover"
+                  unoptimized
                 />
               ) : (
-                <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
+                <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
               )}
             </div>
           </Link>
