@@ -13,7 +13,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-5 pt-20 overflow-hidden" id="about">
+    <section className="hidden lg:flex relative min-h-screen items-center justify-center px-5 pt-20 overflow-hidden" id="about">
       {/* Background Image (Always present as base) */}
       <div className="absolute inset-0 z-0">
         <Image

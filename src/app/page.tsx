@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import BentoGrid from "@/components/BentoGrid";
 import HomeTreatmentGrid from "@/components/HomeTreatmentGrid";
+import TreatmentCards from "@/components/TreatmentCards";
 // import Stats from "@/components/Stats";
 // import Excellence from "@/components/Excellence";
 // import ProblemSolution from "@/components/ProblemSolution";
@@ -18,6 +19,7 @@ export default function Home() {
       <main className="min-h-screen bg-black text-white overflow-x-hidden">
         <Navbar />
         <Hero />
+        <TreatmentCards />
         <BentoGrid />
         <HomeTreatmentGrid />
         {/* <Stats /> */}

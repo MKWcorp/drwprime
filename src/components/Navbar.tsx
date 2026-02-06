@@ -27,7 +27,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-black/95 backdrop-blur-md z-50 border-b border-primary/20">
+    <nav className="hidden lg:block fixed top-0 w-full bg-black/95 backdrop-blur-md z-50 border-b border-primary/20">
       <div className="max-w-7xl mx-auto px-5 flex justify-between items-center py-4">
         <Link href="/">
           <Image 
