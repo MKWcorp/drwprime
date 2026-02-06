@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -98,8 +99,28 @@ const homeCategories: Category[] = [
 ];
 
 export default function HomeTreatmentPage() {
+  const searchParams = useSearchParams();
+  const categoryFromUrl = searchParams.get('category');
+  
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  // Set category from URL parameter on mount
+  useEffect(() => {
+    if (categoryFromUrl) {
+      // Map category name from URL to slug
+      const categoryMap: { [key: string]: string } = {
+        'Facial Basic': 'facial-basic',
+        'Facial Prime': 'facial-prime',
+        'Chemical Peeling': 'chemical-peeling',
+        'Infusion': 'infusion',
+        'Body Treatment': 'body-treatment',
+        'Nail Treatment': 'nail-treatment',
+      };
+      const slug = categoryMap[categoryFromUrl] || categoryFromUrl.toLowerCase().replace(/ /g, '-');
+      setActiveCategory(slug);
+    }
+  }, [categoryFromUrl]);
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
 
   // Get all treatments or filtered by category and search
