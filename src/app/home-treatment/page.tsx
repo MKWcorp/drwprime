@@ -146,13 +146,24 @@ export default function HomeTreatmentPage() {
       
       <main className="pt-20 min-h-screen bg-dark relative overflow-hidden">
         {/* Hero Section */}
-        <section className="relative py-20 px-5 text-center bg-gradient-to-br from-primary/10 to-dark/95 border-b border-primary/20">
-          <div className="max-w-7xl mx-auto">
-            <h1 className="font-playfair text-5xl font-bold text-primary mb-5">
-              Home Treatment
+        <section 
+          className="relative h-[60vh] min-h-[500px] flex items-center justify-center text-center overflow-hidden"
+          style={{
+            backgroundImage: 'url(/hero-home-treatment.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/40"></div>
+          
+          {/* Content */}
+          <div className="relative z-10 max-w-4xl mx-auto px-5">
+            <h1 className="font-playfair text-6xl md:text-7xl font-bold text-primary mb-4">
+              DRW Prime
             </h1>
-            <p className="text-xl text-white/70">
-              Nikmati layanan treatment premium di kenyamanan rumah Anda
+            <p className="text-3xl md:text-4xl text-primary font-light tracking-wider">
+              HOME TREATMENT
             </p>
           </div>
         </section>
