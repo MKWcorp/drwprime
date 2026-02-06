@@ -144,9 +144,28 @@ export default function HomeTreatmentPage() {
     <>
       <Navbar />
       
-      <main className="pt-20 min-h-screen bg-dark">
+      <main className="pt-20 min-h-screen bg-dark relative overflow-hidden">
+        {/* Batik Gold Pattern Background */}
+        <div className="fixed inset-0 z-0 pointer-events-none opacity-5">
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="batik-pattern" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+                {/* Diamond grid pattern */}
+                <path d="M60 0 L120 60 L60 120 L0 60 Z" fill="none" stroke="#D4AF37" strokeWidth="1.5" opacity="0.6"/>
+                <path d="M30 0 L60 30 L30 60 L0 30 Z" fill="none" stroke="#D4AF37" strokeWidth="1" opacity="0.4"/>
+                <path d="M90 0 L120 30 L90 60 L60 30 Z" fill="none" stroke="#D4AF37" strokeWidth="1" opacity="0.4"/>
+                <path d="M30 60 L60 90 L30 120 L0 90 Z" fill="none" stroke="#D4AF37" strokeWidth="1" opacity="0.4"/>
+                <path d="M90 60 L120 90 L90 120 L60 90 Z" fill="none" stroke="#D4AF37" strokeWidth="1" opacity="0.4"/>
+                {/* Center ornament */}
+                <circle cx="60" cy="60" r="8" fill="none" stroke="#D4AF37" strokeWidth="1.5" opacity="0.5"/>
+                <circle cx="60" cy="60" r="4" fill="#D4AF37" opacity="0.3"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#batik-pattern)"/>
+          </svg>
+        </div>
         {/* Hero Section */}
-        <section className="py-20 px-5 text-center bg-gradient-to-br from-primary/10 to-dark/95 border-b border-primary/20">
+        <section className="relative py-20 px-5 text-center bg-gradient-to-br from-primary/10 to-dark/95 border-b border-primary/20 z-10">
           <div className="max-w-7xl mx-auto">
             <h1 className="font-playfair text-5xl font-bold text-primary mb-5">
               Home Treatment
@@ -158,7 +177,7 @@ export default function HomeTreatmentPage() {
         </section>
 
         {/* Search & Filter Section */}
-        <section className="py-6 px-5 bg-[#0f0f0f]/80 border-b border-primary/10 sticky top-[70px] z-50 backdrop-blur-md">
+        <section className="relative py-6 px-5 bg-[#0f0f0f]/80 border-b border-primary/10 sticky top-[70px] z-50 backdrop-blur-md">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center">
               {/* Search Bar */}
@@ -274,7 +293,7 @@ export default function HomeTreatmentPage() {
         </section>
 
         {/* Treatments Grid */}
-        <section className="py-20 px-5">
+        <section className="relative py-20 px-5 z-10">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="font-playfair text-4xl font-bold text-primary mb-4">
@@ -364,7 +383,7 @@ export default function HomeTreatmentPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-5 bg-gradient-to-br from-primary/10 to-dark text-center">
+        <section className="relative py-20 px-5 bg-gradient-to-br from-primary/10 to-dark text-center z-10">
           <div className="max-w-4xl mx-auto">
             <h2 className="font-playfair text-4xl font-bold text-primary mb-4">
               Siap Merasakan Layanan Premium di Rumah?
