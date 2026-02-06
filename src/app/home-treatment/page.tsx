@@ -102,24 +102,32 @@ function HomeTreatmentContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get('category');
   
-  const [activeCategory, setActiveCategory] = useState<string>('all');
+  // Map category name from URL to slug
+  const categoryMap: { [key: string]: string } = {
+    'Facial Basic': 'facial-basic',
+    'Facial Prime': 'facial-prime',
+    'Chemical Peeling': 'chemical-peeling',
+    'Infusion': 'infusion',
+    'Body Treatment': 'body-treatment',
+    'Nail Treatment': 'nail-treatment',
+  };
+  
+  // Initialize activeCategory from URL or default to 'all'
+  const initialCategory = categoryFromUrl 
+    ? (categoryMap[categoryFromUrl] || categoryFromUrl.toLowerCase().replace(/ /g, '-'))
+    : 'all';
+  
+  const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
 
-  // Set category from URL parameter on mount
+  // Update activeCategory when URL changes
   useEffect(() => {
     if (categoryFromUrl) {
-      // Map category name from URL to slug
-      const categoryMap: { [key: string]: string } = {
-        'Facial Basic': 'facial-basic',
-        'Facial Prime': 'facial-prime',
-        'Chemical Peeling': 'chemical-peeling',
-        'Infusion': 'infusion',
-        'Body Treatment': 'body-treatment',
-        'Nail Treatment': 'nail-treatment',
-      };
       const slug = categoryMap[categoryFromUrl] || categoryFromUrl.toLowerCase().replace(/ /g, '-');
       setActiveCategory(slug);
+    } else {
+      setActiveCategory('all');
     }
   }, [categoryFromUrl]);
 
