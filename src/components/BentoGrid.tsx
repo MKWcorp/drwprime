@@ -26,10 +26,10 @@ export default function BentoGrid() {
             <div className="relative aspect-[4/5] p-5 flex flex-col justify-between">
               <div className="absolute inset-0 z-0">
                 <Image
-                  src="/treatments/hifu.png"
+                  src="/treatments/hifu-new.jpeg"
                   alt="HIFU Ultraformer MPT"
                   fill
-                  className="object-cover object-top opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                  className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
               <div className="relative z-10"></div>
@@ -154,10 +154,10 @@ export default function BentoGrid() {
             <div className="relative aspect-[4/5] p-5 flex flex-col justify-between">
               <div className="absolute inset-0 z-0">
                 <Image
-                  src="/treatments/ipl.jpeg"
+                  src="/treatments/ipl-new.jpeg"
                   alt="IPL (Intense Pulsed Light)"
                   fill
-                  className="object-cover object-top opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                  className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
               <div className="relative z-10"></div>
