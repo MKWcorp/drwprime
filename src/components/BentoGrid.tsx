@@ -23,7 +23,7 @@ export default function BentoGrid() {
             href="/treatments?category=hifu-ultraformer-mpt" 
             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
-            <div className="relative aspect-[4/5] p-5 flex flex-col justify-end">
+            <div className="relative aspect-[4/5] p-5 flex flex-col justify-between">
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/treatments/hifu.png"
@@ -32,6 +32,7 @@ export default function BentoGrid() {
                   className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
+              <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
                 <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
                   HIFU Ultraformer MPT
@@ -54,7 +55,7 @@ export default function BentoGrid() {
             href="/treatments?category=facial-basic"
             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
-            <div className="relative aspect-[4/5] p-5 flex flex-col justify-end">
+            <div className="relative aspect-[4/5] p-5 flex flex-col justify-between">
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/treatments/facial-basic.jpeg"
@@ -63,6 +64,7 @@ export default function BentoGrid() {
                   className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
+              <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
                 <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
                   Facial Basic
@@ -85,7 +87,7 @@ export default function BentoGrid() {
             href="/treatments?category=facial-prime"
             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
-            <div className="relative aspect-[4/5] p-5 flex flex-col justify-end">
+            <div className="relative aspect-[4/5] p-5 flex flex-col justify-between">
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/treatments/facial-prime.jpeg"
@@ -94,6 +96,7 @@ export default function BentoGrid() {
                   className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
+              <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
                 <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
                   Facial Prime
@@ -116,7 +119,7 @@ export default function BentoGrid() {
             href="/treatments?category=chemical-peeling"
             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
-            <div className="relative aspect-[4/5] p-5 flex flex-col justify-end">
+            <div className="relative aspect-[4/5] p-5 flex flex-col justify-between">
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/treatments/chemical-peeling.png"
@@ -125,6 +128,7 @@ export default function BentoGrid() {
                   className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
+              <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
                 <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
                   Chemical Peeling
@@ -147,7 +151,7 @@ export default function BentoGrid() {
             href="/treatments?category=ipl"
             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
-            <div className="relative aspect-[4/5] p-5 flex flex-col justify-end">
+            <div className="relative aspect-[4/5] p-5 flex flex-col justify-between">
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/treatments/ipl.jpeg"
@@ -156,6 +160,7 @@ export default function BentoGrid() {
                   className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
+              <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
                 <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
                   IPL (Intense Pulsed Light)
@@ -178,7 +183,7 @@ export default function BentoGrid() {
             href="/treatments?category=dermapen-epn"
             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
-            <div className="relative aspect-[4/5] p-5 flex flex-col justify-end">
+            <div className="relative aspect-[4/5] p-5 flex flex-col justify-between">
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/treatments/dermapen.png"
@@ -187,6 +192,7 @@ export default function BentoGrid() {
                   className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
+              <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
                 <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
                   Dermapen EPN
@@ -209,7 +215,7 @@ export default function BentoGrid() {
             href="/treatments?category=injection-treatment"
             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
-            <div className="relative aspect-[4/5] p-5 flex flex-col justify-end">
+            <div className="relative aspect-[4/5] p-5 flex flex-col justify-between">
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/treatments/injection.png"
@@ -218,6 +224,7 @@ export default function BentoGrid() {
                   className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
+              <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
                 <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
                   Injection Treatment
@@ -240,7 +247,7 @@ export default function BentoGrid() {
             href="/treatments?category=botox"
             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
-            <div className="relative aspect-[4/5] p-5 flex flex-col justify-end">
+            <div className="relative aspect-[4/5] p-5 flex flex-col justify-between">
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/treatments/botox.jpeg"
@@ -249,6 +256,7 @@ export default function BentoGrid() {
                   className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
+              <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
                 <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
                   Botox
