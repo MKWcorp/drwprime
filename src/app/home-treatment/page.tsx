@@ -147,11 +147,11 @@ export default function HomeTreatmentPage() {
       <main className="pt-20 min-h-screen bg-dark relative overflow-hidden">
         {/* Hero Section */}
         <section 
-          className="relative h-[70vh] min-h-[600px] overflow-hidden"
+          className="relative h-[60vh] min-h-[500px] max-h-[600px] overflow-hidden"
           style={{
             backgroundImage: 'url(/hero-home-treatment.png)',
             backgroundSize: 'cover',
-            backgroundPosition: 'center 35%',
+            backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat',
           }}
         >
