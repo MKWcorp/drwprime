@@ -52,7 +52,7 @@ export async function GET(req: Request) {
         let bankAccount = null;
         if (code.claimedBy) {
           const user = await prisma.user.findUnique({
-            where: { clerkId: code.claimedBy },
+            where: { clerkUserId: code.claimedBy },
             include: {
               bankAccounts: {
                 where: { isDefault: true },
