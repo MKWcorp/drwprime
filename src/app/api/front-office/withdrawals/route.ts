@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { ADMIN_USER_IDS } from '@/lib/admin';
 
 // GET - Get all withdrawal requests (Admin only)
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const status = searchParams.get('status') || 'all';
 
-    const whereClause: any = {};
+    const whereClause: { status?: string } = {};
     
     if (status !== 'all') {
       whereClause.status = status;
