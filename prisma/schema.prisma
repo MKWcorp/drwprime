@@ -37,6 +37,8 @@ model User {
   transactions      Transaction[]
   voucherRedemptions VoucherRedemption[]
   eventRegistrations EventRegistration[]
+  bankAccounts      BankAccount[]
+  withdrawals       Withdrawal[]
 
   @@map("users")
 }
@@ -227,4 +229,44 @@ model EventRegistration {
 
   @@unique([userId, eventId])
   @@map("event_registrations")
+}
+
+// Bank Account - Store user's bank/e-wallet info
+model BankAccount {
+  id              String    @id @default(cuid())
+  userId          String
+  accountType     String    // "bank" or "ewallet"
+  bankName        String    // Mandiri, BRI, BCA, BSI, CIMBNIAGA, BPD DIY, DANA, GOPAY, SHOPEEPAY, OVO
+  accountNumber   String
+  accountName     String
+  isDefault       Boolean   @default(false)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  user            User      @relation(fields: [userId], references: [id])
+  withdrawals     Withdrawal[]
+
+  @@map("bank_accounts")
+}
+
+// Withdrawal Request - Commission withdrawal by affiliators
+model Withdrawal {
+  id              String    @id @default(cuid())
+  userId          String
+  bankAccountId   String
+  amount          Decimal   @db.Decimal(10, 2)
+  status          String    @default("pending") // pending, approved, rejected, completed
+  requestDate     DateTime  @default(now())
+  processedDate   DateTime?
+  processedBy     String?   // Admin user ID who processed
+  adminNotes      String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  user            User         @relation(fields: [userId], references: [id])
+  bankAccount     BankAccount  @relation(fields: [bankAccountId], references: [id])
+
+  @@map("withdrawals")
 }

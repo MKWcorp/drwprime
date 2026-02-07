@@ -192,6 +192,19 @@ export async function GET() {
             createdAt: 'desc'
           },
           take: 10
+        },
+        bankAccounts: {
+          orderBy: {
+            createdAt: 'desc'
+          }
+        },
+        withdrawals: {
+          include: {
+            bankAccount: true
+          },
+          orderBy: {
+            createdAt: 'desc'
+          }
         }
       }
     });
