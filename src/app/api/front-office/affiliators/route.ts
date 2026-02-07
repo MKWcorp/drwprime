@@ -42,6 +42,8 @@ export async function GET() {
       const totalReservations = user.referrals.filter(r => r.status === 'completed').length;
 
       return {
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
         email: user.email,
         affiliateCode: user.affiliateCode,
         totalCommission,
