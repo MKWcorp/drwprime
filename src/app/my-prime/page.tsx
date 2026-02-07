@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
+import { QRCodeCanvas } from 'qrcode.react';
 
 interface Reservation {
   id: string;
@@ -70,6 +71,8 @@ export default function MyPrimePage() {
   const [submitting, setSubmitting] = useState(false);
   const [withdrawalMessage, setWithdrawalMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [showQRModal, setShowQRModal] = useState(false);
+  const qrRef = useRef<HTMLCanvasElement>(null);
 
   const banks = ['Mandiri', 'BRI', 'BCA', 'BSI', 'CIMB Niaga', 'BPD DIY'];
   const ewallets = ['DANA', 'GoPay', 'ShopeePay', 'OVO'];
@@ -141,6 +144,17 @@ export default function MyPrimePage() {
     navigator.clipboard.writeText(link);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const downloadQR = () => {
+    const canvas = qrRef.current;
+    if (!canvas) return;
+
+    const url = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = `QR-${userData?.affiliateCode}.png`;
+    link.href = url;
+    link.click();
   };
 
   const formatCurrency = (amount: number) => {
@@ -344,16 +358,25 @@ export default function MyPrimePage() {
             </div>
           </div>
 
-          {/* Withdrawal Button */}
-          <div className="mb-4">
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 gap-3 mb-4">
             <button
               onClick={() => setShowWithdrawModal(true)}
-              className="w-full bg-primary hover:bg-primary/90 text-dark font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm"
+              className="bg-primary hover:bg-primary/90 text-dark font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Tarik Komisi
+            </button>
+            <button
+              onClick={() => setShowQRModal(true)}
+              className="bg-primary/20 hover:bg-primary/30 border border-primary/30 text-primary font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+              </svg>
+              QR Code
             </button>
           </div>
 
@@ -552,6 +575,47 @@ export default function MyPrimePage() {
                 )}
               </div>
             </div>
+
+          {/* QR Code Modal */}
+          {showQRModal && (
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+              <div className="bg-gradient-to-br from-black to-black/95 border border-primary/30 rounded-xl max-w-sm w-full">
+                <div className="bg-gradient-to-br from-primary/20 to-primary/5 border-b border-primary/30 p-4 flex items-center justify-between">
+                  <h3 className="font-bold text-lg text-white">QR Code Referral</h3>
+                  <button
+                    onClick={() => setShowQRModal(false)}
+                    className="text-white/60 hover:text-white transition-colors"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                
+                <div className="p-6 text-center">
+                  <div className="bg-white p-4 rounded-lg inline-block mb-4">
+                    <QRCodeCanvas
+                      ref={qrRef}
+                      value={`${typeof window !== 'undefined' ? window.location.origin : ''}/reservation?ref=${userData?.affiliateCode}`}
+                      size={256}
+                      level="H"
+                      includeMargin={true}
+                    />
+                  </div>
+                  
+                  <p className="text-white/80 text-sm mb-2">Kode: <span className="font-mono font-bold text-primary">{userData?.affiliateCode}</span></p>
+                  <p className="text-white/60 text-xs mb-4">Customer scan QR code ini untuk reservasi dengan kode referral Anda</p>
+                  
+                  <button
+                    onClick={downloadQR}
+                    className="w-full bg-primary hover:bg-primary/90 text-dark font-semibold py-3 px-4 rounded-lg transition-colors"
+                  >
+                    Download QR Code
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
