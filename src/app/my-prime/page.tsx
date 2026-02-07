@@ -59,7 +59,7 @@ export default function MyPrimePage() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
-  const [activeTab, setActiveTab] = useState<'reservations' | 'withdraw'>('reservations');
+  // Removed tabs - only show withdrawal form
   
   // Withdrawal form state
   const [withdrawAmount, setWithdrawAmount] = useState('');
@@ -281,18 +281,7 @@ export default function MyPrimePage() {
             </div>
           </div>
 
-          {/* Book Treatment Button */}
-          <div className="mb-4">
-            <Link
-              href="/treatments"
-              className="w-full bg-primary hover:bg-primary/90 text-dark font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              Buat Reservasi Baru
-            </Link>
-          </div>
+
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 gap-3 mb-4">
@@ -348,85 +337,8 @@ export default function MyPrimePage() {
             </div>
           </div>
 
-          {/* Tabs */}
-          <div className="flex gap-2 mb-4">
-            <button
-              onClick={() => setActiveTab('reservations')}
-              className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-colors ${
-                activeTab === 'reservations'
-                  ? 'bg-primary text-dark'
-                  : 'bg-white/10 text-white/60 hover:bg-white/20'
-              }`}
-            >
-              Daftar Reservasi
-            </button>
-            <button
-              onClick={() => setActiveTab('withdraw')}
-              className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-colors ${
-                activeTab === 'withdraw'
-                  ? 'bg-primary text-dark'
-                  : 'bg-white/10 text-white/60 hover:bg-white/20'
-              }`}
-            >
-              Tarik Komisi
-            </button>
-          </div>
-
-          {/* Tab Content */}
-          {activeTab === 'reservations' ? (
-            <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-lg p-4">
-              <h3 className="font-bold text-base text-white mb-3">Daftar Reservasi</h3>
-              {userData.referrals.length === 0 ? (
-                <div className="text-center py-12">
-                  <svg className="w-16 h-16 text-white/20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </svg>
-                  <p className="text-white/60 mb-4">Belum ada reservasi</p>
-                  <p className="text-white/40 text-sm">Bagikan link referral Anda untuk mendapatkan komisi!</p>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {userData.referrals.map((referral: Reservation) => (
-                    <div key={referral.id} className="bg-black/30 border border-white/10 rounded-lg p-3">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex-1">
-                          <p className="font-semibold text-white text-sm">{referral.patientName}</p>
-                          <p className="text-white/70 text-xs">{referral.treatment.name}</p>
-                          <p className="text-white/50 text-[10px] mt-0.5">
-                            {new Date(referral.reservationDate).toLocaleDateString('id-ID', {
-                              weekday: 'short',
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric'
-                            })} - {referral.reservationTime}
-                          </p>
-                        </div>
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold whitespace-nowrap ${
-                          referral.status === 'completed' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 
-                          referral.status === 'confirmed' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 
-                          referral.status === 'cancelled' ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 
-                          'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                        }`}>
-                          {referral.status === 'completed' ? 'Selesai' : 
-                           referral.status === 'confirmed' ? 'Dikonfirmasi' :
-                           referral.status === 'cancelled' ? 'Dibatalkan' : 'Pending'}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between pt-2 border-t border-white/10">
-                        <p className="text-white/60 text-xs">
-                          {referral.patientPhone}
-                        </p>
-                        <p className="text-primary font-bold text-sm">
-                          {formatCurrency(referral.commissionAmount)}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="space-y-4">
+          {/* Withdrawal Section */}
+          <div className="space-y-4">
               {/* Withdrawal Form */}
               <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-lg p-4">
                 <h3 className="font-bold text-base text-white mb-3">Ajukan Penarikan Komisi</h3>
@@ -601,7 +513,6 @@ export default function MyPrimePage() {
                 )}
               </div>
             </div>
-          )}
         </div>
       </div>
     </div>
