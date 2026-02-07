@@ -74,18 +74,15 @@ export default function ReportPage() {
     };
 
     // Create CSV content with proper escaping
-    const headers = ['No', 'Nama', 'Email', 'Kode Affiliate', 'Total Komisi', 'Total Reservasi', 'Tanggal Terdaftar'];
+    const headers = ['Nama', 'Gmail', 'Kode', 'Terdaftar Kapan'];
     const csvRows = [
       headers.join(','),
-      ...affiliators.map((aff, index) => {
+      ...affiliators.map((aff) => {
         const fullName = `${aff.firstName} ${aff.lastName}`.trim();
         return [
-          index + 1,
           escapeCSV(fullName),
           escapeCSV(aff.email),
           escapeCSV(aff.affiliateCode),
-          aff.totalCommission,
-          aff.totalReservations,
           escapeCSV(formatDate(aff.claimedAt))
         ].join(',');
       })
