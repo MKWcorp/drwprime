@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import * as XLSX from 'xlsx';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
@@ -63,43 +64,34 @@ export default function ReportPage() {
   };
 
   const exportToExcel = () => {
-    // Helper function to escape CSV fields
-    const escapeCSV = (field: string | number) => {
-      const str = String(field);
-      // If field contains comma, quote, or newline, wrap in quotes and escape quotes
-      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-        return `"${str.replace(/"/g, '""')}"`;
-      }
-      return str;
-    };
+    // Prepare data for Excel
+    const data = affiliators.map((aff) => {
+      const fullName = `${aff.firstName} ${aff.lastName}`.trim();
+      return {
+        'Nama': fullName,
+        'Gmail': aff.email,
+        'Kode': aff.affiliateCode,
+        'Terdaftar Kapan': formatDate(aff.claimedAt)
+      };
+    });
 
-    // Create CSV content with proper escaping
-    const headers = ['Nama', 'Gmail', 'Kode', 'Terdaftar Kapan'];
-    const csvRows = [
-      headers.join(','),
-      ...affiliators.map((aff) => {
-        const fullName = `${aff.firstName} ${aff.lastName}`.trim();
-        return [
-          escapeCSV(fullName),
-          escapeCSV(aff.email),
-          escapeCSV(aff.affiliateCode),
-          escapeCSV(formatDate(aff.claimedAt))
-        ].join(',');
-      })
+    // Create worksheet from data
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    
+    // Set column widths
+    worksheet['!cols'] = [
+      { wch: 20 }, // Nama
+      { wch: 30 }, // Gmail
+      { wch: 15 }, // Kode
+      { wch: 15 }  // Terdaftar Kapan
     ];
-    const csvContent = csvRows.join('\n');
 
-    // Add BOM for proper UTF-8 encoding in Excel
-    const BOM = '\uFEFF';
-    const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `Report_Affiliator_${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Create workbook and add worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Report Affiliator');
+
+    // Generate Excel file and download
+    XLSX.writeFile(workbook, `Report_Affiliator_${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
   if (!isLoaded || loading) {
