@@ -63,23 +63,38 @@ export default function ReportPage() {
   };
 
   const exportToExcel = () => {
-    // Create CSV content
-    const headers = ['No', 'Nama', 'Email', 'Kode Affiliate', 'Total Komisi', 'Total Reservasi', 'Tanggal Terdaftar'];
-    const csvContent = [
-      headers.join(','),
-      ...affiliators.map((aff, index) => [
-        index + 1,
-        `"${aff.firstName} ${aff.lastName}"`,
-        aff.email,
-        aff.affiliateCode,
-        aff.totalCommission,
-        aff.totalReservations,
-        formatDate(aff.claimedAt)
-      ].join(','))
-    ].join('\n');
+    // Helper function to escape CSV fields
+    const escapeCSV = (field: string | number) => {
+      const str = String(field);
+      // If field contains comma, quote, or newline, wrap in quotes and escape quotes
+      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    };
 
-    // Create blob and download
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    // Create CSV content with proper escaping
+    const headers = ['No', 'Nama', 'Email', 'Kode Affiliate', 'Total Komisi', 'Total Reservasi', 'Tanggal Terdaftar'];
+    const csvRows = [
+      headers.join(','),
+      ...affiliators.map((aff, index) => {
+        const fullName = `${aff.firstName} ${aff.lastName}`.trim();
+        return [
+          index + 1,
+          escapeCSV(fullName),
+          escapeCSV(aff.email),
+          escapeCSV(aff.affiliateCode),
+          aff.totalCommission,
+          aff.totalReservations,
+          escapeCSV(formatDate(aff.claimedAt))
+        ].join(',');
+      })
+    ];
+    const csvContent = csvRows.join('\n');
+
+    // Add BOM for proper UTF-8 encoding in Excel
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
