@@ -24,7 +24,7 @@ export async function GET() {
           select: {
             id: true,
             status: true,
-            commission: true
+            commissionAmount: true
           }
         }
       },
@@ -37,7 +37,7 @@ export async function GET() {
     const affiliators = users.map(user => {
       const totalCommission = user.referrals
         .filter(r => r.status === 'completed')
-        .reduce((sum, r) => sum + Number(r.commission || 0), 0);
+        .reduce((sum, r) => sum + Number(r.commissionAmount || 0), 0);
       
       const totalReservations = user.referrals.filter(r => r.status === 'completed').length;
 
