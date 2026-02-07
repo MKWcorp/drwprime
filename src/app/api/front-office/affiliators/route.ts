@@ -13,7 +13,7 @@ export async function GET() {
     }
 
     // Get all affiliate codes that have been claimed (have assignedEmail)
-    const claimedCodes = await prisma.affiliateCode.findMany({
+    const claimedCodes = await prisma.preClaimAffiliateCode.findMany({
       where: {
         assignedEmail: {
           not: null
