@@ -48,10 +48,26 @@ export async function GET(req: Request) {
           }
         });
 
+        // Get bank account info for claimed codes
+        let bankAccount = null;
+        if (code.claimedBy) {
+          const user = await prisma.user.findUnique({
+            where: { clerkId: code.claimedBy },
+            include: {
+              bankAccounts: {
+                where: { isDefault: true },
+                take: 1
+              }
+            }
+          });
+          bankAccount = user?.bankAccounts[0] || null;
+        }
+
         return {
           ...code,
           reservationCount,
-          totalCommission: totalCommission._sum.commissionAmount || 0
+          totalCommission: totalCommission._sum.commissionAmount || 0,
+          bankAccount
         };
       })
     );

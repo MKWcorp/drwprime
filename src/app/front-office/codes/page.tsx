@@ -7,6 +7,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { QRCodeCanvas } from 'qrcode.react';
 
+interface BankAccount {
+  id: string;
+  accountType: string;
+  bankName: string;
+  accountNumber: string;
+  accountName: string;
+  isDefault: boolean;
+}
+
 interface AffiliateCode {
   id: string;
   code: string;
@@ -19,6 +28,7 @@ interface AffiliateCode {
   createdAt: string;
   reservationCount: number;
   totalCommission: number;
+  bankAccount: BankAccount | null;
 }
 
 interface CodeReservation {
@@ -555,6 +565,7 @@ export default function AffiliateCodesPage() {
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Code</th>
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Assigned Email</th>
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Status</th>
+                    <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Rekening</th>
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Usage</th>
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Commission</th>
                     <th className="text-left text-white/60 text-sm font-semibold pb-3 px-4">Actions</th>
@@ -587,6 +598,15 @@ export default function AffiliateCodesPage() {
                         <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${getStatusColor(code.status)}`}>
                           {code.status.toUpperCase()}
                         </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        {code.bankAccount ? (
+                          <span className="text-white/80 text-sm">
+                            {code.bankAccount.bankName} - {code.bankAccount.accountNumber}
+                          </span>
+                        ) : (
+                          <span className="text-white/40 text-sm">-</span>
+                        )}
                       </td>
                       <td className="py-4 px-4">
                         <span className="text-white font-semibold">
