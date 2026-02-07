@@ -374,12 +374,20 @@ export default function FrontOfficePage() {
               <p className="text-white/70 text-lg">
                 Manage reservations and appointments
               </p>
-              <Link 
-                href="/front-office/codes"
-                className="text-primary hover:text-primary/80 text-sm mt-2 inline-block"
-              >
-                → Manage Affiliate Codes
-              </Link>
+              <div className="flex gap-4 mt-2">
+                <Link 
+                  href="/front-office/codes"
+                  className="text-primary hover:text-primary/80 text-sm inline-block"
+                >
+                  → Manage Affiliate Codes
+                </Link>
+                <Link 
+                  href="/front-office/report"
+                  className="text-primary hover:text-primary/80 text-sm inline-block"
+                >
+                  → Report Affiliator
+                </Link>
+              </div>
             </div>
             <Image 
               src="/drwprime-logo.png" 
