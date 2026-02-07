@@ -16,7 +16,7 @@ export async function GET() {
     const users = await prisma.user.findMany({
       where: {
         affiliateCode: {
-          not: null
+          not: ""
         }
       },
       include: {
