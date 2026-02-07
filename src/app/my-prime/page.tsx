@@ -69,6 +69,7 @@ export default function MyPrimePage() {
   const [accountName, setAccountName] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [withdrawalMessage, setWithdrawalMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
 
   const banks = ['Mandiri', 'BRI', 'BCA', 'BSI', 'CIMB Niaga', 'BPD DIY'];
   const ewallets = ['DANA', 'GoPay', 'ShopeePay', 'OVO'];
@@ -207,6 +208,12 @@ export default function MyPrimePage() {
       // Refresh user data
       await syncAndFetchUser();
       
+      // Close modal after 2 seconds
+      setTimeout(() => {
+        setShowWithdrawModal(false);
+        setWithdrawalMessage(null);
+      }, 2000);
+      
     } catch (error) {
       console.error('Withdrawal error:', error);
       setWithdrawalMessage({ type: 'error', text: 'Terjadi kesalahan. Silakan coba lagi.' });
@@ -337,11 +344,39 @@ export default function MyPrimePage() {
             </div>
           </div>
 
-          {/* Withdrawal Section */}
-          <div className="space-y-4">
-              {/* Withdrawal Form */}
-              <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-lg p-4">
-                <h3 className="font-bold text-base text-white mb-3">Ajukan Penarikan Komisi</h3>
+          {/* Withdrawal Button */}
+          <div className="mb-4">
+            <button
+              onClick={() => setShowWithdrawModal(true)}
+              className="w-full bg-primary hover:bg-primary/90 text-dark font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Tarik Komisi
+            </button>
+          </div>
+
+          {/* Withdrawal Modal */}
+          {showWithdrawModal && (
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+              <div className="bg-gradient-to-br from-black to-black/95 border border-primary/30 rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+                <div className="sticky top-0 bg-gradient-to-br from-primary/20 to-primary/5 border-b border-primary/30 p-4 flex items-center justify-between">
+                  <h3 className="font-bold text-lg text-white">Ajukan Penarikan Komisi</h3>
+                  <button
+                    onClick={() => {
+                      setShowWithdrawModal(false);
+                      setWithdrawalMessage(null);
+                    }}
+                    className="text-white/60 hover:text-white transition-colors"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                
+                <div className="p-4">
                 
                 {withdrawalMessage && (
                   <div className={`mb-4 p-3 rounded-lg ${
@@ -460,9 +495,13 @@ export default function MyPrimePage() {
                     {submitting ? 'Memproses...' : 'Ajukan Penarikan'}
                   </button>
                 </form>
+                </div>
               </div>
+            </div>
+          )}
 
-              {/* Withdrawal History */}
+          {/* Withdrawal History */}
+          <div className="space-y-4">
               <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-lg p-4">
                 <h3 className="font-bold text-base text-white mb-3">Riwayat Penarikan</h3>
                 {!userData.withdrawals || userData.withdrawals.length === 0 ? (
