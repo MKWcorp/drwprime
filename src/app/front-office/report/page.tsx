@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import ExcelJS from 'exceljs';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
@@ -62,6 +63,51 @@ export default function ReportPage() {
     });
   };
 
+  const exportToExcel = async () => {
+    // Create workbook and worksheet
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Report Affiliator');
+
+    // Define columns
+    worksheet.columns = [
+      { header: 'Nama', key: 'nama', width: 25 },
+      { header: 'Gmail', key: 'gmail', width: 35 },
+      { header: 'Kode', key: 'kode', width: 15 },
+      { header: 'Terdaftar Kapan', key: 'terdaftar', width: 18 }
+    ];
+
+    // Style header row
+    worksheet.getRow(1).font = { bold: true };
+    worksheet.getRow(1).fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FFD4AF37' } // Gold color
+    };
+
+    // Add data rows
+    affiliators.forEach((aff) => {
+      const fullName = `${aff.firstName} ${aff.lastName}`.trim();
+      worksheet.addRow({
+        nama: fullName,
+        gmail: aff.email,
+        kode: aff.affiliateCode,
+        terdaftar: formatDate(aff.claimedAt)
+      });
+    });
+
+    // Generate Excel file and download
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `Report_Affiliator_${new Date().toISOString().split('T')[0]}.xlsx`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
 
   if (!isLoaded || loading) {
     return (
@@ -84,8 +130,21 @@ export default function ReportPage() {
           <div className="max-w-7xl mx-auto px-4 py-6">
             {/* Header */}
             <div className="mb-6">
-              <h1 className="text-2xl font-bold text-white mb-2">📊 Report Affiliator</h1>
-              <p className="text-white/60 text-sm">Daftar affiliator yang sudah terdaftar dan aktif</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-2xl font-bold text-white mb-2">📊 Report Affiliator</h1>
+                  <p className="text-white/60 text-sm">Daftar affiliator yang sudah terdaftar dan aktif</p>
+                </div>
+                <button
+                  onClick={exportToExcel}
+                  className="bg-green-500/20 border border-green-500/30 text-green-400 px-4 py-2 rounded-lg hover:bg-green-500/30 transition-colors text-sm font-semibold flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Export Excel
+                </button>
+              </div>
             </div>
 
             {/* Total Count Card */}
