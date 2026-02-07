@@ -12,22 +12,15 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Get all affiliate codes that have been claimed (have assignedEmail)
-    const claimedCodes = await prisma.preClaimAffiliateCode.findMany({
+    // Get all users who have claimed affiliate codes (have affiliateCode)
+    const users = await prisma.user.findMany({
       where: {
-        assignedEmail: {
+        affiliateCode: {
           not: null
         }
       },
       include: {
-        user: {
-          select: {
-            email: true,
-            clerkUserId: true,
-            createdAt: true
-          }
-        },
-        reservations: {
+        referrals: {
           select: {
             id: true,
             status: true,
@@ -36,24 +29,24 @@ export async function GET() {
         }
       },
       orderBy: {
-        claimedAt: 'desc'
+        createdAt: 'desc'
       }
     });
 
     // Process data to get affiliator statistics
-    const affiliators = claimedCodes.map(code => {
-      const totalCommission = code.reservations
+    const affiliators = users.map(user => {
+      const totalCommission = user.referrals
         .filter(r => r.status === 'completed')
-        .reduce((sum, r) => sum + (r.commission || 0), 0);
+        .reduce((sum, r) => sum + Number(r.commission || 0), 0);
       
-      const totalReservations = code.reservations.filter(r => r.status === 'completed').length;
+      const totalReservations = user.referrals.filter(r => r.status === 'completed').length;
 
       return {
-        email: code.assignedEmail,
-        affiliateCode: code.code,
+        email: user.email,
+        affiliateCode: user.affiliateCode,
         totalCommission,
         totalReservations,
-        claimedAt: code.claimedAt || code.user?.createdAt || new Date()
+        claimedAt: user.createdAt
       };
     });
 
