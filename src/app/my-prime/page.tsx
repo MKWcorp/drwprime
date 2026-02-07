@@ -297,14 +297,34 @@ export default function MyPrimePage() {
                       </button>
                     </div>
                   </div>
+                  
+                  {/* QR Code Button */}
+                  <button
+                    onClick={() => setShowQRModal(true)}
+                    className="w-full mt-3 bg-primary/20 hover:bg-primary/30 border border-primary/30 text-primary font-semibold py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors text-xs"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                    </svg>
+                                  </div>
+                  </div>
+                  
+                  {/* QR Code Button */}
+                  <button
+                    onClick={() => setShowQRModal(true)}
+                    className="w-full mt-3 bg-primary/20 hover:bg-primary/30 border border-primary/30 text-primary font-semibold py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors text-xs"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                    </svg>
+                    Lihat QR Code Referral
+                  </button>
                 </div>
               </div>
             </div>
           </div>
 
-
-
-          {/* Stats Grid */}
+          {/* Stats Grid */}*/}
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-lg p-3">
               <div className="flex items-center gap-1.5 mb-2">
@@ -358,25 +378,16 @@ export default function MyPrimePage() {
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          {/* Withdrawal Button */}
+          <div className="mb-4">
             <button
               onClick={() => setShowWithdrawModal(true)}
-              className="bg-primary hover:bg-primary/90 text-dark font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm"
+              className="w-full bg-primary hover:bg-primary/90 text-dark font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Tarik Komisi
-            </button>
-            <button
-              onClick={() => setShowQRModal(true)}
-              className="bg-primary/20 hover:bg-primary/30 border border-primary/30 text-primary font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-              </svg>
-              QR Code
             </button>
           </div>
 
