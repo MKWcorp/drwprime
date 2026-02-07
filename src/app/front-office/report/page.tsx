@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import * as XLSX from 'xlsx';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
@@ -64,34 +63,31 @@ export default function ReportPage() {
   };
 
   const exportToExcel = () => {
-    // Prepare data for Excel
-    const data = affiliators.map((aff) => {
+    // Create TSV (Tab-Separated Values) content - Excel will open this correctly
+    const headers = ['Nama', 'Gmail', 'Kode', 'Terdaftar Kapan'];
+    const rows = affiliators.map((aff) => {
       const fullName = `${aff.firstName} ${aff.lastName}`.trim();
-      return {
-        'Nama': fullName,
-        'Gmail': aff.email,
-        'Kode': aff.affiliateCode,
-        'Terdaftar Kapan': formatDate(aff.claimedAt)
-      };
+      return [
+        fullName,
+        aff.email,
+        aff.affiliateCode,
+        formatDate(aff.claimedAt)
+      ].join('\t'); // Use TAB as separator
     });
-
-    // Create worksheet from data
-    const worksheet = XLSX.utils.json_to_sheet(data);
     
-    // Set column widths
-    worksheet['!cols'] = [
-      { wch: 20 }, // Nama
-      { wch: 30 }, // Gmail
-      { wch: 15 }, // Kode
-      { wch: 15 }  // Terdaftar Kapan
-    ];
-
-    // Create workbook and add worksheet
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Report Affiliator');
-
-    // Generate Excel file and download
-    XLSX.writeFile(workbook, `Report_Affiliator_${new Date().toISOString().split('T')[0]}.xlsx`);
+    const tsvContent = [headers.join('\t'), ...rows].join('\n');
+    
+    // Add BOM for proper UTF-8 encoding in Excel
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + tsvContent], { type: 'text/tab-separated-values;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `Report_Affiliator_${new Date().toISOString().split('T')[0]}.xls`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   if (!isLoaded || loading) {
