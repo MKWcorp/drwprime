@@ -26,6 +26,13 @@ export async function GET() {
             status: true,
             commissionAmount: true
           }
+        },
+        withdrawals: {
+          select: {
+            id: true,
+            amount: true,
+            status: true
+          }
         }
       },
       orderBy: {
@@ -41,12 +48,22 @@ export async function GET() {
       
       const totalReservations = user.referrals.filter(r => r.status === 'completed').length;
 
+      // Calculate total withdrawn (completed withdrawals only)
+      const totalWithdrawn = user.withdrawals
+        .filter(w => w.status === 'completed')
+        .reduce((sum, w) => sum + Number(w.amount || 0), 0);
+      
+      // Calculate remaining commission
+      const remainingCommission = user.totalEarnings;
+
       return {
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         email: user.email,
         affiliateCode: user.affiliateCode,
         totalCommission,
+        totalWithdrawn,
+        remainingCommission,
         totalReservations,
         claimedAt: user.createdAt
       };

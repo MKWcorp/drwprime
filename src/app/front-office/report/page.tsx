@@ -13,6 +13,8 @@ interface AffiliatorData {
   email: string;
   affiliateCode: string;
   totalCommission: number;
+  totalWithdrawn: number;
+  remainingCommission: number;
   totalReservations: number;
   claimedAt: string;
 }
@@ -73,6 +75,9 @@ export default function ReportPage() {
       { header: 'Nama', key: 'nama', width: 25 },
       { header: 'Gmail', key: 'gmail', width: 35 },
       { header: 'Kode', key: 'kode', width: 15 },
+      { header: 'Total Komisi', key: 'totalKomisi', width: 18 },
+      { header: 'Sudah Ditarik', key: 'sudahDitarik', width: 18 },
+      { header: 'Sisa Komisi', key: 'sisaKomisi', width: 18 },
       { header: 'Terdaftar Kapan', key: 'terdaftar', width: 18 }
     ];
 
@@ -91,6 +96,9 @@ export default function ReportPage() {
         nama: fullName,
         gmail: aff.email,
         kode: aff.affiliateCode,
+        totalKomisi: aff.totalCommission,
+        sudahDitarik: aff.totalWithdrawn,
+        sisaKomisi: aff.remainingCommission,
         terdaftar: formatDate(aff.claimedAt)
       });
     });
@@ -176,6 +184,8 @@ export default function ReportPage() {
                         <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Email</th>
                         <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Kode</th>
                         <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Total Komisi</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Sudah Ditarik</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Sisa Komisi</th>
                         <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Reservasi</th>
                         <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Terdaftar</th>
                       </tr>
@@ -193,6 +203,12 @@ export default function ReportPage() {
                           </td>
                           <td className="px-4 py-3 text-sm text-white/80">
                             {formatCurrency(affiliator.totalCommission)}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-red-400">
+                            {formatCurrency(affiliator.totalWithdrawn)}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-green-400 font-semibold">
+                            {formatCurrency(affiliator.remainingCommission)}
                           </td>
                           <td className="px-4 py-3 text-sm text-white/80">
                             {affiliator.totalReservations} reservasi
