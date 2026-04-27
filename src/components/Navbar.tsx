@@ -8,6 +8,7 @@ import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isAffiliate, setIsAffiliate] = useState(false);
   const { user, isLoaded } = useUser();
 
   useEffect(() => {
@@ -21,6 +22,7 @@ export default function Navbar() {
       const response = await fetch('/api/user');
       const data = await response.json();
       setIsAdmin(data.user?.isAdmin || false);
+      setIsAffiliate(data.user?.isTeamLeader || false);
     } catch (error) {
       console.error('Error checking admin status:', error);
     }
@@ -92,6 +94,16 @@ export default function Navbar() {
                 MY PRIME
               </Link>
             </li>
+            {isAffiliate && (
+              <li>
+                <Link 
+                  href="/affiliate-dashboard" 
+                  className="text-primary hover:text-primary/80 transition-colors duration-300 text-sm font-medium tracking-wide"
+                >
+                  AFFILIATE
+                </Link>
+              </li>
+            )}
             {isAdmin && (
               <li>
                 <Link 
@@ -210,6 +222,17 @@ export default function Navbar() {
                   MY PRIME
                 </Link>
               </li>
+              {isAffiliate && (
+                <li>
+                  <Link 
+                    href="/affiliate-dashboard"
+                    onClick={() => setIsOpen(false)}
+                    className="block px-5 py-3 text-primary hover:text-primary/80 hover:bg-primary/10 transition-colors duration-300 text-sm font-medium tracking-wide"
+                  >
+                    AFFILIATE
+                  </Link>
+                </li>
+              )}
               {isAdmin && (
                 <li>
                   <Link 
