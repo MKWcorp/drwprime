@@ -2,22 +2,36 @@ import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { calculateCommission, calculateLoyaltyPoints } from '@/lib/affiliate';
+import { sendReservationToAdminWhatsApp } from '@/lib/whatsapp';
 
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
     
     const body = await req.json();
-    const {
-      treatmentId,
-      patientName,
-      patientEmail,
-      patientPhone,
-      patientNotes,
-      reservationDate,
-      reservationTime,
-      referredBy // Affiliate code
-    } = body;
+    const treatmentId = body.treatmentId;
+    const patientName = body.patientName;
+    const patientEmail = body.patientEmail ?? body.email;
+    const patientPhone = body.patientPhone ?? body.phone;
+    const patientNotes = body.patientNotes ?? body.notes;
+    const reservationDate = body.reservationDate ?? body.preferredDate;
+    const reservationTime = body.reservationTime ?? body.preferredTime;
+    const referredBy = body.referredBy ?? body.referralCode ?? body.affiliateCode;
+
+    if (!treatmentId || !patientName || !patientEmail || !patientPhone || !reservationDate || !reservationTime) {
+      return NextResponse.json(
+        { error: 'Data reservasi belum lengkap' },
+        { status: 400 }
+      );
+    }
+
+    const parsedReservationDate = new Date(reservationDate);
+    if (Number.isNaN(parsedReservationDate.getTime())) {
+      return NextResponse.json(
+        { error: 'Tanggal reservasi tidak valid' },
+        { status: 400 }
+      );
+    }
 
     // Get treatment details
     const treatment = await prisma.treatment.findUnique({
@@ -81,13 +95,30 @@ export async function POST(req: Request) {
         patientEmail,
         patientPhone,
         patientNotes: patientNotes || null,
-        reservationDate: new Date(reservationDate),
+        reservationDate: parsedReservationDate,
         reservationTime,
         originalPrice: treatment.price,
         finalPrice: treatment.price,
         commissionAmount: commissionAmount
       }
     });
+
+    try {
+      await sendReservationToAdminWhatsApp({
+        reservationId: reservation.id,
+        treatmentName: treatment.name,
+        treatmentPrice: Number(treatment.price),
+        patientName,
+        patientEmail,
+        patientPhone,
+        reservationDate: parsedReservationDate,
+        reservationTime,
+        patientNotes: patientNotes || null,
+        referredBy: referredBy || null,
+      });
+    } catch (whatsAppError) {
+      console.error('[WHATSAPP] Failed to send reservation notification:', whatsAppError);
+    }
 
     // Only add loyalty points and transaction if user is logged in
     if (user) {

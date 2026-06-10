@@ -13,9 +13,9 @@ module.exports = {
         dark: '#0a0a0a',
       },
       fontFamily: {
-        playfair: ['Playfair Display', 'serif'],
-        inter: ['Inter', 'sans-serif'],
-        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+        playfair: ['Gilroy', 'Avenir Next', 'Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        inter: ['Gilroy', 'Avenir Next', 'Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        jakarta: ['Gilroy', 'Avenir Next', 'Plus Jakarta Sans', 'Inter', 'sans-serif'],
       },
     },
   },

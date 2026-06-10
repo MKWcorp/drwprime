@@ -6,10 +6,15 @@ const isPublicRoute = createRouteMatcher([
   '/treatments(.*)',
   '/home-treatment(.*)',
   '/product-gallery(.*)',
+  '/best-deal(.*)',
+  '/blog(.*)',
+  '/prime-insight(.*)',
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/reservation(.*)',
   '/api/treatments(.*)',
+  '/api/best-deals(.*)',
+  '/api/blog(.*)',
   '/api/reservations(.*)',
   '/api/categories(.*)',
   '/api/vouchers(.*)',
@@ -27,6 +32,12 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
+  const pathname = req.nextUrl.pathname;
+
+  if (pathname === '/prime-insight' || pathname.startsWith('/prime-insight/')) {
+    return;
+  }
+
   if (!isPublicRoute(req)) {
     await auth.protect();
   }
@@ -35,7 +46,7 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|json|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
     // Always run for API routes
     "/(api|trpc)(.*)",
   ],

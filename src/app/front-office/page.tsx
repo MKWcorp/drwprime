@@ -61,6 +61,11 @@ interface EditFormData {
   affiliateCode: string;
 }
 
+const getAffiliateFullName = (referrer?: Reservation['referrer']) => {
+  if (!referrer) return '';
+  return `${referrer.firstName} ${referrer.lastName}`.trim();
+};
+
 export default function FrontOfficePage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
@@ -321,11 +326,11 @@ export default function FrontOfficePage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-      case 'confirmed': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-      case 'completed': return 'bg-green-500/20 text-green-400 border-green-500/30';
-      case 'cancelled': return 'bg-red-500/20 text-red-400 border-red-500/30';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+      case 'pending': return 'bg-yellow-500/16 text-yellow-300 border-yellow-400/35';
+      case 'confirmed': return 'bg-blue-500/16 text-blue-300 border-blue-400/35';
+      case 'completed': return 'bg-green-500/16 text-green-300 border-green-400/35';
+      case 'cancelled': return 'bg-red-500/16 text-red-300 border-red-400/35';
+      default: return 'bg-gray-500/16 text-gray-300 border-gray-400/35';
     }
   };
 
@@ -362,10 +367,10 @@ export default function FrontOfficePage() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen fo-glass-page fo-theme-dashboard">
       <div className="max-w-7xl mx-auto px-5 py-10">
         {/* Header */}
-        <div className="mb-10">
+        <div className="mb-10 fo-fade-up">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="font-playfair text-4xl md:text-5xl font-bold text-primary mb-2">
@@ -374,18 +379,36 @@ export default function FrontOfficePage() {
               <p className="text-white/70 text-lg">
                 Manage reservations and appointments
               </p>
-              <div className="flex gap-4 mt-2">
+              <div className="flex flex-wrap gap-3 mt-4">
                 <Link 
                   href="/front-office/codes"
-                  className="text-primary hover:text-primary/80 text-sm inline-block"
+                  className="fo-nav-chip text-sm"
                 >
-                  → Manage Affiliate Codes
+                  Manage Affiliate Codes
                 </Link>
                 <Link 
                   href="/front-office/report"
-                  className="text-primary hover:text-primary/80 text-sm inline-block"
+                  className="fo-nav-chip text-sm"
                 >
-                  → Report Affiliator
+                  Report Affiliator
+                </Link>
+                <Link 
+                  href="/front-office/report-spending-daily"
+                  className="fo-nav-chip text-sm"
+                >
+                  Report Spending Daily
+                </Link>
+                <Link 
+                  href="/front-office/best-deals"
+                  className="fo-nav-chip text-sm"
+                >
+                  Best Deal Manager
+                </Link>
+                <Link 
+                  href="/front-office/blog"
+                  className="fo-nav-chip text-sm"
+                >
+                  Blog Manager
                 </Link>
               </div>
             </div>
@@ -401,25 +424,25 @@ export default function FrontOfficePage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
-          <div className="bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border border-yellow-500/30 rounded-xl p-6">
+          <div className="fo-glass-card fo-fade-up fo-stagger-1 rounded-xl p-6 border-yellow-500/35">
             <p className="text-yellow-400 text-sm mb-2">Pending</p>
             <p className="font-playfair text-3xl font-bold text-yellow-400">
               {reservations.filter(r => r.status === 'pending').length}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-blue-500/20 to-blue-500/5 border border-blue-500/30 rounded-xl p-6">
+          <div className="fo-glass-card fo-fade-up fo-stagger-2 rounded-xl p-6 border-blue-500/35">
             <p className="text-blue-400 text-sm mb-2">Confirmed</p>
             <p className="font-playfair text-3xl font-bold text-blue-400">
               {reservations.filter(r => r.status === 'confirmed').length}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-green-500/20 to-green-500/5 border border-green-500/30 rounded-xl p-6">
+          <div className="fo-glass-card fo-fade-up fo-stagger-3 rounded-xl p-6 border-green-500/35">
             <p className="text-green-400 text-sm mb-2">Completed</p>
             <p className="font-playfair text-3xl font-bold text-green-400">
               {reservations.filter(r => r.status === 'completed').length}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl p-6">
+          <div className="fo-glass-card fo-fade-up fo-stagger-4 rounded-xl p-6 border-primary/40">
             <p className="text-primary text-sm mb-2">Total Today</p>
             <p className="font-playfair text-3xl font-bold text-primary">
               {reservations.length}
@@ -428,7 +451,7 @@ export default function FrontOfficePage() {
         </div>
 
         {/* Reservations List */}
-        <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl p-6">
+        <div className="fo-glass-card fo-fade-up fo-stagger-2 rounded-xl p-6 border-primary/35">
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-playfair text-2xl font-bold text-white">Reservations</h2>
           </div>
@@ -438,7 +461,7 @@ export default function FrontOfficePage() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="bg-primary/10 border border-primary/30 text-white px-4 py-2 rounded-lg focus:outline-none focus:border-primary [&>option]:text-black"
+              className="fo-glass-input px-4 py-2 rounded-lg [&>option]:text-black"
             >
               <option value="all">All Status</option>
               <option value="pending">Pending</option>
@@ -451,7 +474,7 @@ export default function FrontOfficePage() {
               type="date"
               value={filterDate}
               onChange={(e) => setFilterDate(e.target.value)}
-              className="bg-primary/10 border border-primary/30 text-white px-4 py-2 rounded-lg focus:outline-none focus:border-primary [color-scheme:dark]"
+              className="fo-glass-input px-4 py-2 rounded-lg [color-scheme:dark]"
             />
 
             {filterDate && (
@@ -474,34 +497,34 @@ export default function FrontOfficePage() {
               <p className="text-white/60">No reservations found</p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {reservations.map((reservation) => (
                 <div
                   key={reservation.id}
-                  className="bg-black/30 rounded-lg border border-white/5 overflow-hidden"
+                  className="fo-ios-card overflow-hidden"
                 >
                   {/* Collapsed Header */}
                   <div
-                    className="flex items-center justify-between p-4 cursor-pointer hover:bg-black/40 transition-all"
+                    className="flex items-start justify-between p-4 md:p-5 cursor-pointer hover:bg-white/5 transition-all"
                     onClick={() => setExpandedReservation(expandedReservation === reservation.id ? null : reservation.id)}
                   >
-                    <div className="flex items-center gap-4 flex-1">
+                    <div className="flex items-start gap-3 md:gap-4 flex-1">
                       <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-1">
-                          <h3 className="font-semibold text-white">
+                        <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                          <h3 className="font-semibold text-white text-base md:text-lg leading-tight">
                             {reservation.patientName}
                           </h3>
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${getStatusColor(reservation.status)}`}>
+                          <span className={`px-2.5 py-0.5 rounded-full text-[10px] tracking-wide font-semibold border backdrop-blur-sm ${getStatusColor(reservation.status)}`}>
                             {reservation.status.toUpperCase()}
                           </span>
                         </div>
-                        <p className="text-white/60 text-xs">
+                        <p className="text-white/70 text-sm leading-snug">
                           {reservation.treatment.name}
                         </p>
                       </div>
-                      <div className="text-right">
-                        <p className="text-white text-sm font-semibold">{formatDate(reservation.reservationDate)}</p>
-                        <p className="text-primary text-xs">{reservation.reservationTime}</p>
+                      <div className="text-right shrink-0">
+                        <p className="text-white text-xs md:text-sm font-semibold">{formatDate(reservation.reservationDate)}</p>
+                        <p className="text-primary text-xs md:text-sm font-medium mt-0.5">{reservation.reservationTime}</p>
                       </div>
                     </div>
                     <svg 
@@ -516,8 +539,8 @@ export default function FrontOfficePage() {
 
                   {/* Expanded Content */}
                   {expandedReservation === reservation.id && (
-                    <div className="p-4 pt-0 space-y-3 border-t border-white/5">
-                      <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div className="px-4 pb-4 md:px-5 md:pb-5 space-y-3 border-t border-white/10">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm pt-3">
                         <div>
                           <p className="text-white/40 text-xs mb-1">Phone</p>
                           <p className="text-white">{reservation.patientPhone}</p>
@@ -546,7 +569,10 @@ export default function FrontOfficePage() {
                       {(reservation.referrer || reservation.referredBy) && (
                         <div className="bg-primary/10 border border-primary/30 rounded-lg p-3">
                           <p className="text-primary text-xs font-semibold mb-1">Affiliate</p>
-                          <p className="text-white text-sm font-semibold">
+                          {reservation.referrer && (
+                            <p className="text-white/70 text-xs mb-1">Nama Afiliator: {getAffiliateFullName(reservation.referrer)}</p>
+                          )}
+                          <p className="text-white text-sm font-semibold">Kode: {' '}
                             {reservation.referrer?.affiliateCode || reservation.referredBy}
                           </p>
                           {!reservation.referrer && reservation.referredBy && (
@@ -561,15 +587,15 @@ export default function FrontOfficePage() {
                       )}
 
                       {/* Action Buttons */}
-                      <div className="flex gap-2 pt-2">
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-2 pt-2">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             handleOpenEditModal(reservation);
                           }}
-                          className="flex-1 bg-purple-500/20 border border-purple-500/30 text-purple-400 py-2 rounded-lg hover:bg-purple-500/30 transition-colors text-sm font-semibold"
+                          className="fo-ios-btn fo-ios-btn-neutral"
                         >
-                          ✏️ Edit
+                          Edit
                         </button>
                         <button
                           onClick={(e) => {
@@ -577,16 +603,16 @@ export default function FrontOfficePage() {
                             setReservationToDelete(reservation);
                             setShowDeleteModal(true);
                           }}
-                          className="flex-1 bg-red-500/20 border border-red-500/30 text-red-400 py-2 rounded-lg hover:bg-red-500/30 transition-colors text-sm font-semibold"
+                          className="fo-ios-btn fo-ios-btn-danger"
                         >
-                          🗑️ Delete
+                          Delete
                         </button>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedReservation(reservation);
                           }}
-                          className="flex-1 bg-primary/20 border border-primary/30 text-primary py-2 rounded-lg hover:bg-primary/30 transition-colors text-sm font-semibold"
+                          className="fo-ios-btn fo-ios-btn-warn"
                         >
                           View Details
                         </button>
@@ -597,7 +623,7 @@ export default function FrontOfficePage() {
                                 e.stopPropagation();
                                 updateReservationStatus(reservation.id, 'confirmed');
                               }}
-                              className="flex-1 bg-blue-500/20 border border-blue-500/30 text-blue-400 py-2 rounded-lg hover:bg-blue-500/30 transition-colors text-sm font-semibold"
+                              className="fo-ios-btn fo-ios-btn-info"
                             >
                               Confirm
                             </button>
@@ -606,7 +632,7 @@ export default function FrontOfficePage() {
                                 e.stopPropagation();
                                 updateReservationStatus(reservation.id, 'cancelled');
                               }}
-                              className="flex-1 bg-red-500/20 border border-red-500/30 text-red-400 py-2 rounded-lg hover:bg-red-500/30 transition-colors text-sm font-semibold"
+                              className="fo-ios-btn fo-ios-btn-danger"
                             >
                               Cancel
                             </button>
@@ -619,7 +645,7 @@ export default function FrontOfficePage() {
                               setSelectedReservation(reservation);
                               setShowPaymentModal(true);
                             }}
-                            className="flex-1 bg-green-500/20 border border-green-500/30 text-green-400 py-2 rounded-lg hover:bg-green-500/30 transition-colors text-sm font-semibold"
+                            className="fo-ios-btn fo-ios-btn-success md:col-span-2"
                           >
                             Complete
                           </button>
@@ -637,7 +663,7 @@ export default function FrontOfficePage() {
       {/* Detail Modal */}
       {selectedReservation && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
+          <div className="fo-glass-modal rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-2xl font-bold text-white">
                 Reservation Details
@@ -698,7 +724,10 @@ export default function FrontOfficePage() {
               {selectedReservation.referrer || selectedReservation.referredBy ? (
                 <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
                   <p className="text-primary font-semibold mb-2">Affiliate</p>
-                  <p className="text-white text-lg font-bold font-mono">
+                  {selectedReservation.referrer && (
+                    <p className="text-white/80 text-sm mb-1">Nama Afiliator: {getAffiliateFullName(selectedReservation.referrer)}</p>
+                  )}
+                  <p className="text-white text-lg font-bold font-mono">Kode: {' '}
                     {selectedReservation.referrer?.affiliateCode || selectedReservation.referredBy}
                   </p>
                   {!selectedReservation.referrer && selectedReservation.referredBy && (
@@ -758,7 +787,7 @@ export default function FrontOfficePage() {
       {/* Add Affiliate Modal */}
       {showAffiliateModal && selectedReservation && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+          <div className="fo-glass-modal rounded-xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-2xl font-bold text-white">
                 Tambah Affiliate
@@ -799,7 +828,7 @@ export default function FrontOfficePage() {
                     setAffiliateError('');
                   }}
                   placeholder="Contoh: JO5X9"
-                  className="w-full bg-black/50 border-2 border-primary/30 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-primary text-lg font-mono uppercase"
+                  className="w-full fo-glass-input border-2 border-primary/30 px-4 py-3 rounded-lg text-lg font-mono uppercase"
                   maxLength={10}
                 />
                 <p className="text-white/40 text-xs mt-1">
@@ -824,14 +853,14 @@ export default function FrontOfficePage() {
                   setAffiliateCode('');
                   setAffiliateError('');
                 }}
-                className="flex-1 bg-white/5 border border-white/10 text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
+                className="flex-1 fo-glass-card-soft text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
               >
                 Batal
               </button>
               <button
                 onClick={handleAddAffiliate}
                 disabled={!affiliateCode}
-                className="flex-1 bg-primary/20 border border-primary/30 text-primary py-3 rounded-lg hover:bg-primary/30 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 fo-glass-card-soft border-primary/35 text-primary py-3 rounded-lg hover:bg-primary/20 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Simpan
               </button>
@@ -843,7 +872,7 @@ export default function FrontOfficePage() {
       {/* Edit Modal */}
       {showEditModal && editFormData && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6">
+          <div className="fo-glass-modal rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-2xl font-bold text-white">
                 Edit Reservasi
@@ -865,7 +894,7 @@ export default function FrontOfficePage() {
 
             <div className="space-y-4 mb-6">
               {/* Patient Info */}
-              <div className="bg-black/30 rounded-lg p-4 space-y-3">
+              <div className="fo-glass-card-soft rounded-lg p-4 space-y-3">
                 <h4 className="text-white font-semibold mb-2">Informasi Pasien</h4>
                 <div>
                   <label className="text-white/60 text-sm mb-1 block">Nama Pasien *</label>
@@ -873,7 +902,7 @@ export default function FrontOfficePage() {
                     type="text"
                     value={editFormData.patientName}
                     onChange={(e) => setEditFormData({...editFormData, patientName: e.target.value})}
-                    className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary"
+                    className="w-full fo-glass-input px-3 py-2 rounded-lg"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
@@ -883,7 +912,7 @@ export default function FrontOfficePage() {
                       type="email"
                       value={editFormData.patientEmail}
                       onChange={(e) => setEditFormData({...editFormData, patientEmail: e.target.value})}
-                      className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary"
+                      className="w-full fo-glass-input px-3 py-2 rounded-lg"
                     />
                   </div>
                   <div>
@@ -892,14 +921,14 @@ export default function FrontOfficePage() {
                       type="tel"
                       value={editFormData.patientPhone}
                       onChange={(e) => setEditFormData({...editFormData, patientPhone: e.target.value})}
-                      className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary"
+                      className="w-full fo-glass-input px-3 py-2 rounded-lg"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Reservation Details */}
-              <div className="bg-black/30 rounded-lg p-4 space-y-3">
+              <div className="fo-glass-card-soft rounded-lg p-4 space-y-3">
                 <h4 className="text-white font-semibold mb-2">Detail Reservasi</h4>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
@@ -908,7 +937,7 @@ export default function FrontOfficePage() {
                       type="date"
                       value={editFormData.reservationDate}
                       onChange={(e) => setEditFormData({...editFormData, reservationDate: e.target.value})}
-                      className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary [color-scheme:dark]"
+                      className="w-full fo-glass-input px-3 py-2 rounded-lg [color-scheme:dark]"
                     />
                   </div>
                   <div>
@@ -917,7 +946,7 @@ export default function FrontOfficePage() {
                       type="time"
                       value={editFormData.reservationTime}
                       onChange={(e) => setEditFormData({...editFormData, reservationTime: e.target.value})}
-                      className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary [color-scheme:dark]"
+                      className="w-full fo-glass-input px-3 py-2 rounded-lg [color-scheme:dark]"
                     />
                   </div>
                 </div>
@@ -926,7 +955,7 @@ export default function FrontOfficePage() {
                   <select
                     value={editFormData.treatmentId}
                     onChange={(e) => setEditFormData({...editFormData, treatmentId: e.target.value})}
-                    className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary [&>option]:text-black"
+                    className="w-full fo-glass-input px-3 py-2 rounded-lg [&>option]:text-black"
                   >
                     <option value="">Pilih Treatment</option>
                     {treatments.map((treatment) => (
@@ -942,7 +971,7 @@ export default function FrontOfficePage() {
                     <select
                       value={editFormData.status}
                       onChange={(e) => setEditFormData({...editFormData, status: e.target.value})}
-                      className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary [&>option]:text-black"
+                      className="w-full fo-glass-input px-3 py-2 rounded-lg [&>option]:text-black"
                     >
                       <option value="pending">Pending</option>
                       <option value="confirmed">Confirmed</option>
@@ -956,14 +985,14 @@ export default function FrontOfficePage() {
                       type="number"
                       value={editFormData.finalPrice}
                       onChange={(e) => setEditFormData({...editFormData, finalPrice: parseFloat(e.target.value)})}
-                      className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary"
+                      className="w-full fo-glass-input px-3 py-2 rounded-lg"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Affiliate Code */}
-              <div className="bg-black/30 rounded-lg p-4">
+              <div className="fo-glass-card-soft rounded-lg p-4">
                 <h4 className="text-white font-semibold mb-2">Kode Affiliate</h4>
                 <div>
                   <label className="text-white/60 text-sm mb-1 block">Kode Affiliate (opsional)</label>
@@ -972,7 +1001,7 @@ export default function FrontOfficePage() {
                     value={editFormData.affiliateCode}
                     onChange={(e) => setEditFormData({...editFormData, affiliateCode: e.target.value.toUpperCase()})}
                     placeholder="Contoh: JO5X9"
-                    className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary font-mono uppercase"
+                    className="w-full fo-glass-input px-3 py-2 rounded-lg font-mono uppercase"
                     maxLength={10}
                   />
                   <p className="text-white/40 text-xs mt-1">
@@ -982,7 +1011,7 @@ export default function FrontOfficePage() {
               </div>
 
               {/* Notes */}
-              <div className="bg-black/30 rounded-lg p-4 space-y-3">
+              <div className="fo-glass-card-soft rounded-lg p-4 space-y-3">
                 <h4 className="text-white font-semibold mb-2">Catatan</h4>
                 <div>
                   <label className="text-white/60 text-sm mb-1 block">Catatan Pasien</label>
@@ -990,7 +1019,7 @@ export default function FrontOfficePage() {
                     value={editFormData.patientNotes}
                     onChange={(e) => setEditFormData({...editFormData, patientNotes: e.target.value})}
                     rows={2}
-                    className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary resize-none"
+                    className="w-full fo-glass-input px-3 py-2 rounded-lg resize-none"
                   />
                 </div>
                 <div>
@@ -999,7 +1028,7 @@ export default function FrontOfficePage() {
                     value={editFormData.adminNotes}
                     onChange={(e) => setEditFormData({...editFormData, adminNotes: e.target.value})}
                     rows={2}
-                    className="w-full bg-black/50 border border-primary/30 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-primary resize-none"
+                    className="w-full fo-glass-input px-3 py-2 rounded-lg resize-none"
                   />
                 </div>
               </div>
@@ -1025,14 +1054,14 @@ export default function FrontOfficePage() {
                   setEditError('');
                   setEditSuccess('');
                 }}
-                className="flex-1 bg-white/5 border border-white/10 text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
+                className="flex-1 fo-glass-card-soft text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
               >
                 Batal
               </button>
               <button
                 onClick={handleEditReservation}
                 disabled={!editFormData.patientName || !editFormData.patientEmail || !editFormData.treatmentId}
-                className="flex-1 bg-primary/20 border border-primary/30 text-primary py-3 rounded-lg hover:bg-primary/30 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 fo-glass-card-soft border-primary/35 text-primary py-3 rounded-lg hover:bg-primary/20 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Simpan Perubahan
               </button>
@@ -1044,7 +1073,7 @@ export default function FrontOfficePage() {
       {/* Delete Confirmation Modal */}
       {showDeleteModal && reservationToDelete && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-red-500/20 to-red-500/5 border border-red-500/30 rounded-xl max-w-md w-full p-6">
+          <div className="fo-glass-modal border-red-500/35 rounded-xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-2xl font-bold text-white">
                 Konfirmasi Hapus
@@ -1073,7 +1102,7 @@ export default function FrontOfficePage() {
                 </p>
               </div>
 
-              <div className="bg-black/30 rounded-lg p-4 space-y-2">
+              <div className="fo-glass-card-soft rounded-lg p-4 space-y-2">
                 <div>
                   <p className="text-white/60 text-xs">Pasien</p>
                   <p className="text-white font-semibold">{reservationToDelete.patientName}</p>
@@ -1089,8 +1118,11 @@ export default function FrontOfficePage() {
                 {(reservationToDelete.referrer || reservationToDelete.referredBy) && (
                   <div>
                     <p className="text-white/60 text-xs">Affiliate</p>
+                    {reservationToDelete.referrer && (
+                      <p className="text-white/70 text-xs">Nama Afiliator: {getAffiliateFullName(reservationToDelete.referrer)}</p>
+                    )}
                     <p className="text-primary font-semibold">
-                      {reservationToDelete.referrer?.affiliateCode || reservationToDelete.referredBy}
+                      Kode: {reservationToDelete.referrer?.affiliateCode || reservationToDelete.referredBy}
                       {!reservationToDelete.referrer && reservationToDelete.referredBy && (
                         <span className="text-yellow-400 text-xs ml-2">(Unclaimed)</span>
                       )}
@@ -1113,7 +1145,7 @@ export default function FrontOfficePage() {
                   setReservationToDelete(null);
                   setDeleteError('');
                 }}
-                className="flex-1 bg-white/5 border border-white/10 text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
+                className="flex-1 fo-glass-card-soft text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
               >
                 Batal
               </button>
@@ -1131,7 +1163,7 @@ export default function FrontOfficePage() {
       {/* Payment Modal */}
       {showPaymentModal && selectedReservation && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+          <div className="fo-glass-modal rounded-xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-2xl font-bold text-white">
                 Input Total Pembayaran
@@ -1166,7 +1198,10 @@ export default function FrontOfficePage() {
               {selectedReservation.referrer && (
                 <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
                   <p className="text-green-400 text-sm font-semibold mb-1">
-                    ✓ Ada Referral dari {selectedReservation.referrer.firstName}
+                    ✓ Ada referral dari {getAffiliateFullName(selectedReservation.referrer)}
+                  </p>
+                  <p className="text-white/80 text-xs mb-1 font-mono">
+                    Kode Afiliator: {selectedReservation.referrer.affiliateCode}
                   </p>
                   <p className="text-white/60 text-xs">
                     Komisi 10% akan otomatis dihitung dari total pembayaran
@@ -1187,7 +1222,7 @@ export default function FrontOfficePage() {
                     value={paymentAmount}
                     onChange={(e) => setPaymentAmount(e.target.value)}
                     placeholder="0"
-                    className="w-full bg-black/50 border-2 border-primary/30 text-white pl-12 pr-4 py-3 rounded-lg focus:outline-none focus:border-primary text-lg font-semibold"
+                    className="w-full fo-glass-input border-2 border-primary/30 pl-12 pr-4 py-3 rounded-lg text-lg font-semibold"
                   />
                 </div>
                 <p className="text-white/40 text-xs mt-1">
@@ -1211,7 +1246,7 @@ export default function FrontOfficePage() {
                   setShowPaymentModal(false);
                   setPaymentAmount('');
                 }}
-                className="flex-1 bg-white/5 border border-white/10 text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
+                className="flex-1 fo-glass-card-soft text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
               >
                 Batal
               </button>

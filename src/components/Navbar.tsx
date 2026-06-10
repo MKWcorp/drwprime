@@ -30,8 +30,8 @@ export default function Navbar() {
 
   return (
     <nav className="hidden lg:block fixed top-0 w-full bg-black/95 backdrop-blur-md z-50 border-b border-primary/20">
-      <div className="max-w-7xl mx-auto px-5 flex justify-between items-center py-4">
-        <Link href="/">
+      <div className="max-w-[1440px] mx-auto px-4 xl:px-6 flex justify-between items-center gap-4 py-4">
+        <Link href="/" className="shrink-0 pr-2">
           <Image 
             src="/drwprime-logo.png" 
             alt="DRW Prime Logo" 
@@ -42,11 +42,11 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-8 items-center">
+        <ul className="hidden md:flex flex-1 justify-end gap-4 xl:gap-6 2xl:gap-8 items-center min-w-0">
           <li>
             <Link 
               href="/treatments" 
-              className="text-white hover:text-primary transition-colors duration-300 text-sm font-medium tracking-wide"
+              className="text-white hover:text-primary transition-colors duration-300 text-[13px] xl:text-sm font-medium tracking-normal xl:tracking-wide whitespace-nowrap"
             >
               TREATMENT
             </Link>
@@ -54,7 +54,7 @@ export default function Navbar() {
           <li>
             <Link 
               href="/home-treatment" 
-              className="text-white hover:text-primary transition-colors duration-300 text-sm font-medium tracking-wide"
+              className="text-white hover:text-primary transition-colors duration-300 text-[13px] xl:text-sm font-medium tracking-normal xl:tracking-wide whitespace-nowrap"
             >
               HOME TREATMENT
             </Link>
@@ -62,7 +62,7 @@ export default function Navbar() {
           <li>
             <Link 
               href="/#gallery" 
-              className="text-white hover:text-primary transition-colors duration-300 text-sm font-medium tracking-wide"
+              className="text-white hover:text-primary transition-colors duration-300 text-[13px] xl:text-sm font-medium tracking-normal xl:tracking-wide whitespace-nowrap"
             >
               GALERI
             </Link>
@@ -70,15 +70,31 @@ export default function Navbar() {
           <li>
             <Link 
               href="/product-gallery" 
-              className="text-white hover:text-primary transition-colors duration-300 text-sm font-medium tracking-wide"
+              className="text-white hover:text-primary transition-colors duration-300 text-[13px] xl:text-sm font-medium tracking-normal xl:tracking-wide whitespace-nowrap"
             >
               PRODUCT GALLERY
             </Link>
           </li>
           <li>
             <Link 
+              href="/best-deal" 
+              className="text-white hover:text-primary transition-colors duration-300 text-[13px] xl:text-sm font-medium tracking-normal xl:tracking-wide whitespace-nowrap"
+            >
+              BEST DEAL
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/prime-insight"
+              className="text-white hover:text-primary transition-colors duration-300 text-[13px] xl:text-sm font-medium tracking-normal xl:tracking-wide whitespace-nowrap"
+            >
+              PRIME INSIGHT
+            </Link>
+          </li>
+          <li>
+            <Link 
               href="/#contact" 
-              className="text-white hover:text-primary transition-colors duration-300 text-sm font-medium tracking-wide"
+              className="text-white hover:text-primary transition-colors duration-300 text-[13px] xl:text-sm font-medium tracking-normal xl:tracking-wide whitespace-nowrap"
             >
               KONTAK
             </Link>
@@ -89,7 +105,7 @@ export default function Navbar() {
             <li>
               <Link 
                 href="/my-prime" 
-                className="text-primary hover:text-primary/80 transition-colors duration-300 text-sm font-medium tracking-wide"
+                className="text-primary hover:text-primary/80 transition-colors duration-300 text-[13px] xl:text-sm font-medium tracking-normal xl:tracking-wide whitespace-nowrap"
               >
                 MY PRIME
               </Link>
@@ -98,7 +114,7 @@ export default function Navbar() {
               <li>
                 <Link 
                   href="/affiliate-dashboard" 
-                  className="text-primary hover:text-primary/80 transition-colors duration-300 text-sm font-medium tracking-wide"
+                  className="text-primary hover:text-primary/80 transition-colors duration-300 text-[13px] xl:text-sm font-medium tracking-normal xl:tracking-wide whitespace-nowrap"
                 >
                   AFFILIATE
                 </Link>
@@ -108,7 +124,7 @@ export default function Navbar() {
               <li>
                 <Link 
                   href="/front-office" 
-                  className="text-primary hover:text-primary/80 transition-colors duration-300 text-sm font-medium tracking-wide"
+                  className="text-primary hover:text-primary/80 transition-colors duration-300 text-[13px] xl:text-sm font-medium tracking-normal xl:tracking-wide whitespace-nowrap"
                 >
                   FRONT OFFICE
                 </Link>
@@ -119,7 +135,7 @@ export default function Navbar() {
                 afterSignOutUrl="/"
                 appearance={{
                   elements: {
-                    avatarBox: "w-9 h-9"
+                    avatarBox: "w-8 h-8"
                   }
                 }}
               />
@@ -129,7 +145,7 @@ export default function Navbar() {
           <SignedOut>
             <li>
               <Link href="/sign-in">
-                <button className="bg-primary/20 border border-primary text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary/30 transition-colors">
+                <button className="bg-primary/20 border border-primary text-primary px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-primary/30 transition-colors whitespace-nowrap">
                   Sign In
                 </button>
               </Link>
@@ -199,6 +215,24 @@ export default function Navbar() {
                 className="block px-5 py-3 text-white hover:text-primary hover:bg-primary/10 transition-colors duration-300 text-sm font-medium tracking-wide"
               >
                 PRODUCT GALLERY
+              </Link>
+            </li>
+            <li>
+              <Link 
+                href="/best-deal"
+                onClick={() => setIsOpen(false)}
+                className="block px-5 py-3 text-white hover:text-primary hover:bg-primary/10 transition-colors duration-300 text-sm font-medium tracking-wide"
+              >
+                BEST DEAL
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/prime-insight"
+                onClick={() => setIsOpen(false)}
+                className="block px-5 py-3 text-white hover:text-primary hover:bg-primary/10 transition-colors duration-300 text-sm font-medium tracking-wide"
+              >
+                PRIME INSIGHT
               </Link>
             </li>
             <li>

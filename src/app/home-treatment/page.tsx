@@ -19,6 +19,7 @@ interface Category {
   id: string;
   slug: string;
   name: string;
+  description: string;
   treatments: Treatment[];
 }
 
@@ -28,91 +29,30 @@ const categoryImageMap: { [key: string]: string } = {
   'chemical-peeling': '/home-treatments/peeling.jpeg',
   'infusion': '/home-treatments/infuse-booster.png',
   'body-treatment': '/home-treatments/body-spa.jpeg',
+  'hair-treatment': '/home-treatments/facial.jpeg',
+  'hand-spa': '/home-treatments/body-spa.jpeg',
   'nail-treatment': '/home-treatments/nail-art.png',
+  'eyelash-extension': '/home-treatments/eyelash-extension.jpeg',
+  'menicure-pedicure': '/home-treatments/nail-art.png'
 };
 
-// Data Home Treatment dari Google Sheets
-const homeCategories: Category[] = [
-  {
-    id: '1',
-    slug: 'facial-basic',
-    name: 'Facial Basic',
-    treatments: [
-      { id: '1-1', slug: 'acne-facial', name: 'Acne Facial', price: 160000 },
-      { id: '1-2', slug: 'glow-facial', name: 'Glow Facial', price: 185000 },
-    ]
-  },
-  {
-    id: '2',
-    slug: 'facial-prime',
-    name: 'Facial Prime',
-    treatments: [
-      { id: '2-1', slug: 'acne-cure-facial', name: 'Acne Cure Facial', price: 235000 },
-      { id: '2-2', slug: 'whitening-glow-facial', name: 'Whitening Glow Facial', price: 260000 },
-      { id: '2-3', slug: 'eternal-rejuve-facial', name: 'Eternal Rejuve Facial', price: 260000 },
-    ]
-  },
-  {
-    id: '3',
-    slug: 'chemical-peeling',
-    name: 'Chemical Peeling',
-    treatments: [
-      { id: '3-1', slug: 'purifying-acne-peel', name: 'Purifying Acne Peel', price: 260000 },
-      { id: '3-2', slug: 'clarifying-light-peel', name: 'Clarifying Light Peel', price: 260000 },
-      { id: '3-3', slug: 'radiance-glow-peel', name: 'Radiance Glow Peel', price: 260000 },
-      { id: '3-4', slug: 'retinol-bright-peel', name: 'Retinol Bright Peel', price: 410000 },
-      { id: '3-5', slug: 'body-peel', name: 'Body Peel', price: 510000 },
-    ]
-  },
-  {
-    id: '4',
-    slug: 'infusion',
-    name: 'Infusion',
-    treatments: [
-      { id: '4-1', slug: 'vitamin-c', name: 'Vitamin C', price: 260000 },
-      { id: '4-2', slug: 'vitamin-white-booster', name: 'Vitamin White Booster', price: 760000 },
-      { id: '4-3', slug: 'vitamin-prime-booster', name: 'Vitamin Prime Booster', price: 1510000 },
-    ]
-  },
-  {
-    id: '5',
-    slug: 'body-treatment',
-    name: 'Body Treatment',
-    treatments: [
-      { id: '5-1', slug: 'lymphatic-dm-wajah', name: 'Lymphatic DM Wajah', price: 160000 },
-      { id: '5-2', slug: 'lymphatic-dm-perut', name: 'Lymphatic DM Perut', price: 160000 },
-      { id: '5-3', slug: 'lymphatic-dm-kaki', name: 'Lymphatic DM Kaki', price: 135000 },
-      { id: '5-4', slug: 'lymphatic-dm-full-body', name: 'Lymphatic DM Full Body', price: 410000 },
-      { id: '5-5', slug: 'javanese-massage-60', name: 'Javanese Massage 60\'', price: 130000 },
-      { id: '5-6', slug: 'javanese-massage-90', name: 'Javanese Massage 90\'', price: 160000 },
-      { id: '5-7', slug: 'hot-stone', name: 'Hot Stone', price: 60000 },
-      { id: '5-8', slug: 'body-spa', name: 'Body Spa', price: 260000 },
-    ]
-  },
-  {
-    id: '6',
-    slug: 'nail-treatment',
-    name: 'Nail Treatment',
-    treatments: [
-      { id: '6-1', slug: 'nail-art-basic', name: 'Nail Art Basic', price: 135000 },
-      { id: '6-2', slug: 'nail-art-cat-eye', name: 'Nail Art Cat Eye', price: 160000 },
-      { id: '6-3', slug: 'french-nail', name: 'French Nail', price: 200000 },
-      { id: '6-4', slug: 'chrome', name: 'Chrome', price: 160000 },
-      { id: '6-5', slug: 'nail-gel-3d', name: 'Nail Gel 3D', price: 260000 },
-      { id: '6-6', slug: 'korean-blush-nail', name: 'Korean Blush Nail', price: 160000 },
-      { id: '6-7', slug: 'glazed-pearl-nail', name: 'Glazed Pearl Nail', price: 160000 },
-      { id: '6-8', slug: 'nail-gel-gliter', name: 'Nail Gel Gliter', price: 145000 },
-      { id: '6-9', slug: 'nail-extension', name: 'Nail Extension', price: 185000 },
-      { id: '6-10', slug: 'remove-nail-gel', name: 'Remove Nail Gel', price: 65000 },
-      { id: '6-11', slug: 'gradasi-nail', name: 'Gradasi Nail', price: 160000 },
-    ]
-  },
-];
+const HOME_TREATMENT_SLUGS = new Set([
+  'facial-basic',
+  'facial-prime',
+  'chemical-peeling',
+  'infusion',
+  'body-treatment',
+  'hair-treatment',
+  'hand-spa',
+  'nail-treatment',
+  'eyelash-extension',
+  'menicure-pedicure'
+]);
 
 function HomeTreatmentContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get('category');
-  
+
   // Map category name from URL to slug
   const categoryMap: { [key: string]: string } = {
     'Facial Basic': 'facial-basic',
@@ -120,17 +60,47 @@ function HomeTreatmentContent() {
     'Chemical Peeling': 'chemical-peeling',
     'Infusion': 'infusion',
     'Body Treatment': 'body-treatment',
+    Hair: 'hair-treatment',
+    'Hand Spa': 'hand-spa',
     'Nail Treatment': 'nail-treatment',
+    'Eyelash Extension': 'eyelash-extension',
+    'Menicure Pedicure': 'menicure-pedicure'
   };
-  
+
   // Initialize activeCategory from URL or default to 'all'
   const initialCategory = categoryFromUrl 
     ? (categoryMap[categoryFromUrl] || categoryFromUrl.toLowerCase().replace(/ /g, '-'))
     : 'all';
-  
+
   const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTreatments = async () => {
+      try {
+        const response = await fetch('/api/treatments');
+        if (!response.ok) {
+          throw new Error('Failed to fetch treatments');
+        }
+
+        const data = await response.json();
+        setCategories(
+          (data.categories as Category[]).filter((category) =>
+            HOME_TREATMENT_SLUGS.has(category.slug)
+          )
+        );
+      } catch (error) {
+        console.error('Error fetching home treatments:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTreatments();
+  }, []);
 
   // Update activeCategory when URL changes
   useEffect(() => {
@@ -145,10 +115,10 @@ function HomeTreatmentContent() {
   // Get all treatments or filtered by category and search
   const displayedTreatments = useMemo(() => {
     let treatments: (Treatment & { categoryName: string; categorySlug: string })[] = [];
-    
+
     if (activeCategory === 'all') {
       // Flatten all treatments from all categories
-      treatments = homeCategories.flatMap((cat: Category) => 
+      treatments = categories.flatMap((cat: Category) => 
         cat.treatments.map((treatment: Treatment) => ({
           ...treatment,
           categoryName: cat.name,
@@ -156,7 +126,7 @@ function HomeTreatmentContent() {
         }))
       );
     } else {
-      const category = homeCategories.find(
+      const category = categories.find(
         (cat: Category) => cat.slug === activeCategory
       );
       treatments = category ? category.treatments.map((treatment: Treatment) => ({
@@ -176,11 +146,23 @@ function HomeTreatmentContent() {
     }
 
     return treatments;
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory, searchQuery, categories]);
 
-  const activeCategoryData = homeCategories.find(
+  const activeCategoryData = categories.find(
     (cat: Category) => cat.slug === activeCategory
   );
+
+  if (loading) {
+    return (
+      <MobileLayout>
+        <Navbar />
+        <main className="pt-20 min-h-screen bg-dark flex items-center justify-center">
+          <div className="text-primary text-xl">Loading home treatments...</div>
+        </main>
+        <Footer />
+      </MobileLayout>
+    );
+  }
 
   return (
     <MobileLayout>
@@ -238,7 +220,7 @@ function HomeTreatmentContent() {
                     <span className="truncate">
                       {activeCategory === 'all' 
                         ? 'Semua Kategori' 
-                        : homeCategories.find((c: Category) => c.slug === activeCategory)?.name}
+                        : categories.find((c: Category) => c.slug === activeCategory)?.name}
                     </span>
                   </span>
                   <svg 
@@ -265,7 +247,7 @@ function HomeTreatmentContent() {
                     >
                       Semua Kategori
                     </button>
-                    {homeCategories.map((category: Category) => (
+                    {categories.map((category: Category) => (
                       <button
                         key={category.id}
                         onClick={() => {
@@ -302,7 +284,7 @@ function HomeTreatmentContent() {
                 )}
                 {activeCategory !== 'all' && (
                   <span className="inline-flex items-center gap-1 bg-primary/20 border border-primary/40 text-primary px-2.5 py-1 rounded-full text-xs md:text-sm">
-                    <span>{homeCategories.find((c: Category) => c.slug === activeCategory)?.name}</span>
+                    <span>{categories.find((c: Category) => c.slug === activeCategory)?.name}</span>
                     <button 
                       onClick={() => setActiveCategory('all')}
                       className="hover:text-white transition-colors"

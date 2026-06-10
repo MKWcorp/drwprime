@@ -27,7 +27,8 @@ function SignUpContent() {
               alt="DRW Prime Logo"
               width={200}
               height={60}
-              className="mx-auto"
+              className="mx-auto h-auto w-auto"
+              priority
             />
           </Link>
         </div>

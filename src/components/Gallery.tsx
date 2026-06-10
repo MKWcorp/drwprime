@@ -37,6 +37,7 @@ export default function Gallery() {
                   src={image.src} 
                   alt={image.alt} 
                   fill
+                  sizes="(min-width: 1024px) 18vw, (min-width: 768px) 30vw, 46vw"
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-all duration-300" />

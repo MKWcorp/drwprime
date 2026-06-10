@@ -466,17 +466,17 @@ export default function AffiliateCodesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen fo-glass-page fo-theme-codes">
       <div className="max-w-7xl mx-auto px-5 py-10">
         {/* Header */}
-        <div className="mb-10">
+        <div className="mb-10 fo-fade-up">
           <div className="flex items-center justify-between mb-6">
             <div>
               <Link 
                 href="/front-office"
-                className="text-primary hover:text-primary/80 text-sm mb-2 inline-block"
+                className="fo-nav-chip text-sm mb-3"
               >
-                ← Back to Reservations
+                Back to Reservations
               </Link>
               <h1 className="font-playfair text-4xl md:text-5xl font-bold text-primary mb-2">
                 Affiliate Codes
@@ -497,25 +497,25 @@ export default function AffiliateCodesPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
-          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl p-6">
+          <div className="fo-glass-card fo-fade-up fo-stagger-1 rounded-xl p-6 border-primary/35">
             <p className="text-primary text-sm mb-2">Total Codes</p>
             <p className="font-playfair text-3xl font-bold text-primary">
               {codes.length}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border border-yellow-500/30 rounded-xl p-6">
+          <div className="fo-glass-card fo-fade-up fo-stagger-2 rounded-xl p-6 border-yellow-500/35">
             <p className="text-yellow-400 text-sm mb-2">Unclaimed</p>
             <p className="font-playfair text-3xl font-bold text-yellow-400">
               {codes.filter(c => c.status === 'unclaimed').length}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-green-500/20 to-green-500/5 border border-green-500/30 rounded-xl p-6">
+          <div className="fo-glass-card fo-fade-up fo-stagger-3 rounded-xl p-6 border-green-500/35">
             <p className="text-green-400 text-sm mb-2">Claimed</p>
             <p className="font-playfair text-3xl font-bold text-green-400">
               {codes.filter(c => c.status === 'claimed').length}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-blue-500/20 to-blue-500/5 border border-blue-500/30 rounded-xl p-6">
+          <div className="fo-glass-card fo-fade-up fo-stagger-4 rounded-xl p-6 border-blue-500/35">
             <p className="text-blue-400 text-sm mb-2">Total Usage</p>
             <p className="font-playfair text-3xl font-bold text-blue-400">
               {codes.reduce((sum, c) => sum + c.reservationCount, 0)}
@@ -524,12 +524,12 @@ export default function AffiliateCodesPage() {
         </div>
 
         {/* Codes List */}
-        <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl p-6">
+        <div className="fo-glass-card fo-fade-up fo-stagger-2 rounded-xl p-6 border-primary/35">
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-playfair text-2xl font-bold text-white">Codes</h2>
             <button
               onClick={() => setShowGenerateModal(true)}
-              className="bg-primary/20 border border-primary/30 text-primary px-6 py-2 rounded-lg hover:bg-primary/30 transition-colors font-semibold"
+              className="fo-glass-card-soft border-primary/35 text-primary px-6 py-2 rounded-lg hover:bg-primary/20 transition-colors font-semibold"
             >
               + Generate Code
             </button>
@@ -540,7 +540,7 @@ export default function AffiliateCodesPage() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="bg-primary/10 border border-primary/30 text-white px-4 py-2 rounded-lg focus:outline-none focus:border-primary [&>option]:text-black"
+              className="fo-glass-input px-4 py-2 rounded-lg [&>option]:text-black"
             >
               <option value="all">All Status</option>
               <option value="unclaimed">Unclaimed</option>
@@ -573,7 +573,7 @@ export default function AffiliateCodesPage() {
                 </thead>
                 <tbody>
                   {codes.map((code) => (
-                    <tr key={code.id} className="border-b border-white/5 hover:bg-white/5">
+                    <tr key={code.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                       <td className="py-4 px-4">
                         <button
                           onClick={() => handleViewDetails(code)}
@@ -693,7 +693,7 @@ export default function AffiliateCodesPage() {
       {/* Generate Code Modal */}
       {showGenerateModal && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+          <div className="fo-glass-modal rounded-xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-2xl font-bold text-white">
                 Generate Affiliate Code
@@ -724,7 +724,7 @@ export default function AffiliateCodesPage() {
                   value={customCode}
                   onChange={(e) => setCustomCode(e.target.value.toUpperCase())}
                   placeholder="Kosongkan untuk generate random"
-                  className="w-full bg-black/50 border border-primary/30 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-primary font-mono uppercase"
+                  className="w-full fo-glass-input px-4 py-3 rounded-lg font-mono uppercase"
                   maxLength={10}
                 />
                 <p className="text-white/40 text-xs mt-1">
@@ -741,7 +741,7 @@ export default function AffiliateCodesPage() {
                   onChange={(e) => setCodeNotes(e.target.value)}
                   placeholder="Catatan tentang kode ini..."
                   rows={2}
-                  className="w-full bg-black/50 border border-primary/30 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-primary resize-none"
+                  className="w-full fo-glass-input px-4 py-3 rounded-lg resize-none"
                 />
               </div>
 
@@ -767,13 +767,13 @@ export default function AffiliateCodesPage() {
                   setGenerateError('');
                   setGenerateSuccess('');
                 }}
-                className="flex-1 bg-white/5 border border-white/10 text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
+                className="flex-1 fo-glass-card-soft text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
               >
                 Batal
               </button>
               <button
                 onClick={handleGenerateCode}
-                className="flex-1 bg-primary/20 border border-primary/30 text-primary py-3 rounded-lg hover:bg-primary/30 transition-colors font-semibold"
+                className="flex-1 fo-glass-card-soft border-primary/35 text-primary py-3 rounded-lg hover:bg-primary/20 transition-colors font-semibold"
               >
                 Generate
               </button>
@@ -785,7 +785,7 @@ export default function AffiliateCodesPage() {
       {/* Delete Confirmation Modal */}
       {showDeleteModal && codeToDelete && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-red-500/20 to-red-500/5 border border-red-500/30 rounded-xl max-w-md w-full p-6">
+          <div className="fo-glass-modal border-red-500/35 rounded-xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-2xl font-bold text-white">
                 Konfirmasi Hapus
@@ -814,7 +814,7 @@ export default function AffiliateCodesPage() {
                 </p>
               </div>
 
-              <div className="bg-black/30 rounded-lg p-4">
+              <div className="fo-glass-card-soft rounded-lg p-4">
                 <p className="text-white/60 text-xs mb-1">Kode</p>
                 <p className="text-primary font-bold font-mono text-2xl">
                   {codeToDelete.code}
@@ -835,7 +835,7 @@ export default function AffiliateCodesPage() {
                   setCodeToDelete(null);
                   setDeleteError('');
                 }}
-                className="flex-1 bg-white/5 border border-white/10 text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
+                className="flex-1 fo-glass-card-soft text-white py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold"
               >
                 Batal
               </button>
@@ -853,7 +853,7 @@ export default function AffiliateCodesPage() {
       {/* Detail Modal - Show reservations using this code */}
       {showDetailModal && selectedCodeDetail && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+          <div className="fo-glass-modal rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
             <div className="flex items-center justify-between p-6 border-b border-white/10">
               <div>
                 <h3 className="font-playfair text-2xl font-bold text-white mb-1">
@@ -885,7 +885,7 @@ export default function AffiliateCodesPage() {
               ) : (
                 <div className="space-y-3">
                   {codeReservations.map((reservation: CodeReservation) => (
-                    <div key={reservation.id} className="bg-black/30 border border-white/10 rounded-lg p-4">
+                    <div key={reservation.id} className="fo-glass-card-soft rounded-lg p-4">
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <h4 className="text-white font-semibold text-lg">{reservation.patientName}</h4>
@@ -933,7 +933,7 @@ export default function AffiliateCodesPage() {
               )}
             </div>
 
-            <div className="p-6 border-t border-white/10 bg-black/20">
+            <div className="p-6 border-t border-white/10 fo-glass-card-soft">
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
                   <p className="text-white/60 text-xs mb-1">Total Reservasi</p>
@@ -964,7 +964,7 @@ export default function AffiliateCodesPage() {
       {/* Assign Owner Modal */}
       {showAssignModal && selectedCode && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+          <div className="fo-glass-modal rounded-xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-2xl font-bold text-white">
                 Assign Owner
@@ -998,7 +998,7 @@ export default function AffiliateCodesPage() {
                   setActionError('');
                 }}
                 placeholder="Email pemilik kode"
-                className="w-full bg-black/30 border border-primary/50 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-primary"
+                className="w-full fo-glass-input px-4 py-3 rounded-lg"
               />
             </div>
 
@@ -1017,7 +1017,7 @@ export default function AffiliateCodesPage() {
             <div className="flex gap-3">
               <button
                 onClick={handleAssignOwner}
-                className="flex-1 bg-primary hover:bg-primary/90 text-dark font-semibold py-3 px-6 rounded-lg transition-colors"
+                className="flex-1 fo-glass-card-soft border-primary/45 text-primary font-semibold py-3 px-6 rounded-lg transition-colors hover:bg-primary/20"
               >
                 Assign
               </button>
@@ -1029,7 +1029,7 @@ export default function AffiliateCodesPage() {
                   setActionError('');
                   setActionSuccess('');
                 }}
-                className="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                className="flex-1 fo-glass-card-soft text-white font-semibold py-3 px-6 rounded-lg transition-colors hover:bg-white/10"
               >
                 Batal
               </button>
@@ -1041,7 +1041,7 @@ export default function AffiliateCodesPage() {
       {/* Claim Code Modal */}
       {showClaimModal && selectedCode && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+          <div className="fo-glass-modal rounded-xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-2xl font-bold text-white">
                 Claim Code
@@ -1075,7 +1075,7 @@ export default function AffiliateCodesPage() {
                   setActionError('');
                 }}
                 placeholder="Email user"
-                className="w-full bg-black/30 border border-primary/50 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-primary"
+                className="w-full fo-glass-input px-4 py-3 rounded-lg"
               />
               
               <p className="text-white/40 text-xs mt-2">
@@ -1098,7 +1098,7 @@ export default function AffiliateCodesPage() {
             <div className="flex gap-3">
               <button
                 onClick={handleClaimCode}
-                className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                className="flex-1 fo-glass-card-soft border-green-500/40 text-green-300 font-semibold py-3 px-6 rounded-lg transition-colors hover:bg-green-500/20"
               >
                 Claim
               </button>
@@ -1110,7 +1110,7 @@ export default function AffiliateCodesPage() {
                   setActionError('');
                   setActionSuccess('');
                 }}
-                className="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                className="flex-1 fo-glass-card-soft text-white font-semibold py-3 px-6 rounded-lg transition-colors hover:bg-white/10"
               >
                 Batal
               </button>
@@ -1122,7 +1122,7 @@ export default function AffiliateCodesPage() {
       {/* Transfer Ownership Modal */}
       {showTransferModal && selectedCode && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+          <div className="fo-glass-modal rounded-xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-2xl font-bold text-white">
                 Transfer Ownership
@@ -1159,7 +1159,7 @@ export default function AffiliateCodesPage() {
                   setActionError('');
                 }}
                 placeholder="Email pemilik baru"
-                className="w-full bg-black/30 border border-primary/50 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-primary"
+                className="w-full fo-glass-input px-4 py-3 rounded-lg"
               />
               
               <p className="text-yellow-400/80 text-xs mt-2">
@@ -1182,7 +1182,7 @@ export default function AffiliateCodesPage() {
             <div className="flex gap-3">
               <button
                 onClick={handleTransferOwnership}
-                className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 px-6 rounded-lg transition-colors"
+                className="flex-1 fo-glass-card-soft border-yellow-500/45 text-yellow-300 font-semibold py-3 px-6 rounded-lg transition-colors hover:bg-yellow-500/20"
               >
                 Transfer
               </button>
@@ -1194,7 +1194,7 @@ export default function AffiliateCodesPage() {
                   setActionError('');
                   setActionSuccess('');
                 }}
-                className="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                className="flex-1 fo-glass-card-soft text-white font-semibold py-3 px-6 rounded-lg transition-colors hover:bg-white/10"
               >
                 Batal
               </button>
@@ -1206,7 +1206,7 @@ export default function AffiliateCodesPage() {
       {/* QR Code Modal */}
       {showQRModal && selectedCodeForQR && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl max-w-md w-full p-6">
+          <div className="fo-glass-modal rounded-xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-2xl font-bold text-white">
                 QR Code - {selectedCodeForQR.code}
@@ -1237,22 +1237,22 @@ export default function AffiliateCodesPage() {
 
             {/* Code Info */}
             <div className="mb-6 space-y-3">
-              <div className="bg-black/30 p-4 rounded-lg">
+              <div className="fo-glass-card-soft p-4 rounded-lg">
                 <p className="text-white/60 text-xs mb-1">Kode Affiliate</p>
                 <p className="text-primary font-bold font-mono text-xl">{selectedCodeForQR.code}</p>
               </div>
-              <div className="bg-black/30 p-4 rounded-lg">
+              <div className="fo-glass-card-soft p-4 rounded-lg">
                 <p className="text-white/60 text-xs mb-1">Link Referral</p>
                 <p className="text-white text-sm break-all">
                   https://drwprime.com/reservation?ref={selectedCodeForQR.code}
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-black/30 p-3 rounded-lg">
+                <div className="fo-glass-card-soft p-3 rounded-lg">
                   <p className="text-white/60 text-xs mb-1">Status</p>
                   <p className="text-white font-semibold capitalize">{selectedCodeForQR.status}</p>
                 </div>
-                <div className="bg-black/30 p-3 rounded-lg">
+                <div className="fo-glass-card-soft p-3 rounded-lg">
                   <p className="text-white/60 text-xs mb-1">Usage</p>
                   <p className="text-white font-semibold">{selectedCodeForQR.reservationCount}x</p>
                 </div>
@@ -1263,7 +1263,7 @@ export default function AffiliateCodesPage() {
             <div className="flex gap-3">
               <button
                 onClick={handleShareQR}
-                className="flex-1 bg-gradient-to-r from-primary to-primary/80 text-black font-semibold py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-primary/50 transition-all flex items-center justify-center gap-2"
+                className="flex-1 fo-glass-card-soft border-primary/45 text-primary font-semibold py-3 px-6 rounded-lg hover:bg-primary/20 transition-all flex items-center justify-center gap-2"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -1272,7 +1272,7 @@ export default function AffiliateCodesPage() {
               </button>
               <button
                 onClick={handleDownloadQR}
-                className="flex-1 bg-white/10 border border-white/20 text-white font-semibold py-3 px-6 rounded-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2"
+                className="flex-1 fo-glass-card-soft text-white font-semibold py-3 px-6 rounded-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

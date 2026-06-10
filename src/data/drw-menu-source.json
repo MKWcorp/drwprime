@@ -1,0 +1,769 @@
+{
+  "clinic_info": {
+    "name": "DRW Primé By dr. Wahyu Triasmara [cite: 491, 492]",
+    "address": "Jl. Affandi CT. X No. 24A, Karang Gayam, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta [cite: 978]",
+    "contact": "0811 3880 0071 [cite: 980]"
+  },
+  "menu": [
+    {
+      "category": "Facial Basic & Prime [cite: 495, 501]",
+      "items": [
+        {
+          "name": "Acne Facial [cite: 493]",
+          "price": "Rp 175.000 [cite: 496]",
+          "description": "Facial Acne merupakan treatment yang berfungsi untuk membersihkan & merelaksasi kulit wajah berminyak/jerawat[cite: 497]."
+        },
+        {
+          "name": "Glow Facial [cite: 498]",
+          "price": "Rp 200.000 [cite: 499]",
+          "description": "Facial Glow merupakan treatment yang berfungsi untuk membersihkan & merelaksasi kulit wajah normal/tidak berjerawat. [cite: 500]"
+        },
+        {
+          "name": "Acne Cure Facial [cite: 502]",
+          "price": "Rp 250.000 [cite: 503]",
+          "description": "Facial Acne Cure merupakan treatment yang berfungsi untuk membersihkan & merelaksasi kulit wajah berjerawat dengan dengan tambahan serum khusus[cite: 504]."
+        },
+        {
+          "name": "Whitening Glow Facial [cite: 505]",
+          "price": "Rp 275.000 [cite: 506]",
+          "description": "Facial Whitening Glow merupakan treatment yang berfungsi untuk membersihkan & merelaksasi kulit wajah normal/tidak berjerawat plus tambahan serum khusus[cite: 507]."
+        },
+        {
+          "name": "Eternal Rejuve facial [cite: 508]",
+          "price": "Rp 275.000 [cite: 509]",
+          "description": "Facial Calming Care merupakan treatment yang berfungsi untuk membersihkan & merelaksasi kulit wajah kering dan sensitif dengan tambahan serum khusus[cite: 510]."
+        }
+      ]
+    },
+    {
+      "category": "Chemical Peeling [cite: 512]",
+      "items": [
+        {
+          "name": "Clarifiying Light Peel [cite: 513]",
+          "price": "Rp 275.000 [cite: 514]",
+          "description": "Clarifiying Light Peel merupakan prosedur medis yang menggunakan larutan kimia bersifat keratolitik dengan kekuatan ringan. [cite: 515]"
+        },
+        {
+          "name": "Purifiying Acne Peel [cite: 516]",
+          "price": "Rp 275.000 [cite: 517]",
+          "description": "Purifiying Acne Peel merupakan prosedur medis yang menggunakan larutan kimia bersifat keratolitik dengan kekuatan sedang yang berfokus pada penanganan jerawat dan komedo. [cite: 518]"
+        },
+        {
+          "name": "Radiance Glow Peel [cite: 519]",
+          "price": "Rp 275.000 [cite: 520]",
+          "description": "Radiance Glow Peel merupakan prosedur medis yang menggunakan larutan kimia bersifat keratolitik dengan kekuatan sedang-berat. [cite: 521]"
+        },
+        {
+          "name": "Retinol Bright Peel [cite: 522]",
+          "price": "Rp 500.000 [cite: 523]",
+          "description": "Retinol Bright Peel merupakan prosedur medis yang menggunakan larutan kimia mengandung turunan vitamin A yang bersifat keratolitik dengan kekuatan berat. [cite: 524]"
+        },
+        {
+          "name": "Body Peeling [cite: 525]",
+          "price": "Rp 560.000 [cite: 526]",
+          "description": "Body Peeling Merupakan prosedur medis yang menggunakan larutan kimia yang bersifat keratolitik dengan kekuatan berat yang dikhususkan untuk area leher, dada, punggung, perut, tangan dan khaki. [cite: 527]"
+        }
+      ]
+    },
+    {
+      "category": "IPL (Intense Pulsed Light) [cite: 530]",
+      "items": [
+        {
+          "name": "IPL Acne [cite: 529]",
+          "price": "Rp 275.000 [cite: 531]",
+          "description": "IPL (intense pulsed light) Acne adalah treatment yang memanfaatkan cahaya dengan intensitas tertentu untuk mengontrol jerawat dan mengatasi berbagai permasalahan kulit lainnya. [cite: 532]"
+        },
+        {
+          "name": "IPL Glow [cite: 533]",
+          "price": "Rp 275.000 [cite: 534]",
+          "description": "IPL (intense pulsed light) Acne adalah treatment yang memanfaatkan cahaya dengan intensitas tertentu untuk mengontrol jerawat dan mengatasi berbagai permasalahan kulit lainnya. [cite: 535]"
+        },
+        {
+          "name": "IPL Vascular [cite: 536]",
+          "price": "Rp 275.000 [cite: 537]",
+          "description": "IPL (intense pulsed light) Glow adalah treatment yang memanfaatkan cahaya dengan intensitas tertentu untuk mencerahkan kulit dan mengatasi berbagai permasalahan kulit lainnya[cite: 538]."
+        },
+        {
+          "name": "IPL Hair Removal [cite: 539]",
+          "price": "Rp 275.000 [cite: 540]",
+          "description": "IPL (intense pulsed light) Acne adalah treatment yang memanfaatkan cahaya dengan intensitas tertentu untuk menghilangkan bulu dan rambut di area yang diinginkan[cite: 541]."
+        }
+      ]
+    },
+    {
+      "category": "Pico Laser & Cauter [cite: 542, 560]",
+      "items": [
+        {
+          "name": "Pico Glow Rejuve [cite: 544]",
+          "price": "Rp 450.000 [cite: 545]",
+          "description": "Pico Glow Rejuve adalah perawatan kecantikan non ablatif dengan teknologi laser dengan kecepatan tembakan picosecond untuk meremajakan kulit[cite: 546]."
+        },
+        {
+          "name": "Pico Melasma [cite: 547]",
+          "price": "Rp 450.000 [cite: 548]",
+          "description": "Pico Melasma adalah perawatan kecantikan non ablatif yang menggunakan teknologi laser dengan kecepatan tembakan picosecond untuk menyamarkan flek. [cite: 549]"
+        },
+        {
+          "name": "Pico Black Doll [cite: 550]",
+          "price": "Rp 450.000 [cite: 551]",
+          "description": "Pico Black Doll adalah perawatan kecantikan non ablatif yang menggunakan teknologi laser dengan kecepatan tembakan picosecond dengan media karbon untuk meremajakan kulit[cite: 552]."
+        },
+        {
+          "name": "Pico Pink Lips [cite: 553]",
+          "price": "Rp 175.000 [cite: 554]",
+          "description": "Pico Pink lips adalah perawatan kecantikan non ablatif menggunakan teknologi laser dengan kecepatan tembakan picosecond untuk mencerahkan area bibir. [cite: 555]"
+        },
+        {
+          "name": "Pico Tattoo Removal [cite: 556]",
+          "price": "Rp 450.000 [cite: 557]",
+          "description": "Pico Tattoo Removal adalah perawatan kecantikan non ablatif menggunakan teknologi laser dengan kecepatan tembakan picosecond untuk menyamarkan tattoo. [cite: 558]"
+        },
+        {
+          "name": "Cauter [cite: 559]",
+          "price": "Rp 350.000 [cite: 561]",
+          "description": "Cauter adalah prosedur medis yang memanfaatkan energi listrik (elektrocauter) untuk membakar lesi atau jaringan tubuh tertentu. [cite: 562]"
+        }
+      ]
+    },
+    {
+      "category": "Dermapen EPN [cite: 564]",
+      "items": [
+        {
+          "name": "Dermapen PRP [cite: 565]",
+          "price": "Rp 900.000 [cite: 566]",
+          "description": "Dermapen PRP adalah suatu tindakan medis microneedling dengan alat EPN (Electroporation Needle) menggunakan serum Platelet Rich Plasma. [cite: 567]"
+        },
+        {
+          "name": "Dermapen DNA Salmon [cite: 568]",
+          "price": "Rp 1.750.000 [cite: 569]",
+          "description": "Dermapen DNA SALMON adalah suatu tindakan medis microneedling dengan alat EPN (Electroporation Needle) dan menggunakan serum DNA salmon. [cite: 570]"
+        }
+      ]
+    },
+    {
+      "category": "HIFU Ultraformer MPT [cite: 571]",
+      "items": [
+        {
+          "name": "HIFU Upper Face [cite: 572]",
+          "price": "Rp 2.000.000 [cite: 572]",
+          "description": "Terapi ultrasound intensitas tinggi untuk mengencangkan dan mengangkat (lifting) kulit di area dahi dan sekitar mata, serta memudarkan garis-garis halus. [cite: 572]"
+        },
+        {
+          "name": "HIFU Lower Face [cite: 572]",
+          "price": "Rp 2.750.000 [cite: 572]",
+          "description": "Terapi ultrasound intensitas tinggi untuk mengencangkan dan mengangkat (lifting) kulit di area dahi dan sekitar mata, serta memudarkan garis-garis halus. [cite: 572]"
+        },
+        {
+          "name": "HIFU Face [cite: 573]",
+          "price": "Rp 4.500.000 [cite: 576]",
+          "description": "HIFU (High-Intensity Focused Ultrasound) Face adalah perawatan kecantikan dengan prosedur non-invasif yang menggunakan gelombang ultrasound untuk menargetkan lapisan kulit pada wajah. [cite: 573] Berfungsi untuk memperbaiki tekstur kulit dengan cara membuat perlukaan mikro pada kulit. [cite: 574] Sehingga meningkatkan produksi kolagen dan meregenerasi kulit untuk hilangkan bopeng dan bekas luka, menyamarkan noda, garis halus dan pori-pori. [cite: 575]"
+        },
+        {
+          "name": "HIFU Body [cite: 577]",
+          "price": "Rp 2.750.000 [cite: 578]",
+          "description": "HIFU (High-Intensity Focused Ultrasound) Body adalah perawatan kecantikan dengan prosedur non-invasif yang menggunakan gelombang ultrasound untuk menargetkan lapisan kulit pada bagian tubuh tertentu[cite: 579]."
+        }
+      ]
+    },
+    {
+      "category": "Botox [cite: 580]",
+      "items": [
+        {
+          "name": "Botox Forehead [cite: 582]",
+          "price": "Rp 900.000 [cite: 583]",
+          "description": "Botox Forehead adalah suatu prosedur medis menyuntikan botulinum toxin ke bawah lapisan kulit di area dahi untuk tujuan tertentu. [cite: 584]"
+        },
+        {
+          "name": "Botox Crow's Feet [cite: 585]",
+          "price": "Rp 450.000 [cite: 586]",
+          "description": "Botox Crow's Feet adalah suatu prosedur medis menyuntikan botulinum toxin ke bawah lapisan kulit di area mata bagian luar untuk tujuan tertentu. [cite: 587]"
+        },
+        {
+          "name": "Botox Jawline [cite: 588]",
+          "price": "Rp 1.700.000 [cite: 589]",
+          "description": "Botox Jawline adalah suatu prosedur medis menyuntikan botulinum toxin ke bawah lapisan kulit di area rahang / pipi bawah untuk tujuan tertentu. [cite: 590]"
+        },
+        {
+          "name": "Botox Perunit [cite: 591]",
+          "price": "Rp 35.000 [cite: 592]",
+          "description": "Botox Perunit adalah suatu prosedur medis menyuntikan botulinum toxin ke bawah lapisan kulit untuk tujuan tertentu. [cite: 593]"
+        },
+        {
+          "name": "Botox Prime Forehead [cite: 594]",
+          "price": "Rp 2.800.000 [cite: 595]",
+          "description": "Botox Prime Forehead adalah suatu prosedur medis menyuntikan botulinum toxin ke bawah apisan kulit di area dahi untuk tujuan tertentu. [cite: 596]"
+        },
+        {
+          "name": "Botox Prime Crow's Feet [cite: 597]",
+          "price": "Rp 1.400.000 [cite: 598]",
+          "description": "Botox Prime Crow's Feet adalah suatu prosedur medis menyuntikan botulinum toxin ke bawah lapisan kulit di area mata bagian luar untuk tujuan tertentu. [cite: 599]"
+        },
+        {
+          "name": "Botox Prime Jawline [cite: 600]",
+          "price": "Rp 5.600.000 [cite: 601]",
+          "description": "Botox Perunit adalah suatu prosedur medis menyuntikan botulinum toxin ke bawah lapisan kulit untuk tujuan tertentu. [cite: 602]"
+        },
+        {
+          "name": "Botox Prime Perunit [cite: 603]",
+          "price": "Rp 125.000 [cite: 604]",
+          "description": "Botox Prime Perunit adalah suatu prosedur medis menyuntikan botulinum toxin ke bawah lapisan kulit untuk tujuan tertentu. [cite: 605]"
+        }
+      ]
+    },
+    {
+      "category": "Skin Booster [cite: 607]",
+      "items": [
+        {
+          "name": "Skin Booster Acne Plus [cite: 608]",
+          "price": "Rp 900.000 [cite: 609]",
+          "description": "Skinbooster Acne Plus adalah tindakan medis dengan tujuan menginjeksikan suatu bahan anti jerawat ke dalam lapisan kulit. [cite: 610]"
+        },
+        {
+          "name": "Skin Booster DNA Salmon [cite: 611]",
+          "price": "Rp 1.200.000 [cite: 611]",
+          "description": "Skinbooster DNA Salmon adalah tindakan medis dengan tujuan menginjeksikan PDRN, peptides, glutathion, dan asam hyaluronat ke dalam lapisan kulit. [cite: 612]"
+        },
+        {
+          "name": "Skin Booster NCTF 135HA [cite: 613]",
+          "price": "Rp 2.350.000 [cite: 613]",
+          "description": "Skinbooster NCTF 135HA adalah tindakan medis dengan tujuan memasukan lebih dari 55 bahan aktif termasuk Hyaluronic Acid, asam amino, vitamin dan mineral yang berfungsi untuk menutrisi kulit dari dalam [cite: 614]"
+        },
+        {
+          "name": "Skin Booster Nucleofill Strong [cite: 615]",
+          "price": "Rp 6.950.000 [cite: 615]",
+          "description": "Skinbooster Nucleofill Strong adalah tindakan medis dengan tujuan memasukan polynucleotide konsentrasi tinggi dari DNA salmon ke dalam lapisan kulit. [cite: 616]"
+        },
+        {
+          "name": "Skin Booster Rejuran Healer [cite: 617]",
+          "price": "Rp 8.750.000 [cite: 617]",
+          "description": "Skinbooster Rejuran Healer adalah tindakan medis dengan tujuan memasukan polynucleotide (PN) dari DNA salmon ke dalam lapisan kulit. [cite: 618]"
+        }
+      ]
+    },
+    {
+      "category": "Injection, Infusion & Add On [cite: 620, 637, 647]",
+      "items": [
+        {
+          "name": "Acne Injection [cite: 621]",
+          "price": "Rp 100.000 [cite: 622]",
+          "description": "Injeksi Acne adalah prosedur medis menyuntikkan suatu bahan anti jerawat pada lesi jerawat. [cite: 623]"
+        },
+        {
+          "name": "Keloid Injection [cite: 624]",
+          "price": "Rp 175.000 [cite: 625]",
+          "description": "Injeksi Keloid adalah prosedur menginjeksikan bahan steroid pada lesi keloid. [cite: 626]"
+        },
+        {
+          "name": "PRP Injection [cite: 627]",
+          "price": "Rp 300.000 [cite: 628]",
+          "description": "Injeksi Platelet Rich Plasma adalah tindakan medis menyuntikkan Platelet-Rich Plasma (PRP) dari darah pasien sendiri ke area tubuh tertentu. [cite: 629]"
+        },
+        {
+          "name": "Meso Face Lift (2,5 cc) [cite: 630]",
+          "price": "Rp 700.000 [cite: 631]",
+          "description": "Injeksi Facelift adalah prosedur medis non-bedah yang menggunakan suntikan bahan aktif tertentu untuk menghilangkan lemak berlebih di area wajah. [cite: 632]"
+        },
+        {
+          "name": "Meso Body Slim (10 cc) [cite: 633]",
+          "price": "Rp 1.400.000 [cite: 634]",
+          "description": "Injeksi Body Slimming adalah prosedur medis non-bedah menggunakan suntikan bahan aktif tertentu untuk mengurangi lemak berlebih di bagian tubuh tertentu. [cite: 635]"
+        },
+        {
+          "name": "Vitamin White Booster [cite: 639]",
+          "price": "Rp 850.000 [cite: 638]",
+          "description": "Infus Vitamin White Booster adalah tindakan medis memberikan vitamin, mineral, dan nutrisi tertentu ke tubuh secara intravena menggunakan infus. [cite: 640]"
+        },
+        {
+          "name": "Vitamin Prime Booster [cite: 641]",
+          "price": "Rp 1.750.000 [cite: 642]",
+          "description": "Infus Vitamin White Booster adalah tindakan medis memberikan vitamin, mineral, dan nutrisi tertentu ke tubuh secara intravena menggunakan infus. [cite: 643]"
+        },
+        {
+          "name": "Purely Vitamin C [cite: 644]",
+          "price": "Rp 250.000 [cite: 645]",
+          "description": "Infus Purely Vitamin C adalah tindakan medis memberikan vitamin, mineral, dan nutrisi tertentu ke tubuh secara intravena menggunakan infus. [cite: 646]"
+        },
+        {
+          "name": "Masker PDT Acne [cite: 648]",
+          "price": "Rp 60.000 [cite: 649]",
+          "description": "Masker PDT Acne adalah suatu tindakan tambahan berupa pemberian masker peel off dan PDT untuk kondisi kulit berjerawat atau komedo. [cite: 650]"
+        },
+        {
+          "name": "Masker PDT Glow [cite: 651]",
+          "price": "Rp 60.000 [cite: 652]",
+          "description": "Masker PDT Glow adalah suatu tindakan tambahan berupa pemberian masker peel off dan PDT untuk kondisi kulit tidak berjerawat. [cite: 653]"
+        },
+        {
+          "name": "Subsisi [cite: 654]",
+          "price": "Rp 450.000 [cite: 655]",
+          "description": "Subsisi adalah prosedur bedah minor yang dilakukan untuk memperbaiki bekas luka cekung atau bopeng pada kulit menggunakan jarum atau cannula yang digerakkan memotong jaringan parut di bawah lapisan kulit [cite: 656]"
+        }
+      ]
+    },
+    {
+      "category": "Body Spa & Massage [cite: 658]",
+      "items": [
+        {
+          "name": "Lymphatic DM Wajah [cite: 659]",
+          "price": "Rp 175.000 [cite: 660]",
+          "description": "Infus Vitamin White Booster adalah tindakan medis memberikan vitamin, mineral, dan nutrisi tertentu ke tubuh secara intravena menggunakan infus. [cite: 661]"
+        },
+        {
+          "name": "Lymphatic DM Perut [cite: 662]",
+          "price": "Rp 175.000 [cite: 663]",
+          "description": "Infus Vitamin White Booster adalah tindakan medis memberikan vitamin, mineral, dan nutrisi tertentu ke tubuh secara intravena menggunakan infus. [cite: 664]"
+        },
+        {
+          "name": "LymphaticDM Khaki [cite: 665]",
+          "price": "Rp 145.000 [cite: 666]",
+          "description": "Pijatan lembut dan spesifik pada area kaki yang bertujuan untuk melancarkan aliran getah bening, mengurangi pembengkakan, dan membantu proses detoksifikasi. [cite: 667]"
+        },
+        {
+          "name": "Lymphatic DM Full Body [cite: 668]",
+          "price": "Rp 450.000 [cite: 669]",
+          "description": "Pijatan lembut ke seluruh tubuh yang dirancang khusus untuk merangsang sirkulasi sistem getah bening, meningkatkan sistem imun, dan membuang racun dari dalam tubuh. [cite: 670]"
+        },
+        {
+          "name": "Javanese Massage 60 Menit [cite: 671, 674]",
+          "price": "Rp 135.000 [cite: 673]",
+          "description": "Pijat tradisional Jawa selama 60 menit dengan teknik penekanan menggunakan ibu jari dan telapak tangan untuk meredakan ketegangan otot dan melancarkan peredaran darah. [cite: 675]"
+        },
+        {
+          "name": "Javanese Massage 90 Menit [cite: 676, 678]",
+          "price": "Rp 175.000 [cite: 679]",
+          "description": "Pijat tradisional Jawa selama 90 menit untuk relaksasi yang lebih maksimal, meredakan stres, otot kaku, serta memulihkan energi dan kelenturan tubuh. [cite: 680]"
+        },
+        {
+          "name": "Hot Stone 30 Menit [cite: 682, 683]",
+          "price": "Rp 60.000 [cite: 685]",
+          "description": "Infus Vitamin White Booster adalah tindakan medis memberikan vitamin, mineral, dan nutrisi tertentu ke tubuh secara intravena menggunakan infus. [cite: 686]"
+        },
+        {
+          "name": "Sauna 20 Menit [cite: 687, 689]",
+          "price": "Rp 60.000 [cite: 688]",
+          "description": "Infus Vitamin White Booster adalah tindakan medis memberikan vitamin, mineral, dan nutrisi tertentu ke tubuh secara intravena menggunakan infus. [cite: 690]"
+        },
+        {
+          "name": "Body Spa 120 Menit [cite: 691, 692]",
+          "price": "Rp 280.000 [cite: 693]",
+          "description": "Perawatan menyeluruh yang menggabungkan pijat dan eksfoliasi untuk mengangkat sel kulit mati, menutrisi kulit, serta memberikan relaksasi mendalam bagi tubuh dan pikiran. [cite: 694]"
+        },
+        {
+          "name": "Ratus 30 Menit [cite: 695, 696]",
+          "price": "Rp 85.000 [cite: 697]",
+          "description": "Perawatan tradisional menggunakan uap dari rebusan rempah-rempah alami yang berkhasiat untuk menjaga kebersihan, kesehatan, dan kesegaran area kewanitaan. [cite: 698]"
+        },
+        {
+          "name": "Berendam Susu 30 Menit [cite: 699, 700]",
+          "price": "Rp 60.000 [cite: 701]",
+          "description": "Perawatan berendam relaksasi di dalam air yang diperkaya dengan ekstrak susu untuk mencerahkan, melembapkan, dan menghaluskan kulit Anda. [cite: 702]"
+        },
+        {
+          "name": "Berendam Rempah 30 Menit [cite: 703, 704]",
+          "price": "Rp 85.000 [cite: 705]",
+          "description": "Perawatan berendam air hangat dengan paduan rempah tradisional pilihan untuk membantu melancarkan sirkulasi darah, merelaksasi otot yang kaku, [cite: 706] dan mengharumkan tubuh. [cite: 707]"
+        }
+      ]
+    },
+    {
+      "category": "Hair Care [cite: 709]",
+      "items": [
+        {
+          "name": "Wash & Dry [cite: 708]",
+          "price": "Rp 60.000 [cite: 711]",
+          "description": "Perawatan mencuci rambut untuk membersihkan kulit kepala dari kotoran dan minyak, dilanjutkan dengan pengeringan standar (blow dry) hingga rambut bersih dan segar. [cite: 712]"
+        },
+        {
+          "name": "Wash & Styling [cite: 713]",
+          "price": "Rp 85.000 [cite: 714]",
+          "description": "Perawatan mencuci rambut yang dilanjutkan dengan proses penataan (styling) menggunakan catok atau blow variasi untuk hasil rambut yang lebih rapi, bervolume, dan siap untuk acara spesial. [cite: 715]"
+        },
+        {
+          "name": "Hair Curly [cite: 716]",
+          "price": "Rp 85.000 [cite: 717]",
+          "description": "Layanan penataan rambut (styling) menggunakan alat pengeriting untuk menciptakan gaya rambut ikal atau bergelombang (wavy) yang indah, bervolume, dan tahan lama. [cite: 718]"
+        },
+        {
+          "name": "Hair Mask Hydra Short Hair [cite: 719]",
+          "price": "Rp 150.000 [cite: 720]",
+          "description": "Perawatan masker khusus untuk menghidrasi dan menutrisi rambut pendek yang kering, menjadikannya lebih lembut, sehat, dan mudah diatur. [cite: 721]"
+        },
+        {
+          "name": "Hair Mask Hydra Long Hair [cite: 722]",
+          "price": "Rp 175.000 [cite: 723]",
+          "description": "Perawatan masker rambut intensif untuk melembapkan rambut panjang secara menyeluruh, mencegah ujung rambut bercabang, dan mengembalikan kilau alaminya. [cite: 724]"
+        },
+        {
+          "name": "Hair Mask Hydra Very Long Hair [cite: 725]",
+          "price": "Rp 200.000 [cite: 726]",
+          "description": "Perawatan masker rambut ekstra hidrasi yang diformulasikan khusus untuk merawat rambut sangat panjang, menjaga elastisitas helai rambut agar tidak mudah patah. [cite: 727]"
+        },
+        {
+          "name": "Hair Mask Colorist Short [cite: 728]",
+          "price": "Rp 150.000 [cite: 729]",
+          "description": "Perawatan masker khusus untuk rambut pendek yang diwarnai, bertujuan untuk mengunci keawetan warna, menutrisi batang rambut, dan mencegah kekeringan akibat bahan kimia. [cite: 730]"
+        },
+        {
+          "name": "Hair Mask Colorist Long Hair [cite: 733]",
+          "price": "Rp 175.000 [cite: 734]",
+          "description": "Perawatan masker intensif untuk rambut panjang yang diwarnai. Berfungsi mengunci pigmen warna agar lebih tahan lama, sekaligus mengembalikan kelembapan alami rambut yang hilang akibat proses kimia. [cite: 735]"
+        },
+        {
+          "name": "Hair Mask Colorist Very Long Hair [cite: 736]",
+          "price": "Rp 200.000 [cite: 737]",
+          "description": "Perawatan masker ekstra untuk rambut sangat panjang yang diwarnai. Memberikan perlindungan warna maksimal dan nutrisi mendalam dari pangkal hingga ujung rambut untuk mencegah kekeringan dan kerusakan. [cite: 738]"
+        },
+        {
+          "name": "Hair Mask Complete Solution Short [cite: 739]",
+          "price": "Rp 150.000 [cite: 740]",
+          "description": "Solusi perawatan masker menyeluruh untuk rambut pendek. Diformulasikan untuk mengatasi berbagai masalah rambut, menguatkan akar, dan memberikan kelembutan ekstra dalam satu langkah perawatan. [cite: 741]"
+        },
+        {
+          "name": "Hair Mask Complete Solution Long Hair [cite: 742]",
+          "price": "Rp 175.000 [cite: 743]",
+          "description": "Perawatan masker komprehensif untuk rambut panjang. Bekerja efektif memperbaiki kerusakan, menutrisi batang rambut, dan menjadikan rambut lebih kuat, sehat, serta berkilau alami. [cite: 744]"
+        },
+        {
+          "name": "Hair Mask Complete Solution Very Long Hair [cite: 745]",
+          "price": "Rp 200.000 [cite: 746]",
+          "description": "Perawatan masker premium untuk rambut sangat panjang. Memberikan nutrisi ganda untuk menjaga elastisitas helai rambut, mencegah ujung bercabang, dan mengembalikan vitalitas rambut secara keseluruhan. [cite: 747]"
+        },
+        {
+          "name": "Hair Spa Mint Short [cite: 748]",
+          "price": "Rp 150.000 [cite: 749]",
+          "description": "Perawatan spa rambut pendek dengan sensasi mint yang menyegarkan. Efektif membersihkan kulit kepala, mengurangi ketombe dan minyak berlebih, serta memberikan efek relaksasi yang sejuk. [cite: 750]"
+        },
+        {
+          "name": "Hair Spa Mint Long Hair [cite: 751]",
+          "price": "Rp 185.000 [cite: 752]",
+          "description": "Perawatan spa rambut panjang dengan ekstrak mint yang menyejukkan. Membantu melancarkan sirkulasi darah di kulit kepala, menutrisi folikel, dan menjadikan rambut terasa lebih segar, bersih, serta bervolume. [cite: 753]"
+        },
+        {
+          "name": "Hair Spa Mint Very Long Hair [cite: 756]",
+          "price": "Rp 210.000 [cite: 757]",
+          "description": "Perawatan spa menyegarkan dengan ekstrak mint untuk rambut sangat panjang. [cite: 758] Memberikan sensasi dingin yang menenangkan kulit kepala, mengurangi lepek, dan menjaga kesegaran rambut dari akar hingga ke ujungnya [cite: 759]"
+        },
+        {
+          "name": "Hair Spa Cokelat Short [cite: 760]",
+          "price": "Rp 150.000 [cite: 761]",
+          "description": "Perawatan spa dengan ekstrak cokelat kaya antioksidan untuk rambut pendek. [cite: 762] Membantu melembapkan, memperbaiki kerusakan ringan, dan memberikan aroma manis yang merelaksasi pikiran. [cite: 763]"
+        },
+        {
+          "name": "Hair Spa Cokelat Long Hair [cite: 764]",
+          "price": "Rp 185.000 [cite: 765]",
+          "description": "Perawatan spa cokelat untuk rambut panjang yang membutuhkan kelembapan ekstra. [cite: 766] Menutrisi setiap helai rambut agar tampak lebih berkilau, halus, dan mudah diatur, disertai aroma mewah yang menenangkan. [cite: 767]"
+        },
+        {
+          "name": "Hair Spa Cokelat Very Long Hair [cite: 768]",
+          "price": "Rp 210.000 [cite: 769]",
+          "description": "Perawatan spa cokelat intensif untuk rambut sangat panjang. Memberikan perlindungan dan nutrisi menyeluruh untuk mencegah rambut patah, mengembalikan kelembutan, dan menjaga keindahan rambut Anda. [cite: 770]"
+        },
+        {
+          "name": "Hair Spa Strawberry Short [cite: 771]",
+          "price": "Rp 150.000 [cite: 772]",
+          "description": "Perawatan spa menyegarkan dengan ekstrak stroberi untuk rambut pendek. Kaya akan vitamin untuk merevitalisasi rambut kusam, menjadikannya lebih berkilau, lembut, dan wangi sepanjang hari. [cite: 773]"
+        },
+        {
+          "name": "Hair Spa Strawberry Long Hair [cite: 774]",
+          "price": "Rp 185.000 [cite: 775]",
+          "description": "Perawatan spa stroberi untuk rambut panjang. Menutrisi batang rambut secara mendalam, mengatasi kekeringan, dan mengembalikan kilau sehat alami dengan keharuman buah yang segar. [cite: 776]"
+        },
+        {
+          "name": "Hair Spa Strawberry Very Long Hair [cite: 777]",
+          "price": "Rp 210.000 [cite: 778]",
+          "description": "Perawatan spa stroberi komprehensif untuk rambut sangat panjang. Merawat kekuatan dan vitalitas helai rambut untuk mencegah ujung bercabang, memberikan hidrasi ekstra, dan kesegaran yang tahan lama. [cite: 779]"
+        },
+        {
+          "name": "Hair Spa Vanilla Short [cite: 783]",
+          "price": "Rp 150.000 [cite: 782]",
+          "description": "Perawatan spa dengan keharuman vanilla yang mewah dan menenangkan untuk rambut pendek. [cite: 784] Membantu melembapkan helai rambut, mengembalikan kelembutan, dan memberikan efek relaksasi yang mendalam.\" [cite: 785]"
+        },
+        {
+          "name": "Hair Spa Vanilla Long Hair [cite: 786]",
+          "price": "Rp 185.000 [cite: 787]",
+          "description": "Perawatan spa vanilla untuk rambut panjang yang memberikan kelembapan dan kelembutan ekstra. [cite: 788] Menjadikan rambut lebih halus, mudah diatur, dan wangi sepanjang hari dengan sentuhan relaksasi maksimal. [cite: 789]"
+        },
+        {
+          "name": "Hair Spa Vanilla Very Long Hair [cite: 790]",
+          "price": "Rp 210.000 [cite: 791]",
+          "description": "Perawatan spa vanilla untuk rambut sangat panjang yang memberikan kelembapan dan kelembutan ekstra. [cite: 792] Menjadikan rambut lebih halus, mudah diatur, dan wangi sepanjang hari dengan sentuhan relaksasi maksimal. [cite: 793]"
+        },
+        {
+          "name": "Hair Spa Greentea Short [cite: 794]",
+          "price": "Rp 150.000 [cite: 795]",
+          "description": "Perawatan spa dengan ekstrak teh hijau yang kaya antioksidan untuk rambut pendek. [cite: 796] Membantu menyehatkan kulit kepala, menyegarkan rambut, dan memberikan perlindungan dari polusi. [cite: 797]"
+        },
+        {
+          "name": "Hair Spa Greentea Long Hair [cite: 798]",
+          "price": "Rp 185.000 [cite: 799]",
+          "description": "Perawatan spa teh hijau untuk rambut panjang yang efektif menyeimbangkan kondisi kulit kepala, menguatkan akar rambut, dan memberikan sensasi bersih serta segar yang tahan lama. [cite: 800]"
+        },
+        {
+          "name": "Hair Spa Greentea Very Long Hair [cite: 801]",
+          "price": "Rp 210.000 [cite: 802]",
+          "description": "Perawatan spa teh hijau komprehensif untuk rambut sangat panjang. Menjaga kebersihan kulit kepala sekaligus menutrisi batang rambut agar tetap kuat, segar, bervolume, dan berkilau alami. [cite: 803]"
+        },
+        {
+          "name": "Hair Cut + Cuci Blow + Styling [cite: 804]",
+          "price": "Rp 175.000 [cite: 805]",
+          "description": "Layanan potong rambut profesional yang disesuaikan dengan karakter dan bentuk wajah Anda, dilengkapi dengan pencucian bersih, pengeringan (blow), serta penataan (styling) akhir untuk tampilan yang rapi dan memukau. [cite: 806]"
+        },
+        {
+          "name": "Hair Cut [cite: 807]",
+          "price": "Rp 120.000 [cite: 810]",
+          "description": "Layanan pemotongan dan pembentukan gaya rambut oleh penata rambut profesional kami. [cite: 811] Disesuaikan dengan karakter, struktur wajah, dan preferensi Anda untuk hasil akhir yang elegan, segar, dan presisi. [cite: 812]"
+        }
+      ]
+    },
+    {
+      "category": "Anti Dandruff & Hair Treatments [cite: 813, 836]",
+      "items": [
+        {
+          "name": "Anti Dandruff Short [cite: 814]",
+          "price": "Rp 330.000 [cite: 815]",
+          "description": "Perawatan intensif khusus rambut pendek yang diformulasikan untuk membersihkan kulit kepala dari ketombe, menenangkan iritasi, mengurangi rasa gatal, dan mengembalikan keseimbangan alami kulit kepala. [cite: 816]"
+        },
+        {
+          "name": "Anti Dandruff Short Long Hair [cite: 817]",
+          "price": "Rp 390.000 [cite: 818]",
+          "description": "Perawatan anti-ketombe komprehensif untuk rambut panjang. Bekerja efektif membersihkan kulit kepala secara menyeluruh dari serpihan ketombe tanpa menghilangkan kelembapan alami pada batang rambut Anda. [cite: 819]"
+        },
+        {
+          "name": "Anti Dandruff Very Long Hair [cite: 820]",
+          "price": "Rp 420.000 [cite: 821]",
+          "description": "Perawatan anti-ketombe premium khusus untuk rambut sangat panjang. Memberikan purifikasi mendalam pada akar dan kulit kepala, sekaligus menutrisi helaian rambut agar tetap kuat, lembut, dan bebas ketombe.\" [cite: 822]"
+        },
+        {
+          "name": "Hair Collagen Nano Spray Short [cite: 825]",
+          "price": "Rp 330.000 [cite: 826]",
+          "description": "Perawatan inovatif menggunakan teknologi nano spray untuk menginfus kolagen ke dalam batang rambut pendek. [cite: 827] Efektif memperbaiki rambut rusak, mengembalikan elastisitas, dan memberikan kilau alami seketika. [cite: 828]"
+        },
+        {
+          "name": "Hair Collagen Nano Spray Long Hair [cite: 829]",
+          "price": "Rp 390.000 [cite: 830]",
+          "description": "Perawatan kolagen bernutrisi tinggi dengan teknologi nano spray untuk rambut panjang. [cite: 831] Partikel nano memastikan penyerapan nutrisi maksimal ke dalam kutikula, membuat helai rambut lebih kuat, halus, dan berkilau sempurna. [cite: 832]"
+        },
+        {
+          "name": "Hair Collagen Nano Spray Very Long Hair [cite: 833]",
+          "price": "Rp 420.000 [cite: 834]",
+          "description": "Perawatan nano spray kolagen premium khusus rambut sangat panjang. Memberikan hidrasi dan perbaikan struktural secara mendalam dari akar hingga ujungnya, mencegah rambut bercabang, dan menjaganya tetap sehat bercahaya. [cite: 835]"
+        },
+        {
+          "name": "Anti Hair Fall Short [cite: 837]",
+          "price": "Rp 400.000 [cite: 838]",
+          "description": "Perawatan intensif rambut pendek untuk menutrisi kulit kepala, memperkuat akar, dan mengurangi kerontokan secara efektif. [cite: 839]"
+        },
+        {
+          "name": "Anti Hair Fall Long Hair [cite: 840]",
+          "price": "Rp 450.000 [cite: 841]",
+          "description": "Perawatan menyeluruh rambut panjang guna menguatkan akar secara maksimal dan menjaga kepadatan rambut agar tidak mudah rontok. [cite: 842]"
+        },
+        {
+          "name": "Anti Hair Fall Very Long Hair [cite: 843]",
+          "price": "Rp 500.000 [cite: 844]",
+          "description": "Nutrisi ekstra penguat akar untuk menopang helaian rambut sangat panjang dan meminimalisir kerontokan akibat rapuh. [cite: 845]"
+        }
+      ]
+    },
+    {
+      "category": "Nail & Spa [cite: 847, 853, 857]",
+      "items": [
+        {
+          "name": "Hand Spa [cite: 848]",
+          "price": "Rp 75.000 [cite: 850]",
+          "description": "Eksfoliasi dan pijatan lembut untuk merawat, melembapkan, dan mencerahkan kulit tangan Anda. [cite: 851]"
+        },
+        {
+          "name": "Foot Spa [cite: 852]",
+          "price": "Rp 85.000 [cite: 855]",
+          "description": "Perawatan relaksasi dan eksfoliasi untuk kaki lelah agar kembali segar, halus, dan bersih maksimal. [cite: 856]"
+        },
+        {
+          "name": "Nail Art Basic [cite: 858]",
+          "price": "Rp 140.000 [cite: 860]",
+          "description": "Pewarnaan kuku dengan gel dasar bernuansa elegan yang rapi, awet, dan mempercantik jari Anda. [cite: 861]"
+        },
+        {
+          "name": "Nail Art Halal [cite: 862]",
+          "price": "Rp 200.000 [cite: 863]",
+          "description": "Pewarnaan kuku menggunakan kuteks halal bersertifikat yang tembus air (breathable), cantik dan aman untuk beribadah. [cite: 864]"
+        },
+        {
+          "name": "Nail Art Cat Eye [cite: 865]",
+          "price": "Rp 175.000 [cite: 867]",
+          "description": "Desain kuku premium dengan efek kilau magnetik 3D yang mewah, elegan, dan memukau. [cite: 868]"
+        },
+        {
+          "name": "French Nail [cite: 871]",
+          "price": "Rp 225.000 [cite: 872]",
+          "description": "Gaya klasik elegan dengan garis putih presisi di ujung kuku, memberikan kesan bersih, natural, dan mempesona. [cite: 873]"
+        },
+        {
+          "name": "Chrome [cite: 874]",
+          "price": "Rp 175.000 [cite: 876]",
+          "description": "Desain kuku dengan efek cermin metalik yang memukau untuk tampilan yang mewah, modern, dan berkilau. [cite: 877]"
+        },
+        {
+          "name": "Nail Gel 3D [cite: 878]",
+          "price": "Rp 280.000 [cite: 879]",
+          "description": "Seni kuku dengan elemen bertekstur timbul yang artistik, memberikan dimensi ekstra untuk jari yang unik dan menonjol. [cite: 880]"
+        },
+        {
+          "name": "Korean Blush Nail [cite: 881]",
+          "price": "Rp 175.000 [cite: 882]",
+          "description": "Tren gradasi rona lembut di bagian tengah kuku ala Korea, memberikan kesan manis, merona, dan sangat feminin. [cite: 883]"
+        },
+        {
+          "name": "Glazed Pearl Nail [cite: 884]",
+          "price": "Rp 175.000 [cite: 885]",
+          "description": "Tampilan kuku mengkilap bak mutiara dengan sentuhan krom tipis yang anggun, elegan, dan berkilau halus. [cite: 886]"
+        },
+        {
+          "name": "Nail Gel Gliter [cite: 887]",
+          "price": "Rp 150.000 [cite: 888]",
+          "description": "Pulasan gel awet dengan taburan glitter berkilau maksimal untuk melengkapi gaya glamor Anda. [cite: 889]"
+        },
+        {
+          "name": "Nail Extension [cite: 890]",
+          "price": "Rp 200.000 [cite: 891]",
+          "description": "Layanan perpanjangan kuku menggunakan material premium yang kuat dan terlihat natural untuk jari tampak lebih lentik. [cite: 892]"
+        },
+        {
+          "name": "Remove Nail Gel [cite: 895]",
+          "price": "Rp 65.000 [cite: 896]",
+          "description": "Proses pembersihan dan penghapusan sisa kuteks gel secara aman dan profesional tanpa merusak lapisan alami kuku. [cite: 897]"
+        },
+        {
+          "name": "Gradiasi Nail [cite: 898]",
+          "price": "Rp 175.000 [cite: 899]",
+          "description": "Seni pewarnaan kuku dengan perpaduan dua warna atau lebih yang menyatu lembut untuk tampilan transisi yang artistik dan elegan. [cite: 900]"
+        }
+      ]
+    },
+    {
+      "category": "Eyelash Extension [cite: 901]",
+      "items": [
+        {
+          "name": "Natural Lash [cite: 902]",
+          "price": "Rp 140.000 [cite: 903]",
+          "description": "Pemasangan ekstensi helai per helai untuk hasil akhir yang ringan, lentik alami, dan menyerupai bulu mata asli Anda. [cite: 904]"
+        },
+        {
+          "name": "Fluffy Lash [cite: 905]",
+          "price": "Rp 140.000 [cite: 906]",
+          "description": "Ekstensi bulu mata dengan volume ekstra dan tekstur fluffy yang lembut untuk tampilan mata yang lebih dramatis, penuh, dan memikat. [cite: 907]"
+        },
+        {
+          "name": "Japanese Lash [cite: 908]",
+          "price": "Rp 175.000 [cite: 909]",
+          "description": "eknik ekstensi ala Jepang yang menonjolkan detail natural, sangat rapi, dan ringan untuk memberikan kesan mata yang manis. [cite: 910]"
+        },
+        {
+          "name": "Korean Lash [cite: 911]",
+          "price": "Rp 200.000 [cite: 912]",
+          "description": "Gaya ekstensi bulu mata ala idol Korea dengan susunan helaian yang terdefinisi (spiky/wispy) untuk tampilan mata yang tegas namun tetap natural. [cite: 913]"
+        },
+        {
+          "name": "Georgeus Lash [cite: 916]",
+          "price": "Rp 280.000 [cite: 917]",
+          "description": "Ekstensi bulu mata premium yang dirancang untuk memberikan tampilan memukau, bervolume elegan, dan efek mata yang lebih hidup serta glamor. [cite: 918]"
+        },
+        {
+          "name": "Whispie Lash [cite: 919]",
+          "price": "Rp 225.000 [cite: 920]",
+          "description": "Teknik pemasangan helaian panjang dan pendek secara berselang-seling untuk menciptakan efek bulu mata yang bertekstur ringan, natural, namun tetap memikat. [cite: 921]"
+        },
+        {
+          "name": "Anime Lash [cite: 922]",
+          "price": "Rp 225.000 [cite: 923]",
+          "description": "Gaya ekstensi khas karakter anime dengan helaian yang mengelompok tegas di titik tertentu, memberikan kesan mata lebih bulat, besar, dan menawan. [cite: 924]"
+        },
+        {
+          "name": "Manhwa Lash [cite: 925]",
+          "price": "Rp 230.000 [cite: 926]",
+          "description": "Desain ekstensi trendi ala karakter manhwa (komik Korea) dengan susunan helaian yang terdefinisi rapi untuk menonjolkan bentuk mata yang tajam dan memesona. [cite: 927]"
+        },
+        {
+          "name": "Russian Lash 3D [cite: 928]",
+          "price": "Rp 335.000 [cite: 929]",
+          "description": "Pemasangan tiga helai ekstensi ultra-ringan pada satu bulu mata asli, menghasilkan volume ekstra tebal dan dramatis yang tetap nyaman digunakan. [cite: 930]"
+        },
+        {
+          "name": "Retouch Lash [cite: 931]",
+          "price": "Rp 115.000 [cite: 932]",
+          "description": "Perawatan berkala untuk mengisi kembali helaian ekstensi yang telah rontok, memastikan bulu mata Anda selalu tampil penuh, rapi, dan sempurna. [cite: 933]"
+        },
+        {
+          "name": "Remove Lash [cite: 934]",
+          "price": "Rp 75.000 [cite: 935]",
+          "description": "Proses pelepasan ekstensi bulu mata secara profesional menggunakan cairan khusus yang aman, nyaman, dan tidak merusak bulu mata asli Anda. [cite: 936]"
+        },
+        {
+          "name": "Lashlift Keratin [cite: 939]",
+          "price": "Rp 115.000 [cite: 940]",
+          "description": "Perawatan melentikkan bulu mata asli secara natural yang dilengkapi dengan nutrisi keratin untuk memperkuat, melembapkan, dan menebalkan setiap helaiannya. [cite: 941]"
+        }
+      ]
+    },
+    {
+      "category": "Menicure & Pedicure [cite: 942]",
+      "items": [
+        {
+          "name": "Menicure Express [cite: 943]",
+          "price": "Rp 60.000 [cite: 944]",
+          "description": "Perawatan kilat untuk merapikan bentuk kuku dan membersihkan kutikula tangan, cocok untuk Anda yang memiliki jadwal padat namun tetap ingin tampil rapi dan elegan. [cite: 945]"
+        },
+        {
+          "name": "Pedicure Express [cite: 946]",
+          "price": "Rp 60.000 [cite: 947]",
+          "description": "Layanan cepat dan praktis untuk merapikan bentuk kuku jari kaki serta membersihkan kutikula agar kaki terlihat lebih bersih, sehat, dan terawat. [cite: 948]"
+        },
+        {
+          "name": "Menicure Spa [cite: 949]",
+          "price": "Rp 140.000 [cite: 950]",
+          "description": "Perawatan kuku tangan menyeluruh yang mencakup pembersihan, pembentukan kuku, eksfoliasi lembut, serta pijatan relaksasi untuk mengembalikan kelembapan dan kehalusan kulit tangan. [cite: 951]"
+        },
+        {
+          "name": "Pedicure Spa [cite: 952]",
+          "price": "Rp 170.000 [cite: 953]",
+          "description": "Perawatan kuku dan telapak kaki komprehensif, dilengkapi dengan scrub eksfoliasi dan pijatan memanjakan untuk meredakan pegal, mengangkat sel kulit mati, serta menghaluskan kulit kasar. [cite: 954]"
+        },
+        {
+          "name": "Luxury Pedicure Spa [cite: 955]",
+          "price": "Rp 200.000 [cite: 956]",
+          "description": "Pengalaman spa kaki premium dengan rangkaian perawatan eksklusif. Meliputi relaksasi mendalam, masker bernutrisi, dan perawatan kuku intensif untuk hasil kaki yang sangat lembut, cerah, dan menawan. [cite: 957]"
+        }
+      ]
+    },
+    {
+      "category": "Paket Slimming Treatment [cite: 958]",
+      "items": [
+        {
+          "name": "Paket Slimming 0,25 [cite: 959]",
+          "price": "Rp 7.250.000 [cite: 961]",
+          "description": "Perawatan kuku tangan menyeluruh yang mencakup pembersihan, pembentukan kuku, eksfoliasi lembut, serta pijatan relaksasi untuk mengembalikan kelembapan dan kehalusan kulit tangan. [cite: 962]"
+        },
+        {
+          "name": "Paket Slimming 0,5 [cite: 963]",
+          "price": "Rp 7.250.000 [cite: 964]",
+          "description": "Program lanjutan fase pertama dengan dosis (0,5). Berfokus pada peningkatan pembakaran lemak dan pengendalian nafsu makan yang lebih stabil untuk progres penurunan berat badan yang konsisten. [cite: 965]"
+        },
+        {
+          "name": "Paket Slimming 1,0 [cite: 966]",
+          "price": "Rp 7.250.000 [cite: 967]",
+          "description": "Program perawatan intensif dengan dosis (1,0). Ideal untuk pasien yang telah melewati fase adaptasi, memberikan efek yang lebih signifikan dalam pemecahan lemak dan manajemen bentuk tubuh. [cite: 968]"
+        },
+        {
+          "name": "Paket Slimming 1,7 [cite: 969]",
+          "price": "Rp 11.100.000 [cite: 970]",
+          "description": "Program slimming lanjutan dengan dosis tinggi (1,7) untuk akselerasi penurunan berat badan. [cite: 971] Diformulasikan secara klinis untuk mendekatkan Anda pada target berat badan ideal dengan hasil yang nyata. [cite: 972]"
+        },
+        {
+          "name": "Paket Slimming 2,4 [cite: 973]",
+          "price": "Rp 13.350.000 [cite: 974]",
+          "description": "Program pemeliharaan dan transformasi maksimal dengan dosis puncak (2,4). Memberikan hasil paling optimal dan komprehensif dalam mengikis lemak membandel untuk bentuk tubuh proporsional yang tahan lama. [cite: 975]"
+        }
+      ]
+    }
+  ]
+}

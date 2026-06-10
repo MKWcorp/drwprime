@@ -67,11 +67,11 @@ export default function MobileBottomNav() {
           ),
         }
       : {
-          name: 'Bantuan',
-          href: '#contact',
+          name: 'Insight',
+          href: '/prime-insight',
           icon: (
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
             </svg>
           ),
         },
@@ -83,8 +83,9 @@ export default function MobileBottomNav() {
   };
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-black via-gray-900 to-black border-t border-primary/20">
-      <div className="grid grid-cols-5 gap-1 px-2 py-3">
+    <nav className="lg:hidden fixed bottom-2 left-0 right-0 z-[60] px-3 pb-[max(0.25rem,env(safe-area-inset-bottom))]">
+      <div className="rounded-[2rem] border border-white/15 bg-[linear-gradient(180deg,rgba(18,24,34,0.9),rgba(8,12,20,0.84))] shadow-[0_12px_30px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-xl">
+        <div className="grid grid-cols-5 gap-1 px-2 pt-2 pb-1">
         {navItems.map((item) => {
           const active = isActive(item.href);
           
@@ -92,19 +93,26 @@ export default function MobileBottomNav() {
             <Link
               key={item.name}
               href={item.href}
-              className={`flex flex-col items-center justify-center gap-1 py-2 rounded-lg transition-all ${
-                active
-                  ? "text-primary bg-primary/10"
-                  : "text-gray-400 hover:text-primary hover:bg-primary/5"
+              className={`group flex flex-col items-center justify-start gap-1.5 py-1 transition-all ${
+                active ? "text-primary" : "text-white/75"
               }`}
             >
-              <div className={`transition-transform ${active ? "scale-110" : ""}`}>
+              <div
+                className={`flex h-11 w-11 items-center justify-center rounded-2xl border transition-all duration-300 ${
+                  active
+                    ? "bg-gradient-to-b from-white/25 to-white/10 border-white/25 shadow-[0_8px_20px_rgba(212,175,55,0.3)]"
+                    : "bg-transparent border-transparent group-hover:border-white/20 group-hover:bg-white/5"
+                }`}
+              >
                 {item.icon}
               </div>
-              <span className="text-xs font-medium">{item.name}</span>
+              <span className={`text-[11px] leading-none font-medium ${active ? "text-primary" : "text-white/75"}`}>
+                {item.name}
+              </span>
             </Link>
           );
         })}
+        </div>
       </div>
     </nav>
   );

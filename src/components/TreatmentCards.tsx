@@ -13,7 +13,7 @@ export default function TreatmentCards() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      href: "/treatments?category=facial",
+      href: "/treatments?category=facial-basic",
     },
     {
       id: 2,
@@ -24,7 +24,7 @@ export default function TreatmentCards() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
         </svg>
       ),
-      href: "/treatments?category=body",
+      href: "/treatments?category=body-treatment",
     },
     {
       id: 3,

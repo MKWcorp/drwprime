@@ -250,6 +250,75 @@ model BankAccount {
   @@map("bank_accounts")
 }
 
+// Daily spending report upload for membership enrichment
+model DailySpendingUpload {
+  id               String              @id @default(cuid())
+  reportDate       DateTime
+  sourceFileName   String
+  uploadedByClerkId String?
+  totalRows        Int                 @default(0)
+  totalPendapatan  Decimal             @default(0) @db.Decimal(14, 2)
+  totalKeuntungan  Decimal             @default(0) @db.Decimal(14, 2)
+
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  entries          DailySpendingEntry[]
+
+  @@index([reportDate])
+  @@map("daily_spending_uploads")
+}
+
+model DailySpendingEntry {
+  id                 String             @id @default(cuid())
+  uploadId           String
+  nomorInvoice       String
+  nomorRegistrasi    String?
+  namaPasien         String
+  dob                String?
+  tanggalKunjungan   DateTime
+  dokter             String?
+  diagnosa           String?
+  status             String?
+
+  totalPendapatan    Decimal            @default(0) @db.Decimal(14, 2)
+  pendapatanTindakan Decimal            @default(0) @db.Decimal(14, 2)
+  pendapatanObat     Decimal            @default(0) @db.Decimal(14, 2)
+  keuntungan         Decimal            @default(0) @db.Decimal(14, 2)
+
+  createdAt          DateTime           @default(now())
+
+  upload             DailySpendingUpload @relation(fields: [uploadId], references: [id], onDelete: Cascade)
+
+  @@unique([uploadId, nomorInvoice])
+  @@index([tanggalKunjungan])
+  @@index([namaPasien])
+  @@map("daily_spending_entries")
+}
+
+// Best Deal monthly promotions
+model BestDealPromo {
+  id          String    @id @default(cuid())
+  title       String
+  subtitle    String?
+  description String?
+  imageUrl    String?
+  promoMonth  String
+  validFrom   DateTime?
+  validUntil  DateTime?
+  ctaText     String?   @default("Reservasi Sekarang")
+  ctaLink     String?
+  terms       String?
+  order       Int       @default(0)
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([isActive, order])
+  @@index([promoMonth])
+  @@map("best_deal_promos")
+}
+
 // Withdrawal Request - Commission withdrawal by affiliators
 model Withdrawal {
   id              String    @id @default(cuid())
@@ -269,4 +338,28 @@ model Withdrawal {
   bankAccount     BankAccount  @relation(fields: [bankAccountId], references: [id])
 
   @@map("withdrawals")
+}
+
+// Blog posts for treatment education content
+model BlogPost {
+  id                    String    @id @default(cuid())
+  title                 String
+  slug                  String    @unique
+  excerpt               String?
+  content               String    @db.Text
+  coverImage            String?   @map("cover_image")
+  seoTitle              String?   @map("seo_title")
+  seoDescription        String?   @map("seo_description")
+  tags                  String[]  @default([])
+  relatedTreatmentSlugs String[]  @default([]) @map("related_treatment_slugs")
+  status                String    @default("draft") // draft, published
+  publishedAt           DateTime? @map("published_at")
+  createdByClerkId      String?   @map("created_by_clerk_id")
+  updatedByClerkId      String?   @map("updated_by_clerk_id")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  @@index([status, publishedAt])
+  @@index([createdAt])
+  @@map("blog_posts")
 }

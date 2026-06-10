@@ -38,6 +38,7 @@ export default function ProblemSolution() {
                 src="/ultraformermpt.png"
                 alt="HIFU Ultraformer MPT"
                 fill
+                sizes="(min-width: 1024px) 80rem, 100vw"
                 className="object-contain"
                 priority
               />

@@ -22,7 +22,7 @@ export default function Hero() {
           fill
           className="object-cover"
           priority
-          sizes="100vw"
+          sizes="(min-width: 1024px) calc(100vw - 40px), 0px"
         />
       </div>      {/* Video Overlay (if working) */}
       {!videoError && (

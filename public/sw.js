@@ -1,52 +1,80 @@
-const CACHE_NAME = 'drwprime-v1';
-const urlsToCache = [
-  '/',
-  '/drwprime-icon.png',
-  '/icon-192x192.png',
-  '/icon-512x512.png',
-  '/drwprime-logo.png'
+const STATIC_CACHE = "drwprime-static-v2";
+const RUNTIME_CACHE = "drwprime-runtime-v2";
+const STATIC_ASSETS = [
+  "/drwprime-icon.png",
+  "/icon-192x192.png",
+  "/icon-512x512.png",
+  "/drwprime-logo.png"
 ];
 
-// Install event - cache resources
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
+    caches.open(STATIC_CACHE).then((cache) => {
+      return cache.addAll(STATIC_ASSETS);
+    })
   );
   self.skipWaiting();
 });
 
-// Fetch event - serve from cache, fallback to network
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
-  );
-});
+self.addEventListener("activate", (event) => {
+  const keepCaches = [STATIC_CACHE, RUNTIME_CACHE];
 
-// Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
+          if (!keepCaches.includes(cacheName)) {
             return caches.delete(cacheName);
           }
+          return undefined;
         })
       );
     })
   );
+
   self.clients.claim();
+});
+
+self.addEventListener("fetch", (event) => {
+  const { request } = event;
+
+  if (request.method !== "GET") {
+    return;
+  }
+
+  const url = new URL(request.url);
+
+  // For page navigations, always try network first so HTML stays fresh.
+  if (request.mode === "navigate") {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const responseClone = response.clone();
+          caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, responseClone));
+          return response;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  const isSameOrigin = url.origin === self.location.origin;
+  const isNextStatic = isSameOrigin && url.pathname.startsWith("/_next/static/");
+  const isPublicAsset = isSameOrigin && /\.(?:js|css|png|jpg|jpeg|gif|webp|svg|ico|woff2?)$/i.test(url.pathname);
+
+  if (isNextStatic || isPublicAsset) {
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
+        const networkFetch = fetch(request)
+          .then((response) => {
+            const responseClone = response.clone();
+            caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, responseClone));
+            return response;
+          })
+          .catch(() => cachedResponse);
+
+        return cachedResponse || networkFetch;
+      })
+    );
+  }
 });

@@ -12,7 +12,7 @@ interface Treatment {
   slug: string;
   name: string;
   description: string;
-  duration: number;
+  duration: number | null;
   price: number;
   benefits: string[];
 }
@@ -311,9 +311,15 @@ function TreatmentsContent() {
                     
                     {/* Duration & Price */}
                     <div className="flex justify-between items-center gap-2">
-                      <span className="text-xs bg-primary/15 text-primary px-2 py-1 rounded">
-                        {treatment.duration} Menit
-                      </span>
+                      {treatment.duration ? (
+                        <span className="text-xs bg-primary/15 text-primary px-2 py-1 rounded">
+                          {treatment.duration} Menit
+                        </span>
+                      ) : (
+                        <span className="text-xs bg-white/5 text-white/50 px-2 py-1 rounded">
+                          Hubungi kami untuk durasi
+                        </span>
+                      )}
                       <span className="text-sm font-bold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
                         Rp {treatment.price.toLocaleString('id-ID')}
                       </span>
@@ -325,16 +331,18 @@ function TreatmentsContent() {
                     </p>
                     
                     {/* Benefits */}
-                    <div className="flex-1">
-                      <ul className="text-xs text-white/50 space-y-1 max-h-20 overflow-hidden">
-                        {treatment.benefits.map((benefit: string, index: number) => (
-                          <li key={index} className="flex items-start gap-1">
-                            <span className="text-primary mt-0.5">✓</span>
-                            <span>{benefit}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    {treatment.benefits.length > 0 && (
+                      <div className="flex-1">
+                        <ul className="text-xs text-white/50 space-y-1 max-h-20 overflow-hidden">
+                          {treatment.benefits.map((benefit: string, index: number) => (
+                            <li key={index} className="flex items-start gap-1">
+                              <span className="text-primary mt-0.5">✓</span>
+                              <span>{benefit}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                     
                     {/* Read More Link */}
                     <Link 

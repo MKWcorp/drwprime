@@ -14,10 +14,9 @@ interface Treatment {
   slug: string;
   name: string;
   description: string;
-  duration: number;
+  duration: number | null;
   price: number;
   benefits: string[];
-  image: string;
   category: {
     name: string;
   };
@@ -123,12 +122,14 @@ export default function TreatmentDetailPage() {
           </div>
 
           {/* Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <div className={`grid grid-cols-1 ${treatment.duration ? 'md:grid-cols-2' : ''} gap-6 mb-12`}>
             {/* Duration Card */}
-            <div className="bg-black/50 border border-primary/20 p-6 rounded-xl">
-              <div className="text-sm text-white/60 mb-1">Durasi Treatment</div>
-              <div className="text-2xl font-bold text-primary">{treatment.duration} Menit</div>
-            </div>
+            {treatment.duration && (
+              <div className="bg-black/50 border border-primary/20 p-6 rounded-xl">
+                <div className="text-sm text-white/60 mb-1">Durasi Treatment</div>
+                <div className="text-2xl font-bold text-primary">{treatment.duration} Menit</div>
+              </div>
+            )}
 
             {/* Price Card */}
             <div className="bg-black/50 border border-primary/20 p-6 rounded-xl">
@@ -137,24 +138,25 @@ export default function TreatmentDetailPage() {
             </div>
           </div>
 
-          {/* Benefits Section */}
-          <div className="bg-black/50 border border-primary/20 p-8 rounded-xl mb-12">
-            <h2 className="text-2xl font-bold text-primary mb-6 font-jakarta">
-              Manfaat Treatment
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {treatment.benefits.map((benefit, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+          {treatment.benefits.length > 0 && (
+            <div className="bg-black/50 border border-primary/20 p-8 rounded-xl mb-12">
+              <h2 className="text-2xl font-bold text-primary mb-6 font-jakarta">
+                Manfaat Treatment
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {treatment.benefits.map((benefit, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-white/80 leading-relaxed">{benefit}</span>
                   </div>
-                  <span className="text-white/80 leading-relaxed">{benefit}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* CTA Section */}
           <div className="bg-gradient-to-r from-primary/10 to-primary-light/10 border-2 border-primary/30 p-8 rounded-xl text-center">

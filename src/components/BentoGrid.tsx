@@ -3,14 +3,14 @@ import Link from 'next/link';
 
 export default function BentoGrid() {
   return (
-    <section className="py-20 px-5 bg-black">
+    <section className="font-gilroy py-20 px-5 bg-black">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="font-playfair text-4xl md:text-5xl font-bold text-primary mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.03em] text-primary mb-4">
             Explore Our Premium Treatments
           </h2>
-          <p className="text-white/70 text-lg max-w-2xl mx-auto">
+          <p className="text-white/70 text-lg font-medium leading-8 max-w-2xl mx-auto">
             Discover our range of advanced aesthetic treatments designed to enhance your natural beauty
           </p>
         </div>
@@ -29,15 +29,17 @@ export default function BentoGrid() {
                   src="/treatments/hifu-new.jpeg"
                   alt="HIFU Ultraformer MPT"
                   fill
+                  sizes="(min-width: 1024px) 24vw, (min-width: 640px) 48vw, 96vw"
+                  priority
                   className="object-cover object-center opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
               <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
-                <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
+                <h3 className="text-xl md:text-2xl font-semibold tracking-[-0.02em] text-white mb-2">
                   HIFU Ultraformer MPT
                 </h3>
-                <p className="text-white/70 text-sm mb-4">
+                <p className="text-white/70 text-sm font-medium mb-4">
                   Advanced HIFU technology for skin tightening
                 </p>
                 <div className="flex items-center gap-2 text-primary text-sm font-semibold">
@@ -66,10 +68,10 @@ export default function BentoGrid() {
               </div>
               <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
-                <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
+                <h3 className="text-xl md:text-2xl font-semibold tracking-[-0.02em] text-white mb-2">
                   Facial Basic
                 </h3>
-                <p className="text-white/70 text-sm mb-4">
+                <p className="text-white/70 text-sm font-medium mb-4">
                   Essential facial care for all skin types
                 </p>
                 <div className="flex items-center gap-2 text-primary text-sm font-semibold">
@@ -98,10 +100,10 @@ export default function BentoGrid() {
               </div>
               <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
-                <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
+                <h3 className="text-xl md:text-2xl font-semibold tracking-[-0.02em] text-white mb-2">
                   Facial Prime
                 </h3>
-                <p className="text-white/70 text-sm mb-4">
+                <p className="text-white/70 text-sm font-medium mb-4">
                   Premium facial with specialized serums
                 </p>
                 <div className="flex items-center gap-2 text-primary text-sm font-semibold">
@@ -130,10 +132,10 @@ export default function BentoGrid() {
               </div>
               <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
-                <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
+                <h3 className="text-xl md:text-2xl font-semibold tracking-[-0.02em] text-white mb-2">
                   Chemical Peeling
                 </h3>
-                <p className="text-white/70 text-sm mb-4">
+                <p className="text-white/70 text-sm font-medium mb-4">
                   Medical peeling for skin regeneration
                 </p>
                 <div className="flex items-center gap-2 text-primary text-sm font-semibold">
@@ -162,10 +164,10 @@ export default function BentoGrid() {
               </div>
               <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
-                <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
+                <h3 className="text-xl md:text-2xl font-semibold tracking-[-0.02em] text-white mb-2">
                   IPL (Intense Pulsed Light)
                 </h3>
-                <p className="text-white/70 text-sm mb-4">
+                <p className="text-white/70 text-sm font-medium mb-4">
                   Advanced light therapy for various skin concerns
                 </p>
                 <div className="flex items-center gap-2 text-primary text-sm font-semibold">
@@ -194,10 +196,10 @@ export default function BentoGrid() {
               </div>
               <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
-                <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
+                <h3 className="text-xl md:text-2xl font-semibold tracking-[-0.02em] text-white mb-2">
                   Dermapen EPN
                 </h3>
-                <p className="text-white/70 text-sm mb-4">
+                <p className="text-white/70 text-sm font-medium mb-4">
                   Microneedling for skin rejuvenation
                 </p>
                 <div className="flex items-center gap-2 text-primary text-sm font-semibold">
@@ -212,7 +214,7 @@ export default function BentoGrid() {
 
           {/* Injection Treatment */}
           <Link
-            href="/treatments?category=injection-treatment"
+            href="/treatments?category=injection" 
             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 hover:border-primary transition-all duration-500 hover:shadow-xl hover:shadow-primary/20"
           >
             <div className="relative aspect-[4/5] p-5 flex flex-col justify-between">
@@ -226,10 +228,10 @@ export default function BentoGrid() {
               </div>
               <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
-                <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
+                <h3 className="text-xl md:text-2xl font-semibold tracking-[-0.02em] text-white mb-2">
                   Injection Treatment
                 </h3>
-                <p className="text-white/70 text-sm mb-4">
+                <p className="text-white/70 text-sm font-medium mb-4">
                   Advanced injection therapies
                 </p>
                 <div className="flex items-center gap-2 text-primary text-sm font-semibold">
@@ -258,10 +260,10 @@ export default function BentoGrid() {
               </div>
               <div className="relative z-10"></div>
               <div className="relative z-10 bg-black/60 backdrop-blur-md rounded-xl p-4">
-                <h3 className="font-playfair text-xl md:text-2xl font-bold text-white mb-2">
+                <h3 className="text-xl md:text-2xl font-semibold tracking-[-0.02em] text-white mb-2">
                   Botox
                 </h3>
-                <p className="text-white/70 text-sm mb-4">
+                <p className="text-white/70 text-sm font-medium mb-4">
                   Anti-aging wrinkle reduction treatment
                 </p>
                 <div className="flex items-center gap-2 text-primary text-sm font-semibold">

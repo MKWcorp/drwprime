@@ -1,0 +1,378 @@
+'use client';
+
+import { useEffect, useMemo, useState } from 'react';
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Navbar from '@/components/Navbar';
+import MobileLayout from '@/components/MobileLayout';
+
+type UploadItem = {
+  id: string;
+  reportDate: string;
+  sourceFileName: string;
+  totalRows: number;
+  totalPendapatan: number;
+  totalKeuntungan: number;
+  createdAt: string;
+  entryCount: number;
+};
+
+type CustomerSummary = {
+  namaPasien: string;
+  totalKunjungan: number;
+  totalPendapatan: number;
+  totalKeuntungan: number;
+  lastVisit: string;
+};
+
+type DashboardData = {
+  uploads: UploadItem[];
+  customerSummaries: CustomerSummary[];
+  totals: {
+    totalPendapatan: number;
+    totalKeuntungan: number;
+    totalKunjungan: number;
+  };
+};
+
+export default function ReportSpendingDailyPage() {
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
+
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const [selectedDate, setSelectedDate] = useState('');
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const [data, setData] = useState<DashboardData>({
+    uploads: [],
+    customerSummaries: [],
+    totals: { totalPendapatan: 0, totalKeuntungan: 0, totalKunjungan: 0 },
+  });
+
+  const formatCurrency = (amount: number) =>
+    new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount || 0);
+
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+
+  const checkAdminAccess = async () => {
+    if (!user) {
+      router.push('/sign-in');
+      return;
+    }
+
+    try {
+      await fetch('/api/user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: user.emailAddresses[0]?.emailAddress,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        }),
+      });
+
+      const response = await fetch('/api/user');
+      const result = await response.json();
+
+      if (result.user?.isAdmin) {
+        setIsAdmin(true);
+      } else {
+        router.push('/');
+      }
+    } catch (e) {
+      console.error('Error checking admin access:', e);
+      router.push('/');
+    } finally {
+      setCheckingAuth(false);
+    }
+  };
+
+  const fetchData = async (dateFilter?: string) => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const params = new URLSearchParams();
+      if (dateFilter) params.set('date', dateFilter);
+
+      const response = await fetch(`/api/front-office/spending-daily?${params.toString()}`);
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Gagal mengambil data spending');
+      }
+
+      setData({
+        uploads: result.uploads || [],
+        customerSummaries: result.customerSummaries || [],
+        totals: result.totals || { totalPendapatan: 0, totalKeuntungan: 0, totalKunjungan: 0 },
+      });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Terjadi kesalahan saat mengambil data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoaded) {
+      checkAdminAccess();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoaded]);
+
+  useEffect(() => {
+    if (isAdmin) {
+      fetchData(selectedDate);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAdmin, selectedDate]);
+
+  const handleUpload = async () => {
+    if (!file) {
+      setError('Pilih file Excel terlebih dahulu');
+      return;
+    }
+
+    setUploading(true);
+    setError('');
+    setSuccessMessage('');
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      if (selectedDate) {
+        formData.append('reportDate', selectedDate);
+      }
+
+      const response = await fetch('/api/front-office/spending-daily', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || 'Upload gagal');
+      }
+
+      setSuccessMessage(result.message || `Upload berhasil: ${result.upload.totalRows} baris diproses.`);
+      setFile(null);
+
+      const input = document.getElementById('spending-file-input') as HTMLInputElement | null;
+      if (input) input.value = '';
+
+      await fetchData(selectedDate);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Terjadi kesalahan saat upload file');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const totalCustomer = useMemo(() => data.customerSummaries.length, [data.customerSummaries.length]);
+
+  if (checkingAuth || !isLoaded) {
+    return (
+      <MobileLayout>
+        <div className="min-h-screen fo-glass-page fo-theme-spending">
+          <Navbar />
+          <div className="pt-24 flex items-center justify-center">
+            <p className="text-white/60">Checking access...</p>
+          </div>
+        </div>
+      </MobileLayout>
+    );
+  }
+
+  if (!isAdmin) {
+    return null;
+  }
+
+  return (
+    <MobileLayout>
+      <div className="min-h-screen fo-glass-page fo-theme-spending">
+        <Navbar />
+
+        <div className="pt-20 pb-10">
+          <div className="max-w-7xl mx-auto px-4 py-6 fo-fade-up">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <div>
+                <h1 className="text-2xl font-bold text-white">Report Spending Daily</h1>
+                <p className="text-white/60 text-sm">Upload harian data spending customer untuk kebutuhan membership</p>
+              </div>
+              <Link
+                href="/front-office"
+                className="fo-nav-chip text-sm"
+              >
+                Kembali ke Front Office
+              </Link>
+            </div>
+
+            <div className="fo-glass-card fo-fade-up fo-stagger-1 rounded-xl p-4 md:p-6 mb-6">
+              <h2 className="text-white font-semibold mb-4">Upload File Harian (.xlsx)</h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="md:col-span-1">
+                  <label className="block text-white/70 text-sm mb-2">Tanggal Report (opsional)</label>
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="w-full fo-glass-input rounded-lg px-3 py-2 text-sm"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-white/70 text-sm mb-2">Pilih file VisitReport</label>
+                  <input
+                    id="spending-file-input"
+                    type="file"
+                    accept=".xlsx"
+                    onChange={(e) => setFile(e.target.files?.[0] || null)}
+                    className="w-full fo-glass-input rounded-lg px-3 py-2 text-sm file:mr-3 file:rounded-md file:border-0 file:bg-primary/20 file:px-3 file:py-1.5 file:text-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3 mt-4">
+                <button
+                  onClick={handleUpload}
+                  disabled={uploading || !file}
+                  className="fo-glass-card-soft border-primary/35 text-primary px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/20 transition-colors"
+                >
+                  {uploading ? 'Uploading...' : 'Upload Report'}
+                </button>
+
+                {file && <p className="text-white/60 text-xs">File: {file.name}</p>}
+              </div>
+
+              {error && (
+                <div className="mt-4 bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-sm text-red-300">
+                  {error}
+                </div>
+              )}
+
+              {successMessage && (
+                <div className="mt-4 bg-green-500/10 border border-green-500/30 rounded-lg p-3 text-sm text-green-300">
+                  {successMessage}
+                </div>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div className="fo-glass-card fo-fade-up fo-stagger-1 rounded-xl p-5 border-primary/35">
+                <p className="text-primary text-xs mb-1">Total Customer</p>
+                <p className="text-2xl font-bold text-white">{totalCustomer}</p>
+              </div>
+              <div className="fo-glass-card fo-fade-up fo-stagger-2 rounded-xl p-5 border-green-500/35">
+                <p className="text-green-400 text-xs mb-1">Total Pendapatan</p>
+                <p className="text-xl font-bold text-white">{formatCurrency(data.totals.totalPendapatan)}</p>
+              </div>
+              <div className="fo-glass-card fo-fade-up fo-stagger-3 rounded-xl p-5 border-blue-500/35">
+                <p className="text-blue-400 text-xs mb-1">Total Keuntungan</p>
+                <p className="text-xl font-bold text-white">{formatCurrency(data.totals.totalKeuntungan)}</p>
+              </div>
+              <div className="fo-glass-card fo-fade-up fo-stagger-4 rounded-xl p-5 border-yellow-500/35">
+                <p className="text-yellow-300 text-xs mb-1">Total Kunjungan</p>
+                <p className="text-2xl font-bold text-white">{data.totals.totalKunjungan}</p>
+              </div>
+            </div>
+
+            <div className="fo-glass-card fo-fade-up fo-stagger-2 rounded-xl overflow-hidden mb-6">
+              <div className="p-4 border-b border-white/10 fo-glass-card-soft">
+                <h3 className="text-white font-semibold">Top Customer Spending</h3>
+              </div>
+
+              {loading ? (
+                <div className="p-8 text-center text-white/60">Loading data...</div>
+              ) : data.customerSummaries.length === 0 ? (
+                <div className="p-8 text-center text-white/60">Belum ada data spending customer</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="fo-glass-card-soft border-b border-white/10">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">No</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Nama Pasien</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Total Kunjungan</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Total Pendapatan</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Total Keuntungan</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Last Visit</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/10">
+                      {data.customerSummaries.map((item, idx) => (
+                        <tr key={`${item.namaPasien}-${idx}`} className="hover:bg-white/5 transition-colors">
+                          <td className="px-4 py-3 text-sm text-white/70">{idx + 1}</td>
+                          <td className="px-4 py-3 text-sm text-white">{item.namaPasien}</td>
+                          <td className="px-4 py-3 text-sm text-white/80">{item.totalKunjungan}</td>
+                          <td className="px-4 py-3 text-sm text-green-300 font-semibold">{formatCurrency(item.totalPendapatan)}</td>
+                          <td className="px-4 py-3 text-sm text-blue-300">{formatCurrency(item.totalKeuntungan)}</td>
+                          <td className="px-4 py-3 text-sm text-white/60">{formatDate(item.lastVisit)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            <div className="fo-glass-card fo-fade-up fo-stagger-3 rounded-xl overflow-hidden">
+              <div className="p-4 border-b border-white/10 fo-glass-card-soft">
+                <h3 className="text-white font-semibold">Riwayat Upload</h3>
+              </div>
+
+              {loading ? (
+                <div className="p-8 text-center text-white/60">Loading upload history...</div>
+              ) : data.uploads.length === 0 ? (
+                <div className="p-8 text-center text-white/60">Belum ada upload report</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="fo-glass-card-soft border-b border-white/10">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Tanggal Report</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Nama File</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Rows</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Total Pendapatan</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Diupload</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/10">
+                      {data.uploads.map((item) => (
+                        <tr key={item.id} className="hover:bg-white/5 transition-colors">
+                          <td className="px-4 py-3 text-sm text-white/80">{formatDate(item.reportDate)}</td>
+                          <td className="px-4 py-3 text-sm text-white/70">{item.sourceFileName}</td>
+                          <td className="px-4 py-3 text-sm text-white/80">{item.entryCount}</td>
+                          <td className="px-4 py-3 text-sm text-green-300">{formatCurrency(item.totalPendapatan)}</td>
+                          <td className="px-4 py-3 text-sm text-white/60">{formatDate(item.createdAt)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </MobileLayout>
+  );
+}

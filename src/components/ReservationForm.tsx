@@ -160,7 +160,7 @@ export default function ReservationForm({
                 value={formData.patientName}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
                 placeholder="Your full name"
               />
             </div>
@@ -175,7 +175,7 @@ export default function ReservationForm({
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
                 placeholder="your@email.com"
               />
             </div>
@@ -191,7 +191,7 @@ export default function ReservationForm({
               value={formData.phone}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
               placeholder="08123456789"
             />
           </div>
@@ -208,7 +208,7 @@ export default function ReservationForm({
                 onChange={handleChange}
                 required
                 min={new Date().toISOString().split('T')[0]}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
               />
             </div>
 
@@ -222,7 +222,7 @@ export default function ReservationForm({
                 value={formData.preferredTime}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
               />
             </div>
           </div>
@@ -237,7 +237,7 @@ export default function ReservationForm({
               value={formData.affiliateCode}
               onChange={handleChange}
               maxLength={5}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
               placeholder="Enter 5-digit code (e.g., AB123)"
             />
             <p className="mt-1 text-sm text-gray-500">
@@ -254,7 +254,7 @@ export default function ReservationForm({
               value={formData.notes}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
               placeholder="Any special requests or concerns?"
             />
           </div>

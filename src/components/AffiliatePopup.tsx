@@ -65,6 +65,7 @@ export default function AffiliatePopup() {
             src="/pop_up_afilliate.png"
             alt="Affiliate Program"
             fill
+            sizes="(min-width: 1024px) 32rem, 90vw"
             className="object-contain"
             priority
           />
