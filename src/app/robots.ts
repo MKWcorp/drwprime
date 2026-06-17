@@ -8,8 +8,8 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
       // Private/member areas use a noindex meta tag (kept crawlable so the tag is read).
-      // Only block the pure API surface, which has no HTML metadata.
-      disallow: '/api/'
+      // Block the pure API surface and the Payload CMS admin (no public content there).
+      disallow: ['/api/', '/cms', '/cms-api']
     },
     sitemap: `${SITE_URL}/sitemap.xml`
   };

@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withPayload } from "@payloadcms/next/withPayload";
 
 const nextConfig: NextConfig = {
   images: {
@@ -9,6 +10,13 @@ const nextConfig: NextConfig = {
         hostname: '*.public.blob.vercel-storage.com',
       },
     ],
+  },
+  // /prime-insight was a duplicate of /blog (identical content) — consolidate to /blog for SEO.
+  async redirects() {
+    return [
+      { source: '/prime-insight', destination: '/blog', permanent: true },
+      { source: '/prime-insight/:slug', destination: '/blog/:slug', permanent: true },
+    ];
   },
   // Ensure static files are properly served
   async headers() {
@@ -48,4 +56,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withPayload(nextConfig);
