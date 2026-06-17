@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 import { withPayload } from "@payloadcms/next/withPayload";
 
 const nextConfig: NextConfig = {
+  // Keep sharp (Payload's image processor) as an external server package so Next
+  // bundles its native libvips .so files into the serverless function on Vercel.
+  serverExternalPackages: ['sharp'],
   images: {
     qualities: [75, 90, 100],
     remotePatterns: [
