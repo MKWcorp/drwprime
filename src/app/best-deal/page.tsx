@@ -1,10 +1,19 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
 import { prisma } from '@/lib/prisma';
+import { buildMetadata } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
+export const metadata: Metadata = buildMetadata({
+  title: 'Best Deal & Promo Treatment',
+  description:
+    'Dapatkan penawaran terbaik dan promo treatment bulanan dari DRW Prime. Hemat untuk perawatan kecantikan premium pilihan Anda.',
+  path: '/best-deal',
+});
 
 type Promo = {
   id: string;

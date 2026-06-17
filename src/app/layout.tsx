@@ -2,10 +2,16 @@ import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import Script from "next/script";
 import "./globals.css";
+import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "DRW Prime - Premium Beauty & Wellness",
-  description: "Transform your beauty with our premium treatments and expert care",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "DRW Prime - Klinik Kecantikan & Perawatan Premium",
+    template: `%s | ${SITE_NAME}`,
+  },
+  description:
+    "DRW Prime — klinik kecantikan premium dengan treatment wajah, perawatan kulit, dan layanan estetika oleh tim ahli. Booking treatment & konsultasi sekarang.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -16,6 +22,24 @@ export const metadata: Metadata = {
     icon: "/drwprime-icon.ico",
     shortcut: "/drwprime-icon.ico",
     apple: "/apple-touch-icon.png",
+  },
+  alternates: { canonical: SITE_URL },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: "DRW Prime - Klinik Kecantikan & Perawatan Premium",
+    description:
+      "Klinik kecantikan premium dengan treatment wajah, perawatan kulit, dan layanan estetika oleh tim ahli.",
+    locale: "id_ID",
+    images: [{ url: DEFAULT_OG_IMAGE }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DRW Prime - Klinik Kecantikan & Perawatan Premium",
+    description:
+      "Klinik kecantikan premium dengan treatment wajah, perawatan kulit, dan layanan estetika oleh tim ahli.",
+    images: [DEFAULT_OG_IMAGE],
   },
 };
 
