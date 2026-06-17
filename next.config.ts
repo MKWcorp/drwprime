@@ -27,6 +27,9 @@ const nextConfig: NextConfig = {
     return [
       { source: '/prime-insight', destination: '/blog', permanent: true },
       { source: '/prime-insight/:slug', destination: '/blog/:slug', permanent: true },
+      // Retire the old textarea blog editor — Payload (/cms) is the CMS now.
+      { source: '/front-office/blog', destination: '/cms', permanent: false },
+      { source: '/front-office/blog/:path*', destination: '/cms', permanent: false },
     ];
   },
   // Ensure static files are properly served
