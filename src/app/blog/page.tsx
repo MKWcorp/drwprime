@@ -4,10 +4,10 @@ import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import MobileLayout from '@/components/MobileLayout';
-import { prisma } from '@/lib/prisma';
+import { getPayloadClient, heroImageUrl, type PayloadPost } from '@/lib/payload';
 
 export const metadata: Metadata = {
-  title: 'Blog Edukasi Treatment | DRW Prime',
+  title: { absolute: 'Blog Edukasi Treatment | DRW Prime' },
   description: 'Pelajari edukasi treatment, tips skincare, dan panduan perawatan dari DRW Prime.',
   alternates: {
     canonical: 'https://drwprime.com/blog'
@@ -27,26 +27,21 @@ export const metadata: Metadata = {
   ]
 };
 
+export const revalidate = 3600;
+
 export default async function BlogPage() {
-  const posts = await prisma.blogPost.findMany({
+  const payload = await getPayloadClient();
+  const { docs } = await payload.find({
+    collection: 'posts',
     where: {
-      status: 'published',
-      publishedAt: {
-        lte: new Date()
-      }
+      _status: { equals: 'published' },
+      publishedAt: { less_than_equal: new Date().toISOString() }
     },
-    orderBy: [{ publishedAt: 'desc' }, { createdAt: 'desc' }],
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      excerpt: true,
-      tags: true,
-      publishedAt: true,
-      createdAt: true,
-      coverImage: true
-    }
+    sort: '-publishedAt',
+    depth: 1,
+    limit: 100
   });
+  const posts = docs as unknown as PayloadPost[];
 
   return (
     <MobileLayout>
@@ -70,12 +65,15 @@ export default async function BlogPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              {posts.map((post) => (
+              {posts.map((post) => {
+                const cover = heroImageUrl(post);
+                const tags = post.tags ?? [];
+                return (
                 <article key={post.id} className="border border-white/10 rounded-2xl overflow-hidden bg-black/30 hover:border-primary/40 transition-colors">
-                  {post.coverImage && (
+                  {cover && (
                     <div className="relative w-full aspect-[16/9]">
                       <Image
-                        src={post.coverImage}
+                        src={cover}
                         alt={post.title}
                         fill
                         className="object-cover"
@@ -94,9 +92,9 @@ export default async function BlogPage() {
                   <h2 className="text-lg sm:text-xl font-bold text-white mb-3 leading-snug tracking-[-0.02em]">{post.title}</h2>
                   <p className="text-white/70 mb-4 md:mb-5 text-sm sm:text-base leading-7">{post.excerpt || 'Baca insight edukatif dari tim DRW Prime.'}</p>
 
-                  {post.tags.length > 0 && (
+                  {tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-5">
-                      {post.tags.slice(0, 4).map((tag) => (
+                      {tags.slice(0, 4).map((tag) => (
                         <span key={tag} className="px-3 py-1 rounded-full text-xs bg-primary/10 border border-primary/30 text-primary">
                           {tag}
                         </span>
@@ -113,7 +111,8 @@ export default async function BlogPage() {
                   </Link>
                   </div>
                 </article>
-              ))}
+                );
+              })}
             </div>
           )}
         </section>

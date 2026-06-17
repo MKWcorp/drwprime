@@ -2,25 +2,31 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { RichText } from '@payloadcms/richtext-lexical/react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import MobileLayout from '@/components/MobileLayout';
-import { prisma } from '@/lib/prisma';
+import { getPayloadClient, heroImageUrl, type PayloadPost } from '@/lib/payload';
+
+export const revalidate = 3600;
 
 type BlogDetailProps = {
   params: Promise<{ slug: string }>;
 };
 
-async function getPublishedPost(slug: string) {
-  return prisma.blogPost.findFirst({
+async function getPublishedPost(slug: string): Promise<PayloadPost | null> {
+  const payload = await getPayloadClient();
+  const { docs } = await payload.find({
+    collection: 'posts',
     where: {
-      slug,
-      status: 'published',
-      publishedAt: {
-        lte: new Date()
-      }
-    }
+      slug: { equals: slug },
+      _status: { equals: 'published' },
+      publishedAt: { less_than_equal: new Date().toISOString() }
+    },
+    depth: 1,
+    limit: 1
   });
+  return (docs[0] as unknown as PayloadPost) ?? null;
 }
 
 export async function generateMetadata({ params }: BlogDetailProps): Promise<Metadata> {
@@ -29,16 +35,17 @@ export async function generateMetadata({ params }: BlogDetailProps): Promise<Met
 
   if (!post) {
     return {
-      title: 'Artikel Tidak Ditemukan | DRW Prime Blog'
+      title: { absolute: 'Artikel Tidak Ditemukan | DRW Prime Blog' }
     };
   }
 
   const title = `${post.seoTitle || post.title} | DRW Prime Blog`;
   const description = post.seoDescription || post.excerpt || 'Artikel edukasi treatment dari DRW Prime';
   const canonical = `https://drwprime.com/blog/${post.slug}`;
+  const cover = heroImageUrl(post);
 
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: {
       canonical
@@ -49,11 +56,11 @@ export async function generateMetadata({ params }: BlogDetailProps): Promise<Met
       title,
       description,
       siteName: 'DRW Prime',
-      publishedTime: post.publishedAt?.toISOString(),
-      modifiedTime: post.updatedAt.toISOString(),
-      images: post.coverImage ? [{ url: post.coverImage, alt: post.title }] : undefined
+      publishedTime: post.publishedAt ?? undefined,
+      modifiedTime: post.updatedAt,
+      images: cover ? [{ url: cover, alt: post.title }] : undefined
     },
-    keywords: post.tags
+    keywords: post.tags ?? undefined
   };
 }
 
@@ -65,16 +72,21 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
     notFound();
   }
 
+  const cover = heroImageUrl(post);
+  const tags = post.tags ?? [];
+  const relatedTreatmentSlugs = post.relatedTreatmentSlugs ?? [];
+  const publishedISO = post.publishedAt ?? post.createdAt;
+
   const blogPostingSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.seoTitle || post.title,
     description: post.seoDescription || post.excerpt || post.title,
-    image: post.coverImage ? [post.coverImage] : undefined,
-    datePublished: (post.publishedAt ?? post.createdAt).toISOString(),
-    dateModified: post.updatedAt.toISOString(),
+    image: cover ? [cover] : undefined,
+    datePublished: publishedISO,
+    dateModified: post.updatedAt,
     mainEntityOfPage: `https://drwprime.com/blog/${post.slug}`,
-    keywords: post.tags.join(', '),
+    keywords: tags.join(', '),
     author: {
       '@type': 'Organization',
       name: 'DRW Prime'
@@ -103,10 +115,10 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
           </Link>
 
           <header className="mt-6 mb-8 border-b border-white/10 pb-6">
-            {post.coverImage && (
+            {cover && (
               <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden mb-6">
                 <Image
-                  src={post.coverImage}
+                  src={cover}
                   alt={post.title}
                   fill
                   className="object-cover"
@@ -116,7 +128,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
               </div>
             )}
             <p className="text-xs text-white/50 mb-3">
-              {new Date(post.publishedAt ?? post.createdAt).toLocaleDateString('id-ID', {
+              {new Date(publishedISO).toLocaleDateString('id-ID', {
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric'
@@ -124,9 +136,9 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
             </p>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 leading-tight tracking-[-0.03em]">{post.title}</h1>
             {post.excerpt && <p className="text-white/70 text-sm sm:text-base leading-7">{post.excerpt}</p>}
-            {post.tags.length > 0 && (
+            {tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-4">
-                {post.tags.map((tag) => (
+                {tags.map((tag) => (
                   <span key={tag} className="px-3 py-1 rounded-full text-xs bg-primary/10 border border-primary/30 text-primary">
                     {tag}
                   </span>
@@ -135,15 +147,15 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
             )}
           </header>
 
-          <section className="prose prose-invert prose-headings:text-white prose-p:text-white/85 prose-sm sm:prose-base md:prose-lg max-w-none whitespace-pre-wrap text-white/85 leading-7 sm:leading-8">
-            {post.content}
+          <section className="prose prose-invert prose-headings:text-white prose-p:text-white/85 prose-a:text-primary prose-strong:text-white prose-li:text-white/85 prose-sm sm:prose-base md:prose-lg max-w-none leading-7 sm:leading-8">
+            {post.content ? <RichText data={post.content as never} /> : null}
           </section>
 
-          {post.relatedTreatmentSlugs.length > 0 && (
+          {relatedTreatmentSlugs.length > 0 && (
             <section className="mt-12 border border-white/10 rounded-2xl p-6 bg-black/30">
               <h2 className="text-white font-semibold mb-3">Treatment Terkait</h2>
               <div className="flex flex-wrap gap-3">
-                {post.relatedTreatmentSlugs.map((slugItem) => (
+                {relatedTreatmentSlugs.map((slugItem) => (
                   <Link
                     key={slugItem}
                     href={`/treatments/${slugItem}`}

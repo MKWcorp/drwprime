@@ -65,6 +65,20 @@ export default function RootLayout({
           <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
           <meta name="apple-mobile-web-app-title" content="DRW Prime" />
           <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Organization',
+                name: 'DRW Prime',
+                url: 'https://drwprime.com',
+                logo: 'https://drwprime.com/drwprime-logo.png',
+                description:
+                  'Klinik kecantikan premium dengan treatment wajah, perawatan kulit, dan layanan estetika oleh tim ahli.',
+              }),
+            }}
+          />
           <Script id="google-tag-manager" strategy="afterInteractive">
             {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

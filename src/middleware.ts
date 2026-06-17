@@ -9,10 +9,14 @@ const isPublicRoute = createRouteMatcher([
   '/product-gallery(.*)',
   '/best-deal(.*)',
   '/blog(.*)',
-  '/prime-insight(.*)',
+  '/sitemap.xml',
+  '/robots.txt',
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/reservation(.*)',
+  // Payload CMS (has its own auth)
+  '/cms(.*)',
+  '/cms-api(.*)',
   '/api/treatments(.*)',
   '/api/best-deals(.*)',
   '/api/blog(.*)',
@@ -33,12 +37,6 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
-  const pathname = req.nextUrl.pathname;
-
-  if (pathname === '/prime-insight' || pathname.startsWith('/prime-insight/')) {
-    return;
-  }
-
   if (!isPublicRoute(req)) {
     await auth.protect();
   }
