@@ -115,6 +115,7 @@ export const Posts: CollectionConfig = {
         description: 'Ringkasan singkat untuk daftar artikel, meta description, dan social cards.',
       },
     },
+    /*
     {
       name: 'heroImage',
       type: 'upload',
@@ -124,20 +125,19 @@ export const Posts: CollectionConfig = {
         description: 'Gambar cover (juga digunakan untuk OpenGraph/social image).',
       },
     },
+    */
     {
       name: 'content',
-      type: 'textarea', // Temporarily changed from richText for debugging
+      type: 'richText',
       required: true,
       label: 'Konten',
-      admin: {
-        rows: 15,
-      }
     },
     {
       name: 'tags',
       type: 'text',
       hasMany: true,
     },
+    /*
     {
       name: 'relatedTreatmentSlugs',
       type: 'text',
@@ -147,6 +147,7 @@ export const Posts: CollectionConfig = {
         description: 'Slug treatment untuk cross-link (contoh: radiance-glow-peel).',
       },
     },
+    */
     {
       type: 'collapsible',
       label: 'SEO',
