@@ -21,10 +21,15 @@ function slugifyTitle(input: string): string {
  */
 export const Posts: CollectionConfig = {
   slug: 'posts',
+  labels: {
+    singular: 'Artikel',
+    plural: 'Artikel',
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', '_status', 'publishedAt'],
     group: 'Blog',
+    description: 'Kelola artikel blog untuk edukasi treatment dan tips skincare.',
   },
   access: {
     // Anonymous visitors only ever see published posts; logged-in CMS users see everything.
@@ -72,6 +77,7 @@ export const Posts: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      label: 'Judul',
     },
     {
       name: 'slug',
@@ -80,7 +86,7 @@ export const Posts: CollectionConfig = {
       index: true,
       admin: {
         position: 'sidebar',
-        description: 'URL path under /blog/. Auto-generated from the title if left blank.',
+        description: 'URL path di /blog/. Otomatis dari judul jika dikosongkan.',
       },
       hooks: {
         beforeValidate: [
@@ -94,31 +100,35 @@ export const Posts: CollectionConfig = {
     {
       name: 'publishedAt',
       type: 'date',
+      label: 'Tanggal Publish',
       admin: {
         position: 'sidebar',
         date: { pickerAppearance: 'dayAndTime' },
-        description: 'Shown as the article date. Set in the future + schedule publish to time a release.',
+        description: 'Tanggal artikel ditampilkan. Set di masa depan + schedule publish untuk rilis terjadwal.',
       },
     },
     {
       name: 'excerpt',
       type: 'textarea',
+      label: 'Ringkasan',
       admin: {
-        description: 'Short summary used in listings, meta description fallback, and social cards.',
+        description: 'Ringkasan singkat untuk daftar artikel, meta description, dan social cards.',
       },
     },
     {
       name: 'heroImage',
       type: 'upload',
       relationTo: 'media',
+      label: 'Gambar Cover',
       admin: {
-        description: 'Cover image (also used as the OpenGraph/social image).',
+        description: 'Gambar cover (juga digunakan untuk OpenGraph/social image).',
       },
     },
     {
       name: 'content',
       type: 'richText',
       required: true,
+      label: 'Konten',
     },
     {
       name: 'tags',
@@ -129,8 +139,9 @@ export const Posts: CollectionConfig = {
       name: 'relatedTreatmentSlugs',
       type: 'text',
       hasMany: true,
+      label: 'Treatment Terkait',
       admin: {
-        description: 'Treatment slugs to cross-link (e.g. radiance-glow-peel).',
+        description: 'Slug treatment untuk cross-link (contoh: radiance-glow-peel).',
       },
     },
     {
@@ -141,12 +152,14 @@ export const Posts: CollectionConfig = {
         {
           name: 'seoTitle',
           type: 'text',
-          admin: { description: 'Overrides the <title>. Falls back to the post title.' },
+          label: 'Judul SEO',
+          admin: { description: 'Override <title>. Jika kosong, menggunakan judul artikel.' },
         },
         {
           name: 'seoDescription',
           type: 'textarea',
-          admin: { description: 'Overrides the meta description. Falls back to the excerpt.' },
+          label: 'Deskripsi SEO',
+          admin: { description: 'Override meta description. Jika kosong, menggunakan ringkasan.' },
         },
       ],
     },

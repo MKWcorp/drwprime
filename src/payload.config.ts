@@ -20,8 +20,16 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    theme: 'dark',
     meta: {
       titleSuffix: '- DRW Prime CMS',
+      icons: [{ url: '/drwprime-icon.png' }],
+    },
+    components: {
+      graphics: {
+        Logo: './components/cms/Logo#Logo',
+        Icon: './components/cms/Icon#Icon',
+      },
     },
   },
   // The app already serves its own dashboard at /admin and a large /api surface,
