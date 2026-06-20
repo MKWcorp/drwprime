@@ -97,8 +97,6 @@ export const Posts: CollectionConfig = {
         ],
       },
     },
-    // All other fields are temporarily disabled for debugging
-    /*
     {
       name: 'publishedAt',
       type: 'date',
@@ -168,6 +166,5 @@ export const Posts: CollectionConfig = {
         },
       ],
     },
-    */
   ],
 };
