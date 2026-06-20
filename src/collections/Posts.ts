@@ -126,9 +126,12 @@ export const Posts: CollectionConfig = {
     },
     {
       name: 'content',
-      type: 'richText',
+      type: 'textarea', // Temporarily changed from richText for debugging
       required: true,
       label: 'Konten',
+      admin: {
+        rows: 15,
+      }
     },
     {
       name: 'tags',
