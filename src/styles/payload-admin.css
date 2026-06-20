@@ -1,79 +1,70 @@
-:root,
-[data-theme='dark'] {
-  --theme-bg: #0a0a0a;
-  --theme-input-bg: #111111;
-  --theme-elevation-50: #111111;
-  --theme-elevation-100: #161616;
-  --theme-elevation-150: #1a1a1a;
-  --theme-elevation-200: #1e1e1e;
-  --theme-elevation-250: #222222;
-  --theme-elevation-300: #282828;
-  --theme-elevation-350: #2e2e2e;
-  --theme-elevation-400: #333333;
-  --theme-elevation-450: #3a3a3a;
-  --theme-elevation-500: #444444;
-  --theme-elevation-600: #555555;
-  --theme-elevation-700: #666666;
-  --theme-elevation-800: #888888;
-  --theme-elevation-900: #aaaaaa;
-  --theme-elevation-1000: #ffffff;
+/*
+ * DRW Prime CMS — light admin theme with gold brand accent.
+ * NOTE: do not override --theme-bg / elevation vars here; let Payload's
+ * built-in light theme own the backgrounds so the admin stays "terang".
+ * We only layer the brand accent (gold) on top of the default theme.
+ */
 
-  --theme-success-500: #4ade80;
-  --theme-error-500: #f87171;
-  --theme-warning-500: #fbbf24;
+:root {
+  --drw-gold: #d4af37;
+  --drw-gold-hover: #c9a22e;
 }
 
-[data-theme='dark'] .btn--style-primary,
-[data-theme='dark'] button[class*='publishButton'] {
-  background-color: #d4af37;
+/* Primary / publish buttons → gold */
+.btn--style-primary,
+button[class*='publishButton'] {
+  background-color: var(--drw-gold);
+  border-color: var(--drw-gold);
   color: #0a0a0a;
 }
 
-[data-theme='dark'] .btn--style-primary:hover,
-[data-theme='dark'] button[class*='publishButton']:hover {
-  background-color: #c9a22e;
+.btn--style-primary:hover,
+button[class*='publishButton']:hover {
+  background-color: var(--drw-gold-hover);
+  border-color: var(--drw-gold-hover);
 }
 
-[data-theme='dark'] a:not([class*='btn']):hover {
-  color: #d4af37;
+/* Links & active nav → gold */
+a:not([class*='btn']):hover {
+  color: var(--drw-gold);
 }
 
-[data-theme='dark'] .nav__link--active,
-[data-theme='dark'] .nav__link:hover {
-  color: #d4af37;
+.nav__link--active,
+.nav__link:hover {
+  color: var(--drw-gold);
 }
 
-[data-theme='dark'] input:focus,
-[data-theme='dark'] textarea:focus,
-[data-theme='dark'] select:focus,
-[data-theme='dark'] [class*='field-type']:focus-within {
-  border-color: #d4af37;
+/* Focus states → gold border */
+input:focus,
+textarea:focus,
+select:focus,
+[class*='field-type']:focus-within {
+  border-color: var(--drw-gold);
 }
 
-[data-theme='dark'] [class*='checkbox-input']:checked {
-  background-color: #d4af37;
+[class*='checkbox-input']:checked {
+  background-color: var(--drw-gold);
+  border-color: var(--drw-gold);
 }
 
+/* Login brand logo sizing */
 .login__brand img {
   max-width: 200px;
   height: auto;
 }
 
-[data-theme='dark'] .nav__header {
-  border-bottom-color: #222222;
-}
-
-[data-theme='dark'] .chip {
+/* Status chips */
+.chip {
   background-color: rgba(212, 175, 55, 0.15);
-  color: #d4af37;
+  color: var(--drw-gold-hover);
 }
 
-[data-theme='dark'] [class*='status--published'] {
-  background-color: rgba(74, 222, 128, 0.15);
-  color: #4ade80;
+[class*='status--published'] {
+  background-color: rgba(22, 163, 74, 0.12);
+  color: #16a34a;
 }
 
-[data-theme='dark'] [class*='status--draft'] {
-  background-color: rgba(148, 163, 184, 0.15);
-  color: #94a3b8;
+[class*='status--draft'] {
+  background-color: rgba(100, 116, 139, 0.12);
+  color: #64748b;
 }

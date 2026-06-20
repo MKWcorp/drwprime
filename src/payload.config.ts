@@ -20,7 +20,7 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    theme: 'dark',
+    theme: 'light',
     meta: {
       titleSuffix: '- DRW Prime CMS',
       icons: [{ url: '/drwprime-icon.png' }],
