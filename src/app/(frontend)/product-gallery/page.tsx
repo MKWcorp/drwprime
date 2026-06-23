@@ -5,6 +5,12 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import MobileLayout from '@/components/MobileLayout';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import './product-gallery.css';
+import { Pagination, Navigation } from 'swiper/modules';
 
 type ProductCategory = 'acne' | 'lumiera' | 'antiaging';
 
@@ -13,11 +19,10 @@ interface ProductPhoto {
   src: string;
   alt: string;
   category: ProductCategory;
-  sigUrl?: string; // SIG certification document URL
+  sigUrl?: string;
 }
 
 const productPhotos: ProductPhoto[] = [
-  // Acne Specialized Series (Green)
   {
     id: 'acne-banner',
     src: '/products/002.webp',
@@ -64,7 +69,6 @@ const productPhotos: ProductPhoto[] = [
     category: 'acne',
     sigUrl: '/sig/acne-shield-uv-protect.pdf'
   },
-  // Lumièra Series (Pink)
   {
     id: 'lumiera-banner',
     src: '/products/005.webp',
@@ -104,7 +108,6 @@ const productPhotos: ProductPhoto[] = [
     category: 'lumiera',
     sigUrl: '/sig/lumiera-uv-defense.pdf'
   },
-  // Anti Aging Series (Gold)
   {
     id: 'antiaging-banner',
     src: '/products/008.webp',
@@ -204,10 +207,44 @@ export default function ProductGalleryPage() {
           </div>
         </section>
 
-        {/* Photo Gallery Grid */}
+        {/* Photo Gallery - Slider di mobile, grid di desktop */}
         <section className="px-5">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {/* Mobile Slider */}
+            <div className="block lg:hidden">
+              <Swiper
+                modules={[Pagination, Navigation]}
+                spaceBetween={16}
+                slidesPerView={1}
+                pagination={{ clickable: true }}
+                navigation={true}
+                className="product-slider"
+              >
+                {filteredPhotos.map((photo) => (
+                  <SwiperSlide key={photo.id}>
+                    <div
+                      className="group relative aspect-[3/4] bg-white/5 rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-300 cursor-pointer hover:shadow-2xl hover:shadow-primary/20 mx-auto max-w-sm"
+                      onClick={() => setSelectedPhoto(photo)}
+                    >
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                        <p className="text-white font-semibold text-sm">
+                          {photo.alt}
+                        </p>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+
+            {/* Desktop Grid */}
+            <div className="hidden lg:grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
               {filteredPhotos.map((photo) => (
                 <div
                   key={photo.id}
