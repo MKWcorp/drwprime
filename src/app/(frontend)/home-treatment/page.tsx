@@ -49,6 +49,13 @@ const HOME_TREATMENT_SLUGS = new Set([
   'menicure-pedicure'
 ]);
 
+// Hanya treatment ini yang ditampilkan di Home Treatment
+const HOME_TREATMENT_ALLOWED_NAMES = new Set([
+  'acne facial',
+  'glow facial',
+  'acne cure facial'
+]);
+
 function HomeTreatmentContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get('category');
@@ -88,9 +95,15 @@ function HomeTreatmentContent() {
 
         const data = await response.json();
         setCategories(
-          (data.categories as Category[]).filter((category) =>
-            HOME_TREATMENT_SLUGS.has(category.slug)
-          )
+          (data.categories as Category[])
+            .filter((category) => HOME_TREATMENT_SLUGS.has(category.slug))
+            .map((category) => ({
+              ...category,
+              treatments: category.treatments.filter((treatment) =>
+                HOME_TREATMENT_ALLOWED_NAMES.has(treatment.name.trim().toLowerCase())
+              ),
+            }))
+            .filter((category) => category.treatments.length > 0)
         );
       } catch (error) {
         console.error('Error fetching home treatments:', error);
