@@ -177,12 +177,17 @@ export default function MyPrimePage() {
     return (
       <MobileLayout>
         <Navbar />
-        <div className="min-h-screen bg-black">
-          <div className="pt-20">
+        <div className="min-h-screen bg-black relative overflow-hidden">
+          {/* Ambient glass backdrop */}
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div className="absolute -top-24 -right-20 w-72 h-72 rounded-full bg-primary/20 blur-3xl"></div>
+            <div className="absolute bottom-0 -left-24 w-80 h-80 rounded-full bg-violet-600/10 blur-3xl"></div>
+          </div>
+          <div className="pt-20 relative z-10">
             <div className="max-w-md mx-auto px-4 py-10">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center">
+              <div className="bg-white/[0.06] backdrop-blur-xl border border-white/15 rounded-2xl p-8 text-center shadow-[0_8px_30px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)]">
                 <div className="relative w-20 h-20 mx-auto mb-5">
-                  <div className="absolute inset-0 bg-primary/10 rounded-full"></div>
+                  <div className="absolute inset-0 bg-primary/15 backdrop-blur-md rounded-full border border-primary/20"></div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <svg className="w-9 h-9 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -223,8 +228,13 @@ export default function MyPrimePage() {
   return (
     <MobileLayout>
       <Navbar />
-      <div className="min-h-screen bg-black">
-        <div className="pt-20">
+      <div className="min-h-screen bg-black relative overflow-hidden">
+        {/* Ambient glass backdrop */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -top-24 -right-20 w-72 h-72 rounded-full bg-primary/15 blur-3xl"></div>
+          <div className="absolute bottom-1/4 -left-24 w-80 h-80 rounded-full bg-violet-600/10 blur-3xl"></div>
+        </div>
+        <div className="pt-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 py-6">
 
             {/* Page Title */}
@@ -279,7 +289,7 @@ export default function MyPrimePage() {
             {/* Tier Progress */}
             {membership.nextTier && (
               <div className="mb-5">
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                <div className="bg-white/[0.06] backdrop-blur-xl border border-white/15 rounded-2xl p-4 shadow-[0_8px_30px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)]">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-white/70 text-xs font-semibold">Progress ke {TIER_CONFIG[membership.nextTier].label}</p>
                     <p className="text-white/50 text-[10px]">{membership.progressPercent}%</p>
@@ -343,7 +353,7 @@ export default function MyPrimePage() {
 
             {/* Transaction History */}
             <div>
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+              <div className="bg-white/[0.06] backdrop-blur-xl border border-white/15 rounded-2xl p-4 shadow-[0_8px_30px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)]">
                 <h3 className="font-bold text-sm text-white mb-3">Riwayat Kunjungan</h3>
                 {membership.reservations.length === 0 ? (
                   <div className="text-center py-8">

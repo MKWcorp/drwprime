@@ -41,7 +41,7 @@ const EMPTY_FORM: ProfileForm = {
 };
 
 const inputClass =
-  'w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/30 focus:ring-2 focus:ring-primary focus:border-transparent text-sm outline-none transition-colors';
+  'w-full px-4 py-2.5 bg-white/[0.07] backdrop-blur-md border border-white/15 rounded-lg text-white placeholder:text-white/30 focus:ring-2 focus:ring-primary/60 focus:border-primary/40 text-sm outline-none transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]';
 
 export default function ProfilePage() {
   const { user, isLoaded } = useUser();
@@ -207,8 +207,14 @@ export default function ProfilePage() {
   return (
     <MobileLayout>
       <Navbar />
-      <div className="min-h-screen bg-black">
-        <div className="pt-20">
+      <div className="min-h-screen bg-black relative overflow-hidden">
+        {/* Ambient glass backdrop */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -top-24 -right-20 w-72 h-72 rounded-full bg-primary/20 blur-3xl"></div>
+          <div className="absolute top-1/3 -left-24 w-72 h-72 rounded-full bg-amber-500/10 blur-3xl"></div>
+          <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-violet-600/10 blur-3xl"></div>
+        </div>
+        <div className="pt-20 relative z-10">
           <div className="max-w-2xl mx-auto px-4 py-6">
 
             <Link
@@ -229,7 +235,7 @@ export default function ProfilePage() {
             </div>
 
             {alreadyComplete && (
-              <div className="mb-4 p-3 bg-primary/10 border border-primary/30 rounded-lg flex items-center gap-2">
+              <div className="mb-4 p-3 bg-primary/10 backdrop-blur-md border border-primary/25 rounded-xl flex items-center gap-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
                 <svg className="w-4 h-4 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
@@ -238,13 +244,13 @@ export default function ProfilePage() {
             )}
 
             {error && (
-              <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+              <div className="mb-4 p-3 bg-red-500/10 backdrop-blur-md border border-red-500/30 rounded-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                 <p className="text-red-400 text-xs">{error}</p>
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-4">
+              <div className="bg-white/[0.06] backdrop-blur-xl border border-white/15 rounded-2xl p-4 space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.1)]">
                 <h3 className="text-white font-semibold text-sm">Data Pribadi</h3>
 
                 <div>
@@ -307,7 +313,7 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-4">
+              <div className="bg-white/[0.06] backdrop-blur-xl border border-white/15 rounded-2xl p-4 space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.1)]">
                 <h3 className="text-white font-semibold text-sm">Alamat</h3>
 
                 <div>
