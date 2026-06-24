@@ -237,9 +237,6 @@ export default function MyPrimePage() {
               <p className="text-white/70 text-sm mt-1">Membership Dashboard</p>
             </div>
 
-            {/* Install App (mobile / Android) */}
-            <InstallPrompt />
-
             {/* Membership Card */}
             <div className="mb-5">
               <div className={`relative rounded-2xl overflow-hidden border ${tier.border} bg-gradient-to-br ${tier.gradient} p-5`}>
@@ -359,6 +356,9 @@ export default function MyPrimePage() {
                 </Link>
               </div>
             )}
+
+            {/* Install App (mobile, di bawah Dashboard Afiliator) */}
+            <InstallPrompt />
 
             {/* Transaction History */}
             <div>
