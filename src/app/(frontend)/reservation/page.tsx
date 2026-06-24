@@ -38,6 +38,9 @@ function ReservationContent() {
     notes: ''
   });
 
+  const [treatmentQuery, setTreatmentQuery] = useState('');
+  const [treatmentOpen, setTreatmentOpen] = useState(false);
+
   useEffect(() => {
     fetchTreatments();
   }, []);
@@ -100,6 +103,7 @@ function ReservationContent() {
           reservationTime: '',
           notes: ''
         });
+        setTreatmentQuery('');
         
         // Reset success message after 5 seconds
         setTimeout(() => {
@@ -123,6 +127,24 @@ function ReservationContent() {
     }
     return null;
   }, [categories, formData.treatmentId]);
+
+  const allTreatments = useMemo(
+    () =>
+      categories.flatMap((category) =>
+        category.treatments.map((t) => ({ ...t, categoryName: category.name }))
+      ),
+    [categories]
+  );
+
+  const filteredTreatments = useMemo(() => {
+    const q = treatmentQuery.trim().toLowerCase();
+    if (!q) return allTreatments;
+    return allTreatments.filter(
+      (t) =>
+        t.name.toLowerCase().includes(q) ||
+        t.categoryName.toLowerCase().includes(q)
+    );
+  }, [allTreatments, treatmentQuery]);
 
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat('id-ID', {
@@ -251,28 +273,67 @@ function ReservationContent() {
                   )}
                   <h2 className="font-playfair text-lg font-bold text-white mb-4">Detail Reservasi</h2>
                   <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
+                <div className="relative">
                   <label className="block text-white text-sm font-semibold mb-2">
                     Pilih Treatment <span className="text-primary">*</span>
                   </label>
-                  <select
-                    name="treatmentId"
-                    value={formData.treatmentId}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-3 py-2.5 bg-black/40 border border-white/20 text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
-                  >
-                    <option value="">Pilih treatment...</option>
-                    {categories.map((category) => (
-                      <optgroup key={category.id} label={category.name}>
-                        {category.treatments.map((treatment) => (
-                          <option key={treatment.id} value={treatment.id}>
-                            {treatment.name}
-                          </option>
-                        ))}
-                      </optgroup>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={treatmentQuery}
+                      onChange={(e) => {
+                        setTreatmentQuery(e.target.value);
+                        setTreatmentOpen(true);
+                        if (formData.treatmentId) {
+                          setFormData((prev) => ({ ...prev, treatmentId: '' }));
+                        }
+                      }}
+                      onFocus={() => setTreatmentOpen(true)}
+                      placeholder="Ketik untuk cari treatment..."
+                      autoComplete="off"
+                      className="w-full px-3 py-2.5 pr-9 bg-black/40 border border-white/20 text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-primary placeholder-white/40 text-sm"
+                    />
+                    <svg
+                      className={`absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/60 transition-transform duration-200 pointer-events-none ${treatmentOpen ? 'rotate-180' : ''}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+
+                  {treatmentOpen && (
+                    <>
+                      <div className="fixed inset-0 z-30" onClick={() => setTreatmentOpen(false)}></div>
+                      <div className="absolute left-0 right-0 mt-1 z-40 max-h-64 overflow-y-auto bg-[#161616] border border-primary/30 rounded-lg shadow-2xl shadow-black/60">
+                        {filteredTreatments.length === 0 ? (
+                          <p className="px-3 py-3 text-white/50 text-sm">Tidak ada treatment yang cocok</p>
+                        ) : (
+                          filteredTreatments.map((t) => (
+                            <button
+                              type="button"
+                              key={t.id}
+                              onClick={() => {
+                                setFormData((prev) => ({ ...prev, treatmentId: t.id }));
+                                setTreatmentQuery(t.name);
+                                setTreatmentOpen(false);
+                              }}
+                              className={`w-full text-left px-3 py-2.5 text-sm transition-colors flex items-center justify-between gap-2 border-b border-white/5 last:border-b-0 hover:bg-primary/15 ${
+                                formData.treatmentId === t.id ? 'bg-primary/10' : ''
+                              }`}
+                            >
+                              <span className="min-w-0">
+                                <span className="block truncate text-white/90">{t.name}</span>
+                                <span className="block text-[11px] text-white/40 truncate">{t.categoryName}</span>
+                              </span>
+                              <span className="text-primary/80 text-xs whitespace-nowrap">{formatCurrency(t.price)}</span>
+                            </button>
+                          ))
+                        )}
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 {selectedTreatment && (
