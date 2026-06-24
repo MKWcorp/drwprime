@@ -393,6 +393,12 @@ export default function FrontOfficePage() {
                   Report Affiliator
                 </Link>
                 <Link 
+                  href="/front-office/completed-profiles"
+                  className="fo-nav-chip text-sm"
+                >
+                  Report Profil Lengkap
+                </Link>
+                <Link 
                   href="/front-office/report-spending-daily"
                   className="fo-nav-chip text-sm"
                 >
