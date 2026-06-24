@@ -1,6 +1,7 @@
-const STATIC_CACHE = "drwprime-static-v2";
-const RUNTIME_CACHE = "drwprime-runtime-v2";
+const STATIC_CACHE = "drwprime-static-v3";
+const RUNTIME_CACHE = "drwprime-runtime-v3";
 const STATIC_ASSETS = [
+  "/offline.html",
   "/drwprime-icon.png",
   "/icon-192x192.png",
   "/icon-512x512.png",
@@ -53,7 +54,7 @@ self.addEventListener("fetch", (event) => {
           caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, responseClone));
           return response;
         })
-        .catch(() => caches.match(request))
+        .catch(() => caches.match(request).then((cached) => cached || caches.match("/offline.html")))
     );
     return;
   }
