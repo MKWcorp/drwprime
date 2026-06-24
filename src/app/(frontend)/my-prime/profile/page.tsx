@@ -285,9 +285,9 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       className={inputClass}
                     >
-                      <option value="" className="bg-black">Pilih jenis kelamin</option>
-                      <option value="Pria" className="bg-black">Pria</option>
-                      <option value="Wanita" className="bg-black">Wanita</option>
+                      <option value="" className="bg-white text-black">Pilih jenis kelamin</option>
+                      <option value="Pria" className="bg-white text-black">Pria</option>
+                      <option value="Wanita" className="bg-white text-black">Wanita</option>
                     </select>
                     {renderError('gender')}
                   </div>
@@ -345,9 +345,9 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       className={inputClass}
                     >
-                      <option value="" className="bg-black">Pilih provinsi</option>
+                      <option value="" className="bg-white text-black">Pilih provinsi</option>
                       {PROVINCES.map((p) => (
-                        <option key={p} value={p} className="bg-black">{p}</option>
+                        <option key={p} value={p} className="bg-white text-black">{p}</option>
                       ))}
                     </select>
                     {renderError('province')}
