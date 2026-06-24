@@ -49,6 +49,7 @@ export default function ReportSpendingDailyPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const [data, setData] = useState<DashboardData>({
     uploads: [],
@@ -183,6 +184,37 @@ export default function ReportSpendingDailyPage() {
       setError(e instanceof Error ? e.message : 'Terjadi kesalahan saat upload file');
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleDelete = async (id?: string) => {
+    const isAll = !id;
+    const confirmMsg = isAll
+      ? 'Hapus SEMUA riwayat upload spending? Tindakan ini permanen dan tidak bisa dibatalkan.'
+      : 'Hapus upload ini? Semua entri terkait ikut terhapus permanen.';
+    if (!window.confirm(confirmMsg)) return;
+
+    setDeletingId(isAll ? 'all' : id);
+    setError('');
+    setSuccessMessage('');
+
+    try {
+      const query = isAll ? 'all=true' : `id=${encodeURIComponent(id)}`;
+      const response = await fetch(`/api/front-office/spending-daily?${query}`, {
+        method: 'DELETE',
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Gagal menghapus data');
+      }
+
+      setSuccessMessage(result.message || 'Data berhasil dihapus.');
+      await fetchData(selectedDate);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Terjadi kesalahan saat menghapus data');
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -335,8 +367,20 @@ export default function ReportSpendingDailyPage() {
             </div>
 
             <div className="fo-glass-card fo-fade-up fo-stagger-3 rounded-xl overflow-hidden">
-              <div className="p-4 border-b border-white/10 fo-glass-card-soft">
+              <div className="p-4 border-b border-white/10 fo-glass-card-soft flex items-center justify-between gap-3">
                 <h3 className="text-white font-semibold">Riwayat Upload</h3>
+                {data.uploads.length > 0 && (
+                  <button
+                    onClick={() => handleDelete()}
+                    disabled={deletingId !== null}
+                    className="fo-glass-card-soft border-red-500/35 text-red-300 px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-red-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    {deletingId === 'all' ? 'Menghapus...' : 'Hapus Semua'}
+                  </button>
+                )}
               </div>
 
               {loading ? (
@@ -353,6 +397,7 @@ export default function ReportSpendingDailyPage() {
                         <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Rows</th>
                         <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Total Pendapatan</th>
                         <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Diupload</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-white/70">Aksi</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/10">
@@ -363,6 +408,18 @@ export default function ReportSpendingDailyPage() {
                           <td className="px-4 py-3 text-sm text-white/80">{item.entryCount}</td>
                           <td className="px-4 py-3 text-sm text-green-300">{formatCurrency(item.totalPendapatan)}</td>
                           <td className="px-4 py-3 text-sm text-white/60">{formatDate(item.createdAt)}</td>
+                          <td className="px-4 py-3 text-sm text-right">
+                            <button
+                              onClick={() => handleDelete(item.id)}
+                              disabled={deletingId !== null}
+                              className="fo-glass-card-soft border-red-500/35 text-red-300 px-2.5 py-1 rounded-md text-xs font-semibold hover:bg-red-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-1"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                              {deletingId === item.id ? '...' : 'Hapus'}
+                            </button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>

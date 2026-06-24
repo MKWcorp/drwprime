@@ -389,3 +389,52 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    if (!(await isAdminUser())) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+    const all = searchParams.get('all') === 'true';
+
+    if (all) {
+      // Hapus semua riwayat upload (entri ikut terhapus via cascade)
+      const result = await prisma.dailySpendingUpload.deleteMany({});
+      return NextResponse.json({
+        success: true,
+        deletedCount: result.count,
+        message: `Semua riwayat upload dihapus (${result.count} upload).`,
+      });
+    }
+
+    if (!id) {
+      return NextResponse.json({ error: 'Parameter id wajib diisi' }, { status: 400 });
+    }
+
+    const existing = await prisma.dailySpendingUpload.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      return NextResponse.json({ error: 'Upload tidak ditemukan' }, { status: 404 });
+    }
+
+    // Entri terhapus otomatis via onDelete: Cascade
+    await prisma.dailySpendingUpload.delete({ where: { id } });
+
+    return NextResponse.json({
+      success: true,
+      message: 'Upload berhasil dihapus.',
+    });
+  } catch (error) {
+    console.error('[FO SPENDING DAILY] DELETE error:', error);
+    return NextResponse.json(
+      { error: 'Terjadi kesalahan saat menghapus data spending daily' },
+      { status: 500 }
+    );
+  }
+}
