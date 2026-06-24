@@ -126,6 +126,22 @@ function TreatmentsContent() {
             <p className="text-xl text-white/70">
               Discover our comprehensive range of premium beauty treatments
             </p>
+
+            {/* Home Treatment CTA */}
+            <div className="mt-7 flex justify-center">
+              <Link
+                href="/home-treatment"
+                className="group inline-flex items-center gap-2.5 bg-primary/15 border border-primary/40 text-primary px-5 py-3 rounded-full text-sm font-semibold hover:bg-primary/25 hover:border-primary transition-all duration-300"
+              >
+                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span>Prime at Home &mdash; Home Treatment</span>
+                <svg className="w-4 h-4 flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
           </div>
         </section>
 
