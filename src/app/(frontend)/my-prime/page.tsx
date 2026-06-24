@@ -5,6 +5,7 @@ import { useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
+import InstallPrompt from '@/components/InstallPrompt';
 
 interface MemberReservation {
   id: string;
@@ -235,6 +236,9 @@ export default function MyPrimePage() {
               <h1 className="font-playfair text-3xl md:text-4xl font-bold text-primary">My Prime</h1>
               <p className="text-white/70 text-sm mt-1">Membership Dashboard</p>
             </div>
+
+            {/* Install App (mobile / Android) */}
+            <InstallPrompt />
 
             {/* Membership Card */}
             <div className="mb-5">

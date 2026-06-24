@@ -3,7 +3,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Script from "next/script";
 import "./globals.css";
 import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from "@/lib/seo";
-import InstallPrompt from "@/components/InstallPrompt";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -127,7 +126,6 @@ export default function RootLayout({
             />
           </noscript>
           {children}
-          <InstallPrompt />
         </body>
       </html>
     </ClerkProvider>

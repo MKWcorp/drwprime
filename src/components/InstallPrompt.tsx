@@ -14,6 +14,10 @@ export default function InstallPrompt() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    // Khusus mobile (Android) — sembunyikan di layar lebar
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (!isMobile) return;
+
     // Sudah terpasang sebagai app → jangan tampilkan
     const isStandalone =
       window.matchMedia('(display-mode: standalone)').matches ||
@@ -59,35 +63,40 @@ export default function InstallPrompt() {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-x-3 z-[70] bottom-[max(6rem,calc(env(safe-area-inset-bottom)+5.5rem))] md:bottom-6 md:left-auto md:right-6 md:inset-x-auto md:max-w-sm">
-      <div className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-[#141414]/95 backdrop-blur-md p-3.5 shadow-2xl shadow-black/60">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/icon-192x192.png"
-          alt="DRW Prime"
-          className="w-11 h-11 rounded-xl border border-primary/30 flex-shrink-0"
-        />
-        <div className="min-w-0 flex-1">
-          <p className="text-white text-sm font-semibold leading-tight">Install Aplikasi DRW Prime</p>
-          <p className="text-white/50 text-xs mt-0.5">Akses lebih cepat dari layar utama Anda.</p>
-        </div>
-        <div className="flex items-center gap-1.5 flex-shrink-0">
-          <button
-            onClick={handleInstall}
-            className="bg-primary text-dark text-xs font-bold px-3 py-2 rounded-lg hover:bg-primary/90 transition-colors"
-          >
-            Install
-          </button>
+    <div className="md:hidden mb-5">
+      <div className="rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/15 to-primary/5 p-4">
+        <div className="flex items-center gap-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/icon-192x192.png"
+            alt="DRW Prime"
+            className="w-11 h-11 rounded-xl border border-primary/30 flex-shrink-0"
+          />
+          <div className="min-w-0 flex-1">
+            <p className="text-white text-sm font-semibold leading-tight">
+              Akses Mudah dengan Aplikasi DRW Prime
+            </p>
+            <p className="text-white/50 text-xs mt-0.5">Pasang di layar utama untuk buka lebih cepat.</p>
+          </div>
           <button
             onClick={handleDismiss}
             aria-label="Tutup"
-            className="text-white/40 hover:text-white p-1 transition-colors"
+            className="text-white/40 hover:text-white p-1 self-start transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
+        <button
+          onClick={handleInstall}
+          className="mt-3 w-full bg-primary text-dark text-sm font-bold py-2.5 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+          </svg>
+          Install Aplikasi
+        </button>
       </div>
     </div>
   );
