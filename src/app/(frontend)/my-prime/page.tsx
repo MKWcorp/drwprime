@@ -172,6 +172,50 @@ export default function MyPrimePage() {
     );
   }
 
+  // Gate: dashboard terkunci sampai profil dilengkapi
+  if (profileComplete === false) {
+    return (
+      <MobileLayout>
+        <Navbar />
+        <div className="min-h-screen bg-black">
+          <div className="pt-20">
+            <div className="max-w-md mx-auto px-4 py-10">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center">
+                <div className="relative w-20 h-20 mx-auto mb-5">
+                  <div className="absolute inset-0 bg-primary/10 rounded-full"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <svg className="w-9 h-9 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                </div>
+
+                <h1 className="text-white font-bold text-lg mb-2">Dashboard Terkunci</h1>
+                <p className="text-white/60 text-sm mb-6 leading-relaxed">
+                  Lengkapi data pribadi Anda terlebih dahulu untuk membuka dashboard membership DRW Prime.
+                </p>
+
+                <Link
+                  href="/my-prime/profile"
+                  className="inline-flex items-center justify-center gap-2 w-full bg-primary text-dark font-semibold text-sm py-3 rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  Lengkapi Profil Sekarang
+                </Link>
+
+                <p className="text-white/30 text-[11px] mt-4">
+                  Data Anda aman & hanya digunakan untuk keperluan membership.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </MobileLayout>
+    );
+  }
+
   const tier = TIER_CONFIG[membership.tier];
   const displayName = [user.firstName, user.lastName].filter(Boolean).join(' ') || 'Member';
   const phone = user.phoneNumbers?.[0]?.phoneNumber || '-';
@@ -188,30 +232,6 @@ export default function MyPrimePage() {
               <h1 className="text-white font-bold text-xl">My Prime</h1>
               <p className="text-white/50 text-xs mt-0.5">Membership Dashboard</p>
             </div>
-
-            {/* Complete Profile Banner */}
-            {profileComplete === false && (
-              <div className="mb-5">
-                <Link href="/my-prime/profile">
-                  <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/40 rounded-xl p-4 flex items-center justify-between hover:border-primary/70 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary/20 border border-primary/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="text-white font-semibold text-sm">Lengkapi Profil Anda</p>
-                        <p className="text-white/50 text-xs">Lengkapi data pribadi untuk jadi member DRW Prime</p>
-                      </div>
-                    </div>
-                    <svg className="w-5 h-5 text-primary/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </Link>
-              </div>
-            )}
 
             {/* Membership Card */}
             <div className="mb-5">
