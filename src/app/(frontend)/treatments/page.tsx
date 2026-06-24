@@ -311,16 +311,12 @@ function TreatmentsContent() {
                     
                     {/* Duration & Price */}
                     <div className="flex justify-between items-center gap-2">
-                      {treatment.duration ? (
+                      {treatment.duration && (
                         <span className="text-xs bg-primary/15 text-primary px-2 py-1 rounded">
                           {treatment.duration} Menit
                         </span>
-                      ) : (
-                        <span className="text-xs bg-white/5 text-white/50 px-2 py-1 rounded">
-                          Hubungi kami untuk durasi
-                        </span>
                       )}
-                      <span className="text-sm font-bold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
+                      <span className="text-sm font-bold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent ml-auto">
                         Rp {treatment.price.toLocaleString('id-ID')}
                       </span>
                     </div>
