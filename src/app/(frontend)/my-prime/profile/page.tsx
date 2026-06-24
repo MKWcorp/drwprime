@@ -43,6 +43,14 @@ const EMPTY_FORM: ProfileForm = {
 const inputClass =
   'w-full fo-glass-input px-4 py-2.5 rounded-lg text-sm placeholder:text-white/30 [&>option]:text-black';
 
+type Tier = 'SILVER' | 'GOLD' | 'PLATINUM';
+
+const TIER_RING: Record<Tier, string> = {
+  SILVER: 'border-slate-300 shadow-[0_0_12px_rgba(203,213,225,0.5)]',
+  GOLD: 'border-primary shadow-[0_0_14px_rgba(212,175,55,0.6)]',
+  PLATINUM: 'border-violet-400 shadow-[0_0_14px_rgba(167,139,250,0.6)]',
+};
+
 export default function ProfilePage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
@@ -52,6 +60,7 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [avatarBusy, setAvatarBusy] = useState(false);
   const [avatarError, setAvatarError] = useState('');
+  const [tier, setTier] = useState<Tier>('SILVER');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [alreadyComplete, setAlreadyComplete] = useState(false);
@@ -93,6 +102,16 @@ export default function ProfilePage() {
         postalCode: p.postalCode ?? '',
       });
       setAlreadyComplete(Boolean(p.isComplete));
+
+      try {
+        const memRes = await fetch('/api/membership');
+        if (memRes.ok) {
+          const memData = await memRes.json();
+          if (memData.membership?.tier) setTier(memData.membership.tier as Tier);
+        }
+      } catch {
+        // abaikan; default SILVER
+      }
     } catch (err) {
       console.error('Load profile error:', err);
       setError('Terjadi kesalahan saat memuat profil.');
@@ -260,7 +279,7 @@ export default function ProfilePage() {
             {/* Foto Profil */}
             <div className="fo-glass-card fo-fade-up rounded-xl p-6 border-primary/35 mb-4 flex flex-col items-center gap-3">
               <div className="relative">
-                <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-primary/40 bg-white/10 flex items-center justify-center">
+                <div className={`w-24 h-24 rounded-full overflow-hidden border-2 ${TIER_RING[tier]} bg-white/10 flex items-center justify-center`}>
                   {user.imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={user.imageUrl} alt="Foto profil" className="w-full h-full object-cover" />

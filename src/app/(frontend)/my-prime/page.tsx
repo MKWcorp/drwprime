@@ -35,6 +35,7 @@ const TIER_CONFIG = {
     border: 'border-slate-400/40',
     badge: 'bg-slate-400/20 text-slate-300 border-slate-400/40',
     progress: 'bg-gradient-to-r from-slate-400 to-slate-300',
+    avatarRing: 'border-slate-300 shadow-[0_0_12px_rgba(203,213,225,0.5)]',
     icon: '🥈',
   },
   GOLD: {
@@ -43,6 +44,7 @@ const TIER_CONFIG = {
     border: 'border-primary/50',
     badge: 'bg-primary/20 text-primary border-primary/40',
     progress: 'bg-gradient-to-r from-amber-500 to-primary',
+    avatarRing: 'border-primary shadow-[0_0_14px_rgba(212,175,55,0.6)]',
     icon: '🥇',
   },
   PLATINUM: {
@@ -51,6 +53,7 @@ const TIER_CONFIG = {
     border: 'border-violet-400/50',
     badge: 'bg-violet-500/20 text-violet-300 border-violet-400/40',
     progress: 'bg-gradient-to-r from-violet-500 to-fuchsia-400',
+    avatarRing: 'border-violet-400 shadow-[0_0_14px_rgba(167,139,250,0.6)]',
     icon: '💎',
   },
 };
@@ -257,7 +260,7 @@ export default function MyPrimePage() {
 
                   {/* Member info */}
                   <div className="mb-4 flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full overflow-hidden border border-white/30 bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <div className={`w-12 h-12 rounded-full overflow-hidden border-2 ${tier.avatarRing} bg-white/10 flex items-center justify-center flex-shrink-0`}>
                       {user.imageUrl ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={user.imageUrl} alt="Foto profil" className="w-full h-full object-cover" />
