@@ -161,7 +161,7 @@ export default function SpendingScanPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Gagal mencatat spending');
       setSuccess(
-        `Spending ${formatCurrency(amountNum)} tercatat untuk ${member?.name}. Total: ${formatCurrency(data.totalSpending)} (${TIER_LABEL[data.tier]}).`
+        `Spending ${formatCurrency(amountNum)} tercatat untuk ${member?.name} (+${data.pointsEarned} poin). Total: ${formatCurrency(data.totalSpending)} · ${TIER_LABEL[data.tier]}.`
       );
       resetForm();
     } catch (err) {

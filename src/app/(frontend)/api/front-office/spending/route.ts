@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { isUserAdmin } from '@/lib/admin';
 
 const TIER_THRESHOLDS = { GOLD: 1_000_000, PLATINUM: 5_000_000 };
+const RUPIAH_PER_POINT = 10_000; // Rp 10.000 = 1 poin
 
 function computeTier(totalSpending: number): 'SILVER' | 'GOLD' | 'PLATINUM' {
   if (totalSpending >= TIER_THRESHOLDS.PLATINUM) return 'PLATINUM';
@@ -50,16 +51,26 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Member tidak ditemukan. QR tidak valid.' }, { status: 404 });
     }
 
-    await prisma.spendingRecord.create({
-      data: {
-        userId: user.id,
-        amount,
-        treatment: treatment || null,
-        spendingDate,
-        recordedByClerkId: userId ?? null,
-        source: 'scan',
-      },
-    });
+    const pointsEarned = Math.floor(amount / RUPIAH_PER_POINT);
+
+    const [, updatedUser] = await prisma.$transaction([
+      prisma.spendingRecord.create({
+        data: {
+          userId: user.id,
+          amount,
+          treatment: treatment || null,
+          spendingDate,
+          recordedByClerkId: userId ?? null,
+          source: 'scan',
+          pointsEarned,
+        },
+      }),
+      prisma.user.update({
+        where: { id: user.id },
+        data: { points: { increment: pointsEarned } },
+        select: { points: true },
+      }),
+    ]);
 
     // Hitung ulang total spending member
     const [reservations, spendingRecords] = await Promise.all([
@@ -82,6 +93,8 @@ export async function POST(req: Request) {
       message: 'Spending berhasil dicatat.',
       totalSpending,
       tier: computeTier(totalSpending),
+      pointsEarned,
+      points: updatedUser.points,
     });
   } catch (error) {
     console.error('Error recording spending:', error);

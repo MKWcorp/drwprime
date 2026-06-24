@@ -180,6 +180,7 @@ model SpendingRecord {
   userId            String
   amount            Decimal   @db.Decimal(12, 2)
   treatment         String?   // treatment name / keterangan
+  pointsEarned      Int       @default(0) // poin yang diperoleh dari spending ini
   spendingDate      DateTime
   recordedByClerkId String?   // admin/FO who recorded
   source            String    @default("scan") // scan, manual

@@ -90,7 +90,14 @@ export async function GET() {
           },
         },
         spendingRecords: {
-          select: { amount: true },
+          orderBy: { spendingDate: 'desc' },
+          select: {
+            id: true,
+            amount: true,
+            treatment: true,
+            spendingDate: true,
+            pointsEarned: true,
+          },
         },
       },
     });
@@ -123,6 +130,17 @@ export async function GET() {
         totalSpending,
         memberSince: user.createdAt,
         isTeamLeader: user.isTeamLeader,
+        points: user.points,
+        pointHistory: user.spendingRecords
+          .filter((s) => s.pointsEarned > 0)
+          .slice(0, 20)
+          .map((s) => ({
+            id: s.id,
+            amount: Number(s.amount),
+            treatment: s.treatment,
+            spendingDate: s.spendingDate,
+            pointsEarned: s.pointsEarned,
+          })),
         reservations: user.reservations.slice(0, 20).map((r) => ({
           id: r.id,
           patientName: r.patientName,
