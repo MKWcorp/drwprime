@@ -357,14 +357,14 @@ function HomeTreatmentContent() {
 
             {/* Grid 2 kolom mobile, 3 kolom desktop */}
             {displayedTreatments.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 max-w-4xl mx-auto">
               {displayedTreatments.map((treatment: Treatment & { categoryName?: string; categorySlug?: string }) => (
                 <div 
                   key={treatment.id} 
                   className="bg-[#141414]/95 rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 hover:-translate-y-1 flex flex-col"
                 >
                   {/* Image terpotong di atas */}
-                  <div className="relative h-28 md:h-36 overflow-hidden flex-shrink-0">
+                  <div className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden flex-shrink-0">
                     <Image
                       src={categoryImageMap[treatment.categorySlug ?? activeCategory] ?? '/home-treatments/facial.jpeg'}
                       alt={treatment.categoryName ?? treatment.name}
