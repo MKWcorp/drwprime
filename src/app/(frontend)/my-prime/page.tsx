@@ -256,9 +256,21 @@ export default function MyPrimePage() {
                   </div>
 
                   {/* Member info */}
-                  <div className="mb-4">
-                    <p className="text-white font-bold text-lg leading-tight">{displayName}</p>
-                    <p className="text-white/60 text-xs mt-0.5">{phone}</p>
+                  <div className="mb-4 flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full overflow-hidden border border-white/30 bg-white/10 flex items-center justify-center flex-shrink-0">
+                      {user.imageUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={user.imageUrl} alt="Foto profil" className="w-full h-full object-cover" />
+                      ) : (
+                        <svg className="w-6 h-6 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.6} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-white font-bold text-lg leading-tight">{displayName}</p>
+                      <p className="text-white/60 text-xs mt-0.5">{phone}</p>
+                    </div>
                   </div>
 
                   {/* Card bottom */}
