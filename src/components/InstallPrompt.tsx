@@ -7,12 +7,15 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
+type GlobalWithPrompt = {
+  __drwInstallPrompt?: BeforeInstallPromptEvent | null;
+};
+
 const DISMISS_KEY = 'drwprime-pwa-install-dismissed';
 
 type Mode = 'android' | 'ios' | null;
 
 export default function InstallPrompt() {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [mode, setMode] = useState<Mode>(null);
   const [visible, setVisible] = useState(false);
 
@@ -36,33 +39,38 @@ export default function InstallPrompt() {
       return;
     }
 
-    // Android / Chromium → tunggu event install
-    const onBeforeInstall = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-      setMode('android');
-      setVisible(true);
+    const w = window as unknown as GlobalWithPrompt;
+
+    const showAndroid = () => {
+      if (w.__drwInstallPrompt) {
+        setMode('android');
+        setVisible(true);
+      }
     };
+
+    // Event mungkin sudah tertangkap lebih dulu (global) → langsung tampilkan
+    showAndroid();
 
     const onInstalled = () => {
       setVisible(false);
-      setDeferredPrompt(null);
     };
 
-    window.addEventListener('beforeinstallprompt', onBeforeInstall);
-    window.addEventListener('appinstalled', onInstalled);
+    window.addEventListener('drw-installable', showAndroid);
+    window.addEventListener('drw-installed', onInstalled);
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', onBeforeInstall);
-      window.removeEventListener('appinstalled', onInstalled);
+      window.removeEventListener('drw-installable', showAndroid);
+      window.removeEventListener('drw-installed', onInstalled);
     };
   }, []);
 
   const handleInstall = async () => {
-    if (!deferredPrompt) return;
-    await deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    setDeferredPrompt(null);
+    const w = window as unknown as GlobalWithPrompt;
+    const promptEvent = w.__drwInstallPrompt;
+    if (!promptEvent) return;
+    await promptEvent.prompt();
+    await promptEvent.userChoice;
+    w.__drwInstallPrompt = null;
     setVisible(false);
   };
 

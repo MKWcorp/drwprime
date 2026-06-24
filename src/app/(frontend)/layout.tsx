@@ -66,6 +66,22 @@ export default function RootLayout({
           <meta name="apple-mobile-web-app-title" content="DRW Prime" />
           <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
           <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.__drwInstallPrompt = null;
+                window.addEventListener('beforeinstallprompt', function(e){
+                  e.preventDefault();
+                  window.__drwInstallPrompt = e;
+                  window.dispatchEvent(new Event('drw-installable'));
+                });
+                window.addEventListener('appinstalled', function(){
+                  window.__drwInstallPrompt = null;
+                  window.dispatchEvent(new Event('drw-installed'));
+                });
+              `,
+            }}
+          />
+          <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
               __html: JSON.stringify({
