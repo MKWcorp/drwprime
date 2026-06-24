@@ -200,16 +200,7 @@ function HomeTreatmentContent() {
             Perawatan premium ala klinik, langsung di kenyamanan rumah Anda.
           </p>
         </div>
-        <section 
-          className="relative z-10 hidden md:flex items-center justify-center md:h-[65vh] md:min-h-[550px] md:max-h-[700px] overflow-hidden"
-          style={{
-            backgroundImage: 'url(/hero-home-treatment.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center center',
-            backgroundRepeat: 'no-repeat',
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black"></div>
+        <section className="relative z-10 hidden md:flex items-center justify-center md:py-24 overflow-hidden">
           <div className="relative z-10 text-center px-4">
             <p className="text-primary/80 text-sm tracking-[0.4em] uppercase mb-4">Luxury Home Spa</p>
             <h1 className="font-playfair text-6xl lg:text-7xl font-bold text-white drop-shadow-lg">
