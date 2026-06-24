@@ -5,6 +5,7 @@ import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import InstallPrompt from '@/components/InstallPrompt';
 
 interface Reservation {
   id: string;
@@ -433,6 +434,9 @@ export default function FrontOfficePage() {
             />
           </div>
         </div>
+
+        {/* Install App (mobile, untuk FO) */}
+        <InstallPrompt />
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
