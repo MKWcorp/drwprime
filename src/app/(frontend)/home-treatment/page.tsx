@@ -80,7 +80,6 @@ function HomeTreatmentContent() {
     : 'all';
 
   const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
-  const [searchQuery, setSearchQuery] = useState<string>('');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -125,7 +124,7 @@ function HomeTreatmentContent() {
     }
   }, [categoryFromUrl]);
 
-  // Get all treatments or filtered by category and search
+  // Get all treatments or filtered by category
   const displayedTreatments = useMemo(() => {
     let treatments: (Treatment & { categoryName: string; categorySlug: string })[] = [];
 
@@ -149,17 +148,8 @@ function HomeTreatmentContent() {
       })) : [];
     }
 
-    // Apply search filter
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      treatments = treatments.filter(treatment => 
-        treatment.name.toLowerCase().includes(query) ||
-        treatment.categoryName.toLowerCase().includes(query)
-      );
-    }
-
     return treatments;
-  }, [activeCategory, searchQuery, categories]);
+  }, [activeCategory, categories]);
 
   const activeCategoryData = categories.find(
     (cat: Category) => cat.slug === activeCategory
@@ -217,25 +207,6 @@ function HomeTreatmentContent() {
         <section className="relative z-20 py-3 px-4 md:py-6 md:px-5 bg-[#140d07]/85 border-b border-primary/15 sticky top-[60px] md:top-[70px] backdrop-blur-md">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-center">
-              {/* Search Bar */}
-              <div className="flex-1 relative">
-                <input
-                  type="text"
-                  placeholder="Cari treatment..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-black/50 border-2 border-primary/30 text-white placeholder-white/40 px-4 py-2.5 md:px-5 md:py-3.5 rounded-lg focus:outline-none focus:border-primary transition-all duration-300 pr-10 md:pr-12 text-sm md:text-base"
-                />
-                <svg 
-                  className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-primary/60"
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-
               {/* Category Dropdown */}
               <div className="relative md:min-w-[200px]">
                 <button
@@ -296,34 +267,19 @@ function HomeTreatmentContent() {
             </div>
 
             {/* Active filters indicator */}
-            {(searchQuery || activeCategory !== 'all') && (
+            {activeCategory !== 'all' && (
               <div className="flex flex-wrap gap-2 mt-3">
-                {searchQuery && (
-                  <span className="inline-flex items-center gap-1 bg-primary/20 border border-primary/40 text-primary px-2.5 py-1 rounded-full text-xs md:text-sm">
-                    <span>&quot;{searchQuery}&quot;</span>
-                    <button 
-                      onClick={() => setSearchQuery('')}
-                      className="hover:text-white transition-colors"
-                    >
-                      <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </span>
-                )}
-                {activeCategory !== 'all' && (
-                  <span className="inline-flex items-center gap-1 bg-primary/20 border border-primary/40 text-primary px-2.5 py-1 rounded-full text-xs md:text-sm">
-                    <span>{categories.find((c: Category) => c.slug === activeCategory)?.name}</span>
-                    <button 
-                      onClick={() => setActiveCategory('all')}
-                      className="hover:text-white transition-colors"
-                    >
-                      <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </span>
-                )}
+                <span className="inline-flex items-center gap-1 bg-primary/20 border border-primary/40 text-primary px-2.5 py-1 rounded-full text-xs md:text-sm">
+                  <span>{categories.find((c: Category) => c.slug === activeCategory)?.name}</span>
+                  <button 
+                    onClick={() => setActiveCategory('all')}
+                    className="hover:text-white transition-colors"
+                  >
+                    <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
               </div>
             )}
           </div>
@@ -355,10 +311,9 @@ function HomeTreatmentContent() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <h3 className="text-lg md:text-2xl font-bold text-white/80 mb-2">Tidak ada treatment ditemukan</h3>
-                <p className="text-sm text-white/60 mb-6">Coba ubah kata kunci atau kategori pencarian Anda</p>
+                <p className="text-sm text-white/60 mb-6">Coba pilih kategori lain</p>
                 <button
                   onClick={() => {
-                    setSearchQuery('');
                     setActiveCategory('all');
                   }}
                   className="inline-flex items-center gap-2 bg-primary/20 border border-primary text-primary px-5 py-2.5 md:px-6 md:py-3 rounded-lg font-semibold text-sm hover:bg-primary/30 transition-all duration-300"
