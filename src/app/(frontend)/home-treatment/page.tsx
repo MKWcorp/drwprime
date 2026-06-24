@@ -181,13 +181,27 @@ function HomeTreatmentContent() {
     <MobileLayout>
       <Navbar />
       
-      <main className="pt-20 min-h-screen bg-dark relative overflow-hidden">
+      <main className="pt-20 min-h-screen relative overflow-hidden bg-gradient-to-b from-[#1a120b] via-[#0d0a07] to-black">
+        {/* Ambient spa glow */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden z-0">
+          <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-amber-400/15 blur-3xl"></div>
+          <div className="absolute top-1/3 -left-24 w-72 h-72 rounded-full bg-rose-400/10 blur-3xl"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-primary/10 blur-3xl"></div>
+        </div>
+
         {/* Hero Section - text only on mobile, image on desktop */}
-        <div className="md:hidden px-4 pt-6 pb-2 text-center">
-          <h1 className="font-playfair text-3xl font-bold text-primary">Prime at Home</h1>
+        <div className="md:hidden relative z-10 px-4 pt-8 pb-4 text-center">
+          <p className="text-primary/70 text-[11px] tracking-[0.3em] uppercase mb-2">Luxury Home Spa</p>
+          <h1 className="font-playfair text-4xl font-bold text-white leading-tight">
+            Prime <span className="text-primary italic">at Home</span>
+          </h1>
+          <div className="w-12 h-px bg-primary/50 mx-auto my-3"></div>
+          <p className="text-white/60 text-sm max-w-xs mx-auto">
+            Perawatan premium ala klinik, langsung di kenyamanan rumah Anda.
+          </p>
         </div>
         <section 
-          className="relative hidden md:block md:h-[65vh] md:min-h-[550px] md:max-h-[700px] overflow-hidden"
+          className="relative z-10 hidden md:flex items-center justify-center md:h-[65vh] md:min-h-[550px] md:max-h-[700px] overflow-hidden"
           style={{
             backgroundImage: 'url(/hero-home-treatment.png)',
             backgroundSize: 'cover',
@@ -195,10 +209,21 @@ function HomeTreatmentContent() {
             backgroundRepeat: 'no-repeat',
           }}
         >
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black"></div>
+          <div className="relative z-10 text-center px-4">
+            <p className="text-primary/80 text-sm tracking-[0.4em] uppercase mb-4">Luxury Home Spa</p>
+            <h1 className="font-playfair text-6xl lg:text-7xl font-bold text-white drop-shadow-lg">
+              Prime <span className="text-primary italic">at Home</span>
+            </h1>
+            <div className="w-20 h-px bg-primary/60 mx-auto my-5"></div>
+            <p className="text-white/80 text-lg max-w-xl mx-auto">
+              Perawatan premium ala klinik, langsung di kenyamanan rumah Anda.
+            </p>
+          </div>
         </section>
 
         {/* Search & Filter Section */}
-        <section className="relative py-3 px-4 md:py-6 md:px-5 bg-[#0f0f0f]/80 border-b border-primary/10 sticky top-[60px] md:top-[70px] z-50 backdrop-blur-md">
+        <section className="relative z-20 py-3 px-4 md:py-6 md:px-5 bg-[#140d07]/85 border-b border-primary/15 sticky top-[60px] md:top-[70px] backdrop-blur-md">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-center">
               {/* Search Bar */}
@@ -314,7 +339,7 @@ function HomeTreatmentContent() {
         </section>
 
         {/* Treatments Grid */}
-        <section className="relative py-8 px-4 md:py-20 md:px-5">
+        <section className="relative z-10 py-8 px-4 md:py-20 md:px-5">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-8 md:mb-16">
               <h2 className="font-playfair text-2xl md:text-4xl font-bold text-primary mb-3 md:mb-4">
@@ -361,7 +386,7 @@ function HomeTreatmentContent() {
               {displayedTreatments.map((treatment: Treatment & { categoryName?: string; categorySlug?: string }) => (
                 <div 
                   key={treatment.id} 
-                  className="bg-[#141414]/95 rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                  className="group bg-white/[0.04] backdrop-blur-sm border border-primary/15 rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-1.5 flex flex-col"
                 >
                   {/* Image terpotong di atas */}
                   <div className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden flex-shrink-0">
@@ -369,9 +394,10 @@ function HomeTreatmentContent() {
                       src={categoryImageMap[treatment.categorySlug ?? activeCategory] ?? '/home-treatments/facial.jpeg'}
                       alt={treatment.categoryName ?? treatment.name}
                       fill
-                      className="object-cover object-center"
+                      className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 768px) 50vw, 33vw"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                     {/* Category Badge overlay */}
                     {activeCategory === 'all' && (
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-2 pt-5 pb-1.5">
@@ -417,7 +443,7 @@ function HomeTreatmentContent() {
         </section>
 
         {/* CTA Section */}
-        <section className="relative py-10 px-4 md:py-20 md:px-5 bg-gradient-to-br from-primary/10 to-dark text-center">
+        <section className="relative z-10 py-10 px-4 md:py-20 md:px-5 bg-gradient-to-br from-primary/10 to-dark text-center">
           <div className="max-w-4xl mx-auto">
             <h2 className="font-playfair text-2xl md:text-4xl font-bold text-primary mb-3 md:mb-4">
               Siap Merasakan Layanan Premium di Rumah?
