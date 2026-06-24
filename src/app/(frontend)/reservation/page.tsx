@@ -45,10 +45,11 @@ function ReservationContent() {
     try {
       const response = await fetch('/api/treatments');
       const data = await response.json();
-      
-      setCategories(data.categories);
+
+      setCategories(Array.isArray(data.categories) ? data.categories : []);
     } catch (error) {
       console.error('Error fetching treatments:', error);
+      setCategories([]);
     } finally {
       setLoading(false);
     }

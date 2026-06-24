@@ -58,6 +58,7 @@ const TIER_CONFIG = {
 export default function MyPrimePage() {
   const { user, isLoaded } = useUser();
   const [membership, setMembership] = useState<MembershipData | null>(null);
+  const [profileComplete, setProfileComplete] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchMembership = useCallback(async () => {
@@ -86,6 +87,16 @@ export default function MyPrimePage() {
       }
       const data = await res.json();
       setMembership(data.membership);
+
+      try {
+        const profileRes = await fetch('/api/profile');
+        if (profileRes.ok) {
+          const profileData = await profileRes.json();
+          setProfileComplete(Boolean(profileData.profile?.isComplete));
+        }
+      } catch {
+        // ignore profile fetch errors, banner just won't show
+      }
     } catch (err) {
       console.error('Membership fetch error:', err);
       setMembership(null);
@@ -177,6 +188,30 @@ export default function MyPrimePage() {
               <h1 className="text-white font-bold text-xl">My Prime</h1>
               <p className="text-white/50 text-xs mt-0.5">Membership Dashboard</p>
             </div>
+
+            {/* Complete Profile Banner */}
+            {profileComplete === false && (
+              <div className="mb-5">
+                <Link href="/my-prime/profile">
+                  <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/40 rounded-xl p-4 flex items-center justify-between hover:border-primary/70 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary/20 border border-primary/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-white font-semibold text-sm">Lengkapi Profil Anda</p>
+                        <p className="text-white/50 text-xs">Lengkapi data pribadi untuk jadi member DRW Prime</p>
+                      </div>
+                    </div>
+                    <svg className="w-5 h-5 text-primary/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </Link>
+              </div>
+            )}
 
             {/* Membership Card */}
             <div className="mb-5">
