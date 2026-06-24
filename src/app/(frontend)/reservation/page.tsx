@@ -227,7 +227,7 @@ function ReservationContent() {
                   </span>
                   <div>
                     <p className="text-white text-sm font-semibold">Jam Operasional</p>
-                    <p className="text-white/50 text-xs">Setiap hari, 09.00 &ndash; 18.00 WIB</p>
+                    <p className="text-white/50 text-xs">Setiap hari, 09.00 &ndash; 20.00 WIB</p>
                   </div>
                 </div>
                 <Link
@@ -426,6 +426,8 @@ function ReservationContent() {
                       <option value="16:00">16:00</option>
                       <option value="17:00">17:00</option>
                       <option value="18:00">18:00</option>
+                      <option value="19:00">19:00</option>
+                      <option value="20:00">20:00</option>
                     </select>
                   </div>
                 </div>
