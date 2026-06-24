@@ -162,6 +162,45 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    // Data hasil SCAN (sumber utama / real-time) — ikut digabung ke ringkasan
+    const scanWhere = range ? { spendingDate: range } : {};
+    const scanRows = await prisma.spendingRecord.findMany({
+      where: scanWhere,
+      orderBy: { spendingDate: 'desc' },
+      take: 500,
+      include: {
+        user: { select: { firstName: true, lastName: true } },
+      },
+    });
+
+    const scanRecords = scanRows.map((s) => ({
+      id: s.id,
+      namaPasien: [s.user.firstName, s.user.lastName].filter(Boolean).join(' ') || 'Member',
+      treatment: s.treatment,
+      amount: Number(s.amount),
+      spendingDate: s.spendingDate,
+    }));
+
+    for (const s of scanRecords) {
+      const key = s.namaPasien.trim().toLowerCase();
+      const current = summaryMap.get(key);
+      if (!current) {
+        summaryMap.set(key, {
+          namaPasien: s.namaPasien,
+          totalKunjungan: 1,
+          totalPendapatan: s.amount,
+          totalKeuntungan: 0,
+          lastVisit: s.spendingDate,
+        });
+      } else {
+        current.totalKunjungan += 1;
+        current.totalPendapatan += s.amount;
+        if (s.spendingDate > current.lastVisit) {
+          current.lastVisit = s.spendingDate;
+        }
+      }
+    }
+
     const customerSummaries = Array.from(summaryMap.values())
       .sort((a, b) => b.totalPendapatan - a.totalPendapatan)
       .slice(0, 100);
@@ -190,6 +229,7 @@ export async function GET(req: NextRequest) {
       })),
       customerSummaries,
       totals,
+      scanRecords,
       selectedDate: dateParam,
     });
   } catch (error) {

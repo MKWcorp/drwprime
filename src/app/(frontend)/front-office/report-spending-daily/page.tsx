@@ -29,11 +29,20 @@ type CustomerSummary = {
 type DashboardData = {
   uploads: UploadItem[];
   customerSummaries: CustomerSummary[];
+  scanRecords: ScanRecord[];
   totals: {
     totalPendapatan: number;
     totalKeuntungan: number;
     totalKunjungan: number;
   };
+};
+
+type ScanRecord = {
+  id: string;
+  namaPasien: string;
+  treatment: string | null;
+  amount: number;
+  spendingDate: string;
 };
 
 export default function ReportSpendingDailyPage() {
@@ -54,6 +63,7 @@ export default function ReportSpendingDailyPage() {
   const [data, setData] = useState<DashboardData>({
     uploads: [],
     customerSummaries: [],
+    scanRecords: [],
     totals: { totalPendapatan: 0, totalKeuntungan: 0, totalKunjungan: 0 },
   });
 
@@ -123,6 +133,7 @@ export default function ReportSpendingDailyPage() {
       setData({
         uploads: result.uploads || [],
         customerSummaries: result.customerSummaries || [],
+        scanRecords: result.scanRecords || [],
         totals: result.totals || { totalPendapatan: 0, totalKeuntungan: 0, totalKunjungan: 0 },
       });
     } catch (e) {
@@ -358,6 +369,45 @@ export default function ReportSpendingDailyPage() {
                           <td className="px-4 py-3 text-sm text-green-300 font-semibold">{formatCurrency(item.totalPendapatan)}</td>
                           <td className="px-4 py-3 text-sm text-blue-300">{formatCurrency(item.totalKeuntungan)}</td>
                           <td className="px-4 py-3 text-sm text-white/60">{formatDate(item.lastVisit)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* Riwayat Spending (Scan) — sumber utama real-time */}
+            <div className="fo-glass-card fo-fade-up fo-stagger-2 rounded-xl overflow-hidden mb-6">
+              <div className="p-4 border-b border-white/10 fo-glass-card-soft flex items-center justify-between gap-3">
+                <h3 className="text-white font-semibold">Spending dari Scan</h3>
+                <span className="text-[11px] px-2 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30 whitespace-nowrap">Real-time · sumber utama</span>
+              </div>
+
+              {loading ? (
+                <div className="p-8 text-center text-white/60">Loading...</div>
+              ) : data.scanRecords.length === 0 ? (
+                <div className="p-8 text-center text-white/60">Belum ada spending hasil scan</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="fo-glass-card-soft border-b border-white/10">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">No</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Nama Member</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Treatment</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Nominal</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-white/70">Tanggal</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/10">
+                      {data.scanRecords.map((s, idx) => (
+                        <tr key={s.id} className="hover:bg-white/5 transition-colors">
+                          <td className="px-4 py-3 text-sm text-white/70">{idx + 1}</td>
+                          <td className="px-4 py-3 text-sm text-white">{s.namaPasien}</td>
+                          <td className="px-4 py-3 text-sm text-white/70">{s.treatment || '-'}</td>
+                          <td className="px-4 py-3 text-sm text-green-300 font-semibold">{formatCurrency(s.amount)}</td>
+                          <td className="px-4 py-3 text-sm text-white/60 whitespace-nowrap">{formatDate(s.spendingDate)}</td>
                         </tr>
                       ))}
                     </tbody>
