@@ -27,6 +27,7 @@
     "@vercel/blob": "^2.4.0",
     "exceljs": "^4.4.0",
     "graphql": "^16.14.2",
+    "html5-qrcode": "^2.3.8",
     "next": "^15.5.12",
     "payload": "3.75.0",
     "prisma": "^5.22.0",

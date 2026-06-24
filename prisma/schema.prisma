@@ -29,6 +29,8 @@ model User {
   postalCode        String?
   profileCompletedAt DateTime?     // Set when member completes their profile
 
+  qrToken           String?        @unique // Unique token encoded in member QR for spending scan
+
   affiliateCode     String         // Removed @unique to allow shared codes
   isTeamLeader      Boolean        @default(false) // True if this user created the affiliate code
   affiliateCodeUpdatedAt DateTime?  // Track last time affiliate code was changed
@@ -51,6 +53,7 @@ model User {
   eventRegistrations EventRegistration[]
   bankAccounts      BankAccount[]
   withdrawals       Withdrawal[]
+  spendingRecords   SpendingRecord[]
 
   @@map("users")
 }
@@ -169,6 +172,25 @@ model Transaction {
   user            User      @relation(fields: [userId], references: [id])
 
   @@map("transactions")
+}
+
+// Spending recorded via QR scan by front office (links spending to member account)
+model SpendingRecord {
+  id                String    @id @default(cuid())
+  userId            String
+  amount            Decimal   @db.Decimal(12, 2)
+  treatment         String?   // treatment name / keterangan
+  spendingDate      DateTime
+  recordedByClerkId String?   // admin/FO who recorded
+  source            String    @default("scan") // scan, manual
+
+  createdAt         DateTime  @default(now())
+
+  user              User      @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([spendingDate])
+  @@map("spending_records")
 }
 
 // Voucher system

@@ -399,6 +399,12 @@ export default function FrontOfficePage() {
                   Report Profil Lengkap
                 </Link>
                 <Link 
+                  href="/front-office/spending-scan"
+                  className="fo-nav-chip text-sm"
+                >
+                  Catat Spending (Scan)
+                </Link>
+                <Link 
                   href="/front-office/report-spending-daily"
                   className="fo-nav-chip text-sm"
                 >

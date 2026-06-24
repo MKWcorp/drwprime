@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
 import InstallPrompt from '@/components/InstallPrompt';
+import MemberQrCard from '@/components/MemberQrCard';
 
 interface MemberReservation {
   id: string;
@@ -291,6 +292,9 @@ export default function MyPrimePage() {
                 </div>
               </div>
             </div>
+
+            {/* QR Member */}
+            <MemberQrCard />
 
             {/* Tier Progress */}
             {membership.nextTier && (

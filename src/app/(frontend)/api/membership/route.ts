@@ -89,6 +89,9 @@ export async function GET() {
             treatment: { select: { name: true } },
           },
         },
+        spendingRecords: {
+          select: { amount: true },
+        },
       },
     });
 
@@ -100,10 +103,17 @@ export async function GET() {
       (r) => r.status === 'completed'
     );
 
-    const totalSpending = completedReservations.reduce(
+    const reservationSpending = completedReservations.reduce(
       (sum, r) => sum + Number(r.finalPrice),
       0
     );
+
+    const scanSpending = user.spendingRecords.reduce(
+      (sum, s) => sum + Number(s.amount),
+      0
+    );
+
+    const totalSpending = reservationSpending + scanSpending;
 
     const tierData = computeTier(totalSpending);
 
