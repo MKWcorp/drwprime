@@ -41,7 +41,7 @@ const EMPTY_FORM: ProfileForm = {
 };
 
 const inputClass =
-  'w-full px-4 py-2.5 bg-white/[0.07] backdrop-blur-md border border-white/15 rounded-lg text-white placeholder:text-white/30 focus:ring-2 focus:ring-primary/60 focus:border-primary/40 text-sm outline-none transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]';
+  'w-full fo-glass-input px-4 py-2.5 rounded-lg text-sm placeholder:text-white/30 [&>option]:text-black';
 
 export default function ProfilePage() {
   const { user, isLoaded } = useUser();
@@ -207,13 +207,7 @@ export default function ProfilePage() {
   return (
     <MobileLayout>
       <Navbar />
-      <div className="min-h-screen bg-black relative overflow-hidden">
-        {/* Ambient glass backdrop */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -top-24 -right-20 w-72 h-72 rounded-full bg-primary/20 blur-3xl"></div>
-          <div className="absolute top-1/3 -left-24 w-72 h-72 rounded-full bg-amber-500/10 blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-violet-600/10 blur-3xl"></div>
-        </div>
+      <div className="min-h-screen fo-glass-page fo-theme-dashboard">
         <div className="pt-20 relative z-10">
           <div className="max-w-2xl mx-auto px-4 py-6">
 
@@ -227,9 +221,9 @@ export default function ProfilePage() {
               Kembali ke My Prime
             </Link>
 
-            <div className="mb-5">
-              <h1 className="text-white font-bold text-xl">Lengkapi Profil</h1>
-              <p className="text-white/50 text-xs mt-0.5">
+            <div className="mb-5 fo-fade-up">
+              <h1 className="font-playfair text-2xl md:text-3xl font-bold text-primary">Lengkapi Profil</h1>
+              <p className="text-white/70 text-sm mt-1">
                 Lengkapi data pribadi untuk menjadi member DRW Prime
               </p>
             </div>
@@ -250,7 +244,7 @@ export default function ProfilePage() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="bg-white/[0.06] backdrop-blur-xl border border-white/15 rounded-2xl p-4 space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.1)]">
+              <div className="fo-glass-card fo-fade-up rounded-xl p-6 border-primary/35 space-y-4">
                 <h3 className="text-white font-semibold text-sm">Data Pribadi</h3>
 
                 <div>
@@ -313,7 +307,7 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              <div className="bg-white/[0.06] backdrop-blur-xl border border-white/15 rounded-2xl p-4 space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.1)]">
+              <div className="fo-glass-card fo-fade-up rounded-xl p-6 border-primary/35 space-y-4">
                 <h3 className="text-white font-semibold text-sm">Alamat</h3>
 
                 <div>

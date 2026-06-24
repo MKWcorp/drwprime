@@ -177,15 +177,10 @@ export default function MyPrimePage() {
     return (
       <MobileLayout>
         <Navbar />
-        <div className="min-h-screen bg-black relative overflow-hidden">
-          {/* Ambient glass backdrop */}
-          <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="absolute -top-24 -right-20 w-72 h-72 rounded-full bg-primary/20 blur-3xl"></div>
-            <div className="absolute bottom-0 -left-24 w-80 h-80 rounded-full bg-violet-600/10 blur-3xl"></div>
-          </div>
+        <div className="min-h-screen fo-glass-page fo-theme-dashboard">
           <div className="pt-20 relative z-10">
             <div className="max-w-md mx-auto px-4 py-10">
-              <div className="bg-white/[0.06] backdrop-blur-xl border border-white/15 rounded-2xl p-8 text-center shadow-[0_8px_30px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)]">
+              <div className="fo-glass-card fo-fade-up rounded-2xl p-8 text-center border-primary/35">
                 <div className="relative w-20 h-20 mx-auto mb-5">
                   <div className="absolute inset-0 bg-primary/15 backdrop-blur-md rounded-full border border-primary/20"></div>
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -195,7 +190,7 @@ export default function MyPrimePage() {
                   </div>
                 </div>
 
-                <h1 className="text-white font-bold text-lg mb-2">Dashboard Terkunci</h1>
+                <h1 className="font-playfair text-2xl font-bold text-primary mb-2">Dashboard Terkunci</h1>
                 <p className="text-white/60 text-sm mb-6 leading-relaxed">
                   Lengkapi data pribadi Anda terlebih dahulu untuk membuka dashboard membership DRW Prime.
                 </p>
@@ -228,19 +223,14 @@ export default function MyPrimePage() {
   return (
     <MobileLayout>
       <Navbar />
-      <div className="min-h-screen bg-black relative overflow-hidden">
-        {/* Ambient glass backdrop */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -top-24 -right-20 w-72 h-72 rounded-full bg-primary/15 blur-3xl"></div>
-          <div className="absolute bottom-1/4 -left-24 w-80 h-80 rounded-full bg-violet-600/10 blur-3xl"></div>
-        </div>
+      <div className="min-h-screen fo-glass-page fo-theme-dashboard">
         <div className="pt-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 py-6">
 
             {/* Page Title */}
-            <div className="mb-5">
-              <h1 className="text-white font-bold text-xl">My Prime</h1>
-              <p className="text-white/50 text-xs mt-0.5">Membership Dashboard</p>
+            <div className="mb-5 fo-fade-up">
+              <h1 className="font-playfair text-3xl md:text-4xl font-bold text-primary">My Prime</h1>
+              <p className="text-white/70 text-sm mt-1">Membership Dashboard</p>
             </div>
 
             {/* Membership Card */}
@@ -289,7 +279,7 @@ export default function MyPrimePage() {
             {/* Tier Progress */}
             {membership.nextTier && (
               <div className="mb-5">
-                <div className="bg-white/[0.06] backdrop-blur-xl border border-white/15 rounded-2xl p-4 shadow-[0_8px_30px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)]">
+                <div className="fo-glass-card rounded-xl p-4 border-primary/35">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-white/70 text-xs font-semibold">Progress ke {TIER_CONFIG[membership.nextTier].label}</p>
                     <p className="text-white/50 text-[10px]">{membership.progressPercent}%</p>
@@ -353,7 +343,7 @@ export default function MyPrimePage() {
 
             {/* Transaction History */}
             <div>
-              <div className="bg-white/[0.06] backdrop-blur-xl border border-white/15 rounded-2xl p-4 shadow-[0_8px_30px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)]">
+              <div className="fo-glass-card rounded-xl p-4 border-primary/35">
                 <h3 className="font-bold text-sm text-white mb-3">Riwayat Kunjungan</h3>
                 {membership.reservations.length === 0 ? (
                   <div className="text-center py-8">
