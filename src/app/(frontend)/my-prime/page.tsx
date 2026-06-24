@@ -177,7 +177,7 @@ export default function MyPrimePage() {
     return (
       <MobileLayout>
         <Navbar />
-        <div className="min-h-screen fo-glass-page fo-theme-dashboard">
+        <div className="min-h-screen fo-glass-page mp-theme-bright">
           <div className="pt-20 relative z-10">
             <div className="max-w-md mx-auto px-4 py-10">
               <div className="fo-glass-card fo-fade-up rounded-2xl p-8 text-center border-primary/35">
@@ -223,7 +223,7 @@ export default function MyPrimePage() {
   return (
     <MobileLayout>
       <Navbar />
-      <div className="min-h-screen fo-glass-page fo-theme-dashboard">
+      <div className="min-h-screen fo-glass-page mp-theme-bright">
         <div className="pt-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 py-6">
 

@@ -207,7 +207,7 @@ export default function ProfilePage() {
   return (
     <MobileLayout>
       <Navbar />
-      <div className="min-h-screen fo-glass-page fo-theme-dashboard">
+      <div className="min-h-screen fo-glass-page mp-theme-bright">
         <div className="pt-20 relative z-10">
           <div className="max-w-2xl mx-auto px-4 py-6">
 
