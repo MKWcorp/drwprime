@@ -23,8 +23,8 @@ const SOCIALS = [
     ),
   },
   {
-    label: 'drwprime',
-    href: 'https://www.tiktok.com/@drwprime',
+    label: 'drw.prime',
+    href: 'https://www.tiktok.com/@drw.prime',
     name: 'TikTok',
     icon: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
