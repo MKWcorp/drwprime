@@ -118,10 +118,22 @@ export function Hourglass({ size = 96, className = '' }: HourglassProps) {
   );
 }
 
+const BEAUTY_TIPS = [
+  '“Kecantikan dimulai saat kamu memutuskan menjadi dirimu sendiri.” — Coco Chanel',
+  '“Alam memberimu wajah di usia 20; wajah di usia 50 kamu yang menentukan.” — Coco Chanel',
+  '“Rawat tubuhmu — ia satu-satunya tempat tinggal yang kamu miliki.” — Jim Rohn',
+  'Tabir surya setiap pagi: anti-aging termurah & paling efektif. — Dermatolog DRW Prime',
+  'Konsistensi mengalahkan intensitas — rutinitas kecil tiap hari, hasil terbaik. — Ahli Estetika DRW Prime',
+  'Tidur 7–8 jam adalah perawatan malam terkuat, saat kulit memperbaiki dirinya.',
+  'Kulit terhidrasi memantulkan cahaya lebih indah — cukupi air dari dalam & luar.',
+  '“Kecantikan yang dirawat dengan sabar akan bertahan melampaui waktu.” — Tim Ahli DRW Prime',
+];
+
 type LoadingScreenProps = {
   label?: string;
   tagline?: string;
   showTagline?: boolean;
+  showTips?: boolean;
   size?: number;
   fullScreen?: boolean;
   className?: string;
@@ -131,7 +143,8 @@ export default function LoadingScreen({
   label,
   tagline = 'The Art of Timeless Beauty',
   showTagline = true,
-  size = 96,
+  showTips = true,
+  size = 64,
   fullScreen = true,
   className = '',
 }: LoadingScreenProps) {
@@ -147,11 +160,32 @@ export default function LoadingScreen({
       <div className="flex flex-col items-center text-center px-6">
         <Hourglass size={size} />
         {showTagline && (
-          <p className="hg-tagline mt-7 text-[0.7rem] sm:text-xs font-semibold uppercase tracking-[0.32em]">
+          <p className="hg-tagline mt-5 text-[0.7rem] sm:text-xs font-semibold uppercase tracking-[0.32em]">
             {tagline}
           </p>
         )}
-        {label && <p className="mt-3 text-sm text-white/55">{label}</p>}
+        {label && <p className="mt-2 text-sm text-white/55">{label}</p>}
+        {showTips && (
+          <div
+            aria-hidden="true"
+            className="mt-7 w-full max-w-xs overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md"
+          >
+            <p className="mb-2 text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-primary/80">
+              Tips Kecantikan
+            </p>
+            <div className="relative min-h-[4rem]">
+              {BEAUTY_TIPS.map((tip, i) => (
+                <p
+                  key={i}
+                  className="lt-item text-[0.78rem] leading-snug text-white/75"
+                  style={{ animationDelay: `${i * 4.4}s` }}
+                >
+                  {tip}
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
