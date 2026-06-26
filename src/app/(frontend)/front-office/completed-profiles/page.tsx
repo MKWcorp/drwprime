@@ -20,7 +20,6 @@ interface CompletedProfile {
   address: string;
   city: string;
   province: string;
-  postalCode: string;
   profileCompletedAt: string | null;
 }
 
@@ -77,7 +76,6 @@ export default function CompletedProfilesPage() {
       { header: 'Alamat', key: 'address', width: 40 },
       { header: 'Kota', key: 'city', width: 18 },
       { header: 'Provinsi', key: 'province', width: 20 },
-      { header: 'Kode Pos', key: 'postalCode', width: 12 },
       { header: 'Kode Afiliasi', key: 'affiliateCode', width: 14 },
       { header: 'Tanggal Melengkapi', key: 'completedAt', width: 18 },
     ];
@@ -100,7 +98,6 @@ export default function CompletedProfilesPage() {
         address: p.address,
         city: p.city,
         province: p.province,
-        postalCode: p.postalCode,
         affiliateCode: p.affiliateCode,
         completedAt: formatDate(p.profileCompletedAt),
       });

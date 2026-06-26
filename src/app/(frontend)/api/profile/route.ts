@@ -15,7 +15,6 @@ type ProfileUser = {
   address: string | null;
   city: string | null;
   province: string | null;
-  postalCode: string | null;
   profileCompletedAt: Date | null;
 };
 
@@ -27,8 +26,7 @@ function isProfileComplete(user: ProfileUser): boolean {
     !!user.dateOfBirth &&
     !!user.address &&
     !!user.city &&
-    !!user.province &&
-    !!user.postalCode
+    !!user.province
   );
 }
 
@@ -46,7 +44,6 @@ function serializeProfile(user: ProfileUser) {
     address: user.address,
     city: user.city,
     province: user.province,
-    postalCode: user.postalCode,
     profileCompletedAt: user.profileCompletedAt,
     isComplete: isProfileComplete(user),
   };
@@ -63,7 +60,6 @@ const PROFILE_SELECT = {
   address: true,
   city: true,
   province: true,
-  postalCode: true,
   profileCompletedAt: true,
 } as const;
 
@@ -106,7 +102,6 @@ export async function PUT(req: Request) {
     const address = typeof body.address === 'string' ? body.address.trim() : '';
     const city = typeof body.city === 'string' ? body.city.trim() : '';
     const province = typeof body.province === 'string' ? body.province.trim() : '';
-    const postalCode = typeof body.postalCode === 'string' ? body.postalCode.trim() : '';
 
     const errors: Record<string, string> = {};
 
@@ -144,12 +139,6 @@ export async function PUT(req: Request) {
     if (!city) errors.city = 'Kota/Kabupaten wajib diisi';
     if (!province) errors.province = 'Provinsi wajib diisi';
 
-    if (!postalCode) {
-      errors.postalCode = 'Kode pos wajib diisi';
-    } else if (!/^[0-9]{5}$/.test(postalCode)) {
-      errors.postalCode = 'Kode pos harus 5 digit angka';
-    }
-
     if (Object.keys(errors).length > 0) {
       return NextResponse.json({ error: 'Validasi gagal', fields: errors }, { status: 400 });
     }
@@ -173,7 +162,6 @@ export async function PUT(req: Request) {
         address,
         city,
         province,
-        postalCode,
         profileCompletedAt: existing.profileCompletedAt ?? new Date(),
       },
       select: PROFILE_SELECT,

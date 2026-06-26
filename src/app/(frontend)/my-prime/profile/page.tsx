@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
 import LoadingScreen, { Hourglass } from '@/components/LoadingScreen';
+import { getKabupaten } from '@/data/wilayah';
 
 const PROVINCES = [
   'Aceh', 'Sumatera Utara', 'Sumatera Barat', 'Riau', 'Jambi', 'Sumatera Selatan',
@@ -27,7 +28,6 @@ interface ProfileForm {
   address: string;
   city: string;
   province: string;
-  postalCode: string;
 }
 
 const EMPTY_FORM: ProfileForm = {
@@ -38,7 +38,6 @@ const EMPTY_FORM: ProfileForm = {
   address: '',
   city: '',
   province: '',
-  postalCode: '',
 };
 
 const inputClass =
@@ -100,7 +99,6 @@ export default function ProfilePage() {
         address: p.address ?? '',
         city: p.city ?? '',
         province: p.province ?? '',
-        postalCode: p.postalCode ?? '',
       });
       setAlreadyComplete(Boolean(p.isComplete));
 
@@ -131,7 +129,11 @@ export default function ProfilePage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === 'province' ? { city: '' } : {}),
+    }));
     setFieldErrors((prev) => {
       if (!prev[name]) return prev;
       const next = { ...prev };
@@ -247,6 +249,8 @@ export default function ProfilePage() {
     fieldErrors[name] ? (
       <p className="text-red-400 text-[11px] mt-1">{fieldErrors[name]}</p>
     ) : null;
+
+  const cityOptions = getKabupaten(form.province);
 
   return (
     <MobileLayout>
@@ -406,19 +410,6 @@ export default function ProfilePage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-white/70 text-xs mb-1.5">Kota / Kabupaten *</label>
-                    <input
-                      type="text"
-                      name="city"
-                      value={form.city}
-                      onChange={handleChange}
-                      placeholder="Contoh: Yogyakarta"
-                      className={inputClass}
-                    />
-                    {renderError('city')}
-                  </div>
-
-                  <div>
                     <label className="block text-white/70 text-xs mb-1.5">Provinsi *</label>
                     <select
                       name="province"
@@ -433,21 +424,28 @@ export default function ProfilePage() {
                     </select>
                     {renderError('province')}
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-white/70 text-xs mb-1.5">Kode Pos *</label>
-                  <input
-                    type="text"
-                    name="postalCode"
-                    inputMode="numeric"
-                    maxLength={5}
-                    value={form.postalCode}
-                    onChange={handleChange}
-                    placeholder="5 digit kode pos"
-                    className={inputClass}
-                  />
-                  {renderError('postalCode')}
+                  <div>
+                    <label className="block text-white/70 text-xs mb-1.5">Kota / Kabupaten *</label>
+                    <select
+                      name="city"
+                      value={form.city}
+                      onChange={handleChange}
+                      disabled={!form.province}
+                      className={`${inputClass} disabled:opacity-50 disabled:cursor-not-allowed`}
+                    >
+                      <option value="" className="bg-white text-black">
+                        {form.province ? 'Pilih kota/kabupaten' : 'Pilih provinsi dulu'}
+                      </option>
+                      {form.city && !cityOptions.includes(form.city) && (
+                        <option value={form.city} className="bg-white text-black">{form.city}</option>
+                      )}
+                      {cityOptions.map((c) => (
+                        <option key={c} value={c} className="bg-white text-black">{c}</option>
+                      ))}
+                    </select>
+                    {renderError('city')}
+                  </div>
                 </div>
               </div>
 

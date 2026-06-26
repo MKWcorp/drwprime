@@ -26,7 +26,6 @@ export async function GET() {
         address: true,
         city: true,
         province: true,
-        postalCode: true,
         profileCompletedAt: true,
       },
       orderBy: {
@@ -46,7 +45,6 @@ export async function GET() {
       address: u.address || '',
       city: u.city || '',
       province: u.province || '',
-      postalCode: u.postalCode || '',
       profileCompletedAt: u.profileCompletedAt ? u.profileCompletedAt.toISOString() : null,
     }));
 
