@@ -53,7 +53,15 @@ const HOME_TREATMENT_SLUGS = new Set([
 // Hanya treatment ini yang ditampilkan di Home Treatment
 const HOME_TREATMENT_ALLOWED_NAMES = new Set([
   'acne facial',
-  'glow facial'
+  'glow facial',
+  'body spa 120 menit',
+  'hot stone 30 menit',
+  'lymphatic dm wajah',
+  'lymphatic dm perut',
+  'lymphaticdm khaki',
+  'lymphatic dm full body',
+  'javanese massage 60 menit',
+  'javanese massage 90 menit'
 ]);
 
 function HomeTreatmentContent() {
