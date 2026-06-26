@@ -5,6 +5,10 @@ type HourglassProps = {
   className?: string;
 };
 
+const HG_DUR = '3.6s';
+const HG_EASE = '0.37 0 0.25 1';
+const HG_HOLD = '0 0 1 1';
+
 export function Hourglass({ size = 96, className = '' }: HourglassProps) {
   return (
     <svg
@@ -13,42 +17,103 @@ export function Hourglass({ size = 96, className = '' }: HourglassProps) {
       viewBox="0 0 100 140"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`hg-rotate ${className}`}
+      shapeRendering="geometricPrecision"
+      className={className}
       aria-hidden="true"
     >
       <defs>
         <linearGradient id="hgSand" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#f4d03f" />
-          <stop offset="100%" stopColor="#d4af37" />
+          <stop offset="0%" stopColor="#efd07f" />
+          <stop offset="100%" stopColor="#c89b34" />
         </linearGradient>
         <linearGradient id="hgFrame" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#f4d03f" />
-          <stop offset="55%" stopColor="#d4af37" />
-          <stop offset="100%" stopColor="#a9842a" />
+          <stop offset="0%" stopColor="#e7c66b" />
+          <stop offset="60%" stopColor="#c89b34" />
+          <stop offset="100%" stopColor="#9c7c2a" />
         </linearGradient>
+        <clipPath id="hgTop">
+          <rect x="22" width="56" y="22" height="44">
+            <animate
+              attributeName="y"
+              dur={HG_DUR}
+              repeatCount="indefinite"
+              calcMode="spline"
+              keyTimes="0;0.58;1"
+              values="22;66;66"
+              keySplines={`${HG_EASE};${HG_HOLD}`}
+            />
+            <animate
+              attributeName="height"
+              dur={HG_DUR}
+              repeatCount="indefinite"
+              calcMode="spline"
+              keyTimes="0;0.58;1"
+              values="44;0;0"
+              keySplines={`${HG_EASE};${HG_HOLD}`}
+            />
+          </rect>
+        </clipPath>
+        <clipPath id="hgBot">
+          <rect x="22" width="56" y="118" height="0">
+            <animate
+              attributeName="y"
+              dur={HG_DUR}
+              repeatCount="indefinite"
+              calcMode="spline"
+              keyTimes="0;0.58;1"
+              values="118;74;74"
+              keySplines={`${HG_EASE};${HG_HOLD}`}
+            />
+            <animate
+              attributeName="height"
+              dur={HG_DUR}
+              repeatCount="indefinite"
+              calcMode="spline"
+              keyTimes="0;0.58;1"
+              values="0;44;44"
+              keySplines={`${HG_EASE};${HG_HOLD}`}
+            />
+          </rect>
+        </clipPath>
       </defs>
 
-      {/* Caps */}
-      <rect x="16" y="9" width="68" height="7" rx="3.5" fill="url(#hgFrame)" />
-      <rect x="16" y="124" width="68" height="7" rx="3.5" fill="url(#hgFrame)" />
+      <g>
+        <animateTransform
+          attributeName="transform"
+          attributeType="XML"
+          type="rotate"
+          dur={HG_DUR}
+          repeatCount="indefinite"
+          calcMode="spline"
+          keyTimes="0;0.70;1"
+          values="0 50 70;0 50 70;180 50 70"
+          keySplines={`${HG_HOLD};0.45 0 0.15 1`}
+        />
 
-      {/* Glass body */}
-      <path
-        d="M22 18 L78 18 L54 70 L78 122 L22 122 L46 70 Z"
-        stroke="url(#hgFrame)"
-        strokeWidth="3"
-        strokeLinejoin="round"
-        fill="rgba(212,175,55,0.06)"
-      />
+        <rect x="18" y="9" width="64" height="7" rx="3.5" fill="url(#hgFrame)" />
+        <rect x="18" y="124" width="64" height="7" rx="3.5" fill="url(#hgFrame)" />
 
-      {/* Sand: top (drains toward neck) */}
-      <path className="hg-sand-top" d="M27 22 L73 22 L50 66 Z" fill="url(#hgSand)" />
+        <path
+          d="M24 18 L76 18 L53 70 L76 122 L24 122 L47 70 Z"
+          stroke="url(#hgFrame)"
+          strokeWidth="2.6"
+          strokeLinejoin="round"
+          fill="rgba(212,175,55,0.05)"
+        />
 
-      {/* Sand: bottom (piles up) */}
-      <path className="hg-sand-bottom" d="M50 74 L74 118 L26 118 Z" fill="url(#hgSand)" />
+        <path d="M28 22 L72 22 L50 66 Z" fill="url(#hgSand)" clipPath="url(#hgTop)" />
+        <path d="M50 74 L72 118 L28 118 Z" fill="url(#hgSand)" clipPath="url(#hgBot)" />
 
-      {/* Falling stream */}
-      <rect className="hg-stream" x="48.5" y="66" width="3" height="11" rx="1.5" fill="#f4d03f" />
+        <rect x="48.7" y="66" width="2.6" height="9" rx="1.3" fill="#e7c150">
+          <animate
+            attributeName="opacity"
+            dur={HG_DUR}
+            repeatCount="indefinite"
+            keyTimes="0;0.10;0.50;0.60;1"
+            values="0;1;1;0;0"
+          />
+        </rect>
+      </g>
     </svg>
   );
 }
