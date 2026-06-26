@@ -53,8 +53,7 @@ const HOME_TREATMENT_SLUGS = new Set([
 // Hanya treatment ini yang ditampilkan di Home Treatment
 const HOME_TREATMENT_ALLOWED_NAMES = new Set([
   'acne facial',
-  'glow facial',
-  'acne cure facial'
+  'glow facial'
 ]);
 
 function HomeTreatmentContent() {
