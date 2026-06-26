@@ -58,7 +58,7 @@ const HOME_TREATMENT_ALLOWED_NAMES = new Set([
   'hot stone 30 menit',
   'lymphatic dm wajah',
   'lymphatic dm perut',
-  'lymphaticdm khaki',
+  'lymphatic dm kaki',
   'lymphatic dm full body',
   'javanese massage 60 menit',
   'javanese massage 90 menit'
