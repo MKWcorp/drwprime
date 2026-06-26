@@ -3,7 +3,6 @@
 import { useState, useMemo, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
 import Footer from '@/components/Footer';
@@ -23,19 +22,6 @@ interface Category {
   description: string;
   treatments: Treatment[];
 }
-
-const categoryImageMap: { [key: string]: string } = {
-  'facial-basic': '/home-treatments/facial.jpeg',
-  'facial-prime': '/home-treatments/facial.jpeg',
-  'chemical-peeling': '/home-treatments/peeling.jpeg',
-  'infusion': '/home-treatments/infuse-booster.png',
-  'body-treatment': '/home-treatments/body-spa.jpeg',
-  'hair-treatment': '/home-treatments/facial.jpeg',
-  'hand-spa': '/home-treatments/body-spa.jpeg',
-  'nail-treatment': '/home-treatments/nail-art.png',
-  'eyelash-extension': '/home-treatments/eyelash-extension.jpeg',
-  'menicure-pedicure': '/home-treatments/nail-art.png'
-};
 
 const HOME_TREATMENT_SLUGS = new Set([
   'facial-basic',
@@ -340,22 +326,10 @@ function HomeTreatmentContent() {
               {displayedTreatments.map((treatment: Treatment & { categoryName?: string; categorySlug?: string }) => (
                 <div
                   key={treatment.id}
-                  className="group flex min-h-[7rem] md:min-h-[8.5rem] bg-white/[0.04] backdrop-blur-sm border border-primary/15 rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-0.5"
+                  className="group flex bg-white/[0.04] backdrop-blur-sm border border-primary/15 rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-0.5"
                 >
-                  {/* Image kiri */}
-                  <div className="relative w-28 sm:w-40 md:w-56 flex-shrink-0 overflow-hidden">
-                    <Image
-                      src={categoryImageMap[treatment.categorySlug ?? activeCategory] ?? '/home-treatments/facial.jpeg'}
-                      alt={treatment.categoryName ?? treatment.name}
-                      fill
-                      className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 768px) 40vw, 224px"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/20"></div>
-                  </div>
-
-                  {/* Konten kanan, memanjang */}
-                  <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-3 md:p-5">
+                  {/* Konten memanjang */}
+                  <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-4 md:p-5">
                     <div className="flex-1 min-w-0">
                       {activeCategory === 'all' && treatment.categoryName && (
                         <span className="block text-primary/80 text-[10px] md:text-xs font-semibold uppercase tracking-wide line-clamp-1">
