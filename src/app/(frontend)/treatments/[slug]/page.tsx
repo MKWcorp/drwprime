@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import MobileLayout from '@/components/MobileLayout';
 import ReservationForm from '@/components/ReservationForm';
+import LoadingScreen from '@/components/LoadingScreen';
 import Link from 'next/link';
 
 interface Treatment {
@@ -62,13 +63,7 @@ export default function TreatmentDetailPage() {
   if (loading) {
     return (
       <MobileLayout>
-        <Navbar />
-        <main className="pt-32 min-h-screen bg-dark px-5">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="text-white">Loading...</div>
-          </div>
-        </main>
-        <Footer />
+        <LoadingScreen />
       </MobileLayout>
     );
   }

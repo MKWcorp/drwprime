@@ -6,6 +6,7 @@ import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
+import { Hourglass } from '@/components/LoadingScreen';
 
 interface AffiliatorData {
   firstName: string;
@@ -123,7 +124,7 @@ export default function ReportPage() {
         <div className="min-h-screen fo-glass-page fo-theme-report">
           <Navbar />
           <div className="pt-20 flex items-center justify-center">
-            <p className="text-white/60">Loading...</p>
+            <Hourglass size={56} />
           </div>
         </div>
       </MobileLayout>

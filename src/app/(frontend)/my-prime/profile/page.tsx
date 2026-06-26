@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
+import LoadingScreen, { Hourglass } from '@/components/LoadingScreen';
 
 const PROVINCES = [
   'Aceh', 'Sumatera Utara', 'Sumatera Barat', 'Riau', 'Jambi', 'Sumatera Selatan',
@@ -204,12 +205,7 @@ export default function ProfilePage() {
   if (!isLoaded || loading) {
     return (
       <MobileLayout>
-        <div className="min-h-screen bg-black flex items-center justify-center">
-          <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-            <p className="text-white/60 text-sm">Memuat profil...</p>
-          </div>
-        </div>
+        <LoadingScreen label="Memuat profil..." />
       </MobileLayout>
     );
   }
@@ -291,7 +287,7 @@ export default function ProfilePage() {
                 </div>
                 {avatarBusy && (
                   <div className="absolute inset-0 rounded-full bg-black/60 flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                    <Hourglass size={22} />
                   </div>
                 )}
               </div>

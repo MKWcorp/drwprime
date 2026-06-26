@@ -6,6 +6,7 @@ import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
+import { Hourglass } from '@/components/LoadingScreen';
 
 interface CompletedProfile {
   firstName: string;
@@ -125,7 +126,7 @@ export default function CompletedProfilesPage() {
         <div className="min-h-screen fo-glass-page fo-theme-dashboard">
           <Navbar />
           <div className="pt-20 flex items-center justify-center">
-            <p className="text-white/60">Loading...</p>
+            <Hourglass size={56} />
           </div>
         </div>
       </MobileLayout>

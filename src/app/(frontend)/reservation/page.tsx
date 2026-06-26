@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 
 import MobileLayout from '@/components/MobileLayout';
+import LoadingScreen from '@/components/LoadingScreen';
 interface Treatment {
   id: string;
   name: string;
@@ -156,15 +157,7 @@ function ReservationContent() {
   if (loading) {
     return (
       <MobileLayout>
-        <div className="min-h-screen bg-black">
-          <Navbar />
-        <div className="pt-20 flex items-center justify-center min-h-[80vh]">
-          <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-            <p className="text-white/60">Memuat data...</p>
-          </div>
-        </div>
-      </div>
+        <LoadingScreen label="Memuat data..." />
       </MobileLayout>
     );
   }
@@ -479,14 +472,7 @@ function ReservationContent() {
 
 export default function ReservationPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-          <p className="text-white/60">Loading...</p>
-        </div>
-      </div>
-    }>
+    <Suspense fallback={<LoadingScreen />}>
       <ReservationContent />
     </Suspense>
   );

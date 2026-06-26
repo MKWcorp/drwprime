@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
+import { Hourglass } from '@/components/LoadingScreen';
 
 type UploadItem = {
   id: string;
@@ -385,7 +386,7 @@ export default function ReportSpendingDailyPage() {
               </div>
 
               {loading ? (
-                <div className="p-8 text-center text-white/60">Loading...</div>
+                <div className="p-8 text-center flex justify-center"><Hourglass size={44} /></div>
               ) : data.scanRecords.length === 0 ? (
                 <div className="p-8 text-center text-white/60">Belum ada spending hasil scan</div>
               ) : (

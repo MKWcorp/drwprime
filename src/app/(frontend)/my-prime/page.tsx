@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
 import InstallPrompt from '@/components/InstallPrompt';
 import MemberQrCard from '@/components/MemberQrCard';
+import LoadingScreen from '@/components/LoadingScreen';
 
 interface MemberReservation {
   id: string;
@@ -150,12 +151,7 @@ export default function MyPrimePage() {
   if (!isLoaded || loading) {
     return (
       <MobileLayout>
-        <div className="min-h-screen bg-black flex items-center justify-center">
-          <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-            <p className="text-white/60 text-sm">Loading My Prime...</p>
-          </div>
-        </div>
+        <LoadingScreen label="Loading My Prime..." />
       </MobileLayout>
     );
   }

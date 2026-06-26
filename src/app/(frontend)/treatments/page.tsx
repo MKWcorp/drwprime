@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import MobileLayout from '@/components/MobileLayout';
+import LoadingScreen from '@/components/LoadingScreen';
 
 interface Treatment {
   id: string;
@@ -418,11 +419,7 @@ function TreatmentsContent() {
 
 export default function TreatmentsPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-dark flex items-center justify-center">
-        <div className="text-primary text-xl">Loading...</div>
-      </div>
-    }>
+    <Suspense fallback={<LoadingScreen />}>
       <TreatmentsContent />
     </Suspense>
   );

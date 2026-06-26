@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
 import { QRCodeCanvas } from 'qrcode.react';
+import LoadingScreen from '@/components/LoadingScreen';
 
 interface Reservation {
   id: string;
@@ -203,12 +204,7 @@ export default function AffiliateDashboardPage() {
   if (!isLoaded || loading) {
     return (
       <MobileLayout>
-        <div className="min-h-screen bg-black flex items-center justify-center">
-          <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-            <p className="text-white/60">Loading dashboard afiliator...</p>
-          </div>
-        </div>
+        <LoadingScreen label="Loading dashboard afiliator..." />
       </MobileLayout>
     );
   }

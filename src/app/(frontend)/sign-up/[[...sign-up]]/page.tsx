@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import LoadingScreen from '@/components/LoadingScreen';
 
 function SignUpContent() {
   const searchParams = useSearchParams();
@@ -142,7 +143,7 @@ function SignUpContent() {
 
 export default function SignUpPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center"><div className="text-white">Loading...</div></div>}>
+    <Suspense fallback={<LoadingScreen />}>
       <SignUpContent />
     </Suspense>
   );

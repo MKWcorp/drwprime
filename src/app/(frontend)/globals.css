@@ -278,4 +278,115 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  /* ---- DRW Prime hourglass loader ---- */
+  .hg-glow {
+    background:
+      radial-gradient(circle at 50% 44%, rgba(212, 175, 55, 0.1), transparent 48%),
+      #0a0a0a;
+  }
+
+  .hg-rotate {
+    transform-origin: center center;
+    animation: hg-flip 2.6s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .hg-sand-top,
+  .hg-sand-bottom {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+  }
+
+  .hg-sand-top {
+    animation: hg-sand-top 2.6s ease-in-out infinite;
+  }
+
+  .hg-sand-bottom {
+    animation: hg-sand-bottom 2.6s ease-in-out infinite;
+  }
+
+  .hg-stream {
+    animation: hg-stream 2.6s linear infinite;
+  }
+
+  .hg-tagline {
+    background: linear-gradient(
+      90deg,
+      rgba(196, 161, 70, 0.7) 0%,
+      rgba(196, 161, 70, 0.7) 40%,
+      #ecdbab 50%,
+      rgba(196, 161, 70, 0.7) 60%,
+      rgba(196, 161, 70, 0.7) 100%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: hg-shimmer 6s ease-in-out infinite;
+  }
+
+  @keyframes hg-flip {
+    0%, 72% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(180deg);
+    }
+  }
+
+  @keyframes hg-sand-top {
+    0%, 4% {
+      transform: scaleY(1);
+    }
+
+    72%, 100% {
+      transform: scaleY(0.02);
+    }
+  }
+
+  @keyframes hg-sand-bottom {
+    0%, 4% {
+      transform: scaleY(0.02);
+    }
+
+    72%, 100% {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes hg-stream {
+    0%, 6% {
+      opacity: 0;
+    }
+
+    14%, 64% {
+      opacity: 1;
+    }
+
+    74%, 100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes hg-shimmer {
+    0% {
+      background-position: 220% 0;
+    }
+
+    100% {
+      background-position: -220% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hg-rotate,
+    .hg-sand-top,
+    .hg-sand-bottom,
+    .hg-stream,
+    .hg-tagline {
+      animation: none;
+    }
+  }
 }

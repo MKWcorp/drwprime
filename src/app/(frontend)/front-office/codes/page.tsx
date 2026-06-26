@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { QRCodeCanvas } from 'qrcode.react';
+import LoadingScreen, { Hourglass } from '@/components/LoadingScreen';
 
 interface BankAccount {
   id: string;
@@ -452,12 +453,7 @@ export default function AffiliateCodesPage() {
 
   if (checkingAuth || !isLoaded) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-          <p className="text-white/60">Checking access...</p>
-        </div>
-      </div>
+      <LoadingScreen label="Checking access..." />
     );
   }
 
@@ -550,7 +546,7 @@ export default function AffiliateCodesPage() {
 
           {loading ? (
             <div className="text-center py-10">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+              <Hourglass size={52} />
               <p className="text-white/60 mt-4">Loading...</p>
             </div>
           ) : codes.length === 0 ? (
