@@ -21,7 +21,11 @@ export const metadata: Metadata = {
   icons: {
     icon: "/drwprime-icon.ico",
     shortcut: "/drwprime-icon.ico",
-    apple: "/apple-touch-icon.png",
+    apple: [
+      { url: "/apple-touch-icon-152.png", sizes: "152x152" },
+      { url: "/apple-touch-icon-167.png", sizes: "167x167" },
+      { url: "/apple-touch-icon-180.png", sizes: "180x180" },
+    ],
   },
   alternates: { canonical: SITE_URL },
   openGraph: {
@@ -64,7 +68,6 @@ export default function RootLayout({
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
           <meta name="apple-mobile-web-app-title" content="DRW Prime" />
-          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
           <script
             dangerouslySetInnerHTML={{
               __html: `

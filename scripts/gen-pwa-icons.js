@@ -49,7 +49,7 @@ async function makeAny(size, out) {
 }
 
 async function makeApple(size, out) {
-  const inner = Math.round(size * 0.7);
+  const inner = Math.round(size * 0.74); // iOS only rounds corners (no circle crop), so logo can be larger
   const logo = await trimmedLogo(inner);
   await sharp(bgSvg(size))
     .composite([{ input: logo, gravity: 'center' }])
@@ -62,6 +62,9 @@ async function makeApple(size, out) {
   await makeAny(512, path.join(PUBLIC, 'icon-512x512.png'));
   await makeMaskable(192, path.join(PUBLIC, 'icon-maskable-192.png'));
   await makeMaskable(512, path.join(PUBLIC, 'icon-maskable-512.png'));
+  await makeApple(152, path.join(PUBLIC, 'apple-touch-icon-152.png'));
+  await makeApple(167, path.join(PUBLIC, 'apple-touch-icon-167.png'));
+  await makeApple(180, path.join(PUBLIC, 'apple-touch-icon-180.png'));
   await makeApple(180, path.join(PUBLIC, 'apple-touch-icon.png'));
   console.log('PWA icons generated.');
 })().catch((e) => {
