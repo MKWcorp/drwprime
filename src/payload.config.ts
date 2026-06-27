@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
+import { s3Storage } from '@payloadcms/storage-s3';
 import { buildConfig } from 'payload';
 import sharp from 'sharp';
 
@@ -51,12 +51,25 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    vercelBlobStorage({
+    // Media is stored in self-hosted MinIO (S3-compatible) on the VPS.
+    // Payload keeps serving files through its own /cms-api/media/file route,
+    // so stored DB urls stay relative and need no rewrite.
+    s3Storage({
       enabled: true,
       collections: {
         [Media.slug]: true,
       },
-      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+      bucket: process.env.S3_BUCKET || 'drwprime',
+      config: {
+        endpoint: process.env.S3_ENDPOINT || 'https://cdn.drwskincare.com',
+        region: process.env.S3_REGION || 'us-east-1',
+        // MinIO requires path-style addressing (bucket in the path, not subdomain).
+        forcePathStyle: true,
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+        },
+      },
     }),
   ],
 });
