@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { put } from '@vercel/blob';
+import { uploadPublicObject, isUploadConfigured } from '@/lib/s3-upload';
 import { prisma } from '@/lib/prisma';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -53,35 +53,24 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
-    if (!blobToken) {
+    if (!isUploadConfigured()) {
       return NextResponse.json(
-        { error: 'Upload belum aktif. BLOB_READ_WRITE_TOKEN belum dikonfigurasi di environment server.' },
+        { error: 'Upload belum aktif. Kredensial S3 (S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY) belum dikonfigurasi di environment server.' },
         { status: 500 }
       );
     }
 
     const safeName = sanitizeFileName(file.name || 'promo-image');
-    const blob = await put(`best-deals/${Date.now()}-${safeName}`, file, {
-      access: 'public',
-      addRandomSuffix: true,
-      token: blobToken,
-    });
+    const uploaded = await uploadPublicObject(`best-deals/${Date.now()}-${safeName}`, file);
 
     return NextResponse.json({
-      url: blob.url,
-      pathname: blob.pathname,
+      url: uploaded.url,
+      pathname: uploaded.pathname,
       message: 'Upload gambar berhasil',
     });
   } catch (error) {
     console.error('[FO BEST DEALS UPLOAD] POST error:', error);
-
-    const rawMessage = error instanceof Error ? error.message : '';
-    const isPrivateStoreError = rawMessage.toLowerCase().includes('cannot use public access on a private store');
-    const message = isPrivateStoreError
-      ? 'Vercel Blob Anda masih private. Ubah akses store menjadi Public di Vercel Storage -> Blob -> Settings -> Access, lalu coba upload lagi.'
-      : (rawMessage || 'Gagal upload gambar promo');
-
+    const message = error instanceof Error ? error.message : 'Gagal upload gambar promo';
     return NextResponse.json(
       { error: message },
       { status: 500 }
