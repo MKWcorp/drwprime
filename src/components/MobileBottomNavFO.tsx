@@ -56,7 +56,7 @@ export default function MobileBottomNavFO() {
 
   const isActive = (href: string) => {
     if (href === "/front-office") return pathname === "/front-office";
-    return pathname.startsWith(href);
+    return pathname === href || pathname.startsWith(href + '/');
   };
 
   return (
