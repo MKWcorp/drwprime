@@ -3,7 +3,9 @@ import { getPayloadClient, type PayloadPost } from '@/lib/payload';
 
 const SITE_URL = 'https://drwprime.com';
 
-export const revalidate = 3600;
+// Rendered at request time on the VPS (DB reachable via hairpin), NOT prerendered
+// at build on GitHub runners — the Postgres port is firewalled from the internet.
+export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [

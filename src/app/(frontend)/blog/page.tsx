@@ -27,7 +27,9 @@ export const metadata: Metadata = {
   ]
 };
 
-export const revalidate = 3600;
+// Rendered at request time on the VPS (DB reachable via hairpin), NOT prerendered
+// at build on GitHub runners — the Postgres port is firewalled from the internet.
+export const dynamic = 'force-dynamic';
 
 export default async function BlogPage() {
   const payload = await getPayloadClient();
