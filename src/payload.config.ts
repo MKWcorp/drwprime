@@ -31,6 +31,13 @@ export default buildConfig({
     //     Icon: './components/cms/Icon#Icon',
     //   },
     // },
+    components: {
+      views: {
+        login: {
+          Component: 'src/components/cms/AutoLogin#AutoLogin',
+        },
+      },
+    },
   },
   // The app already serves its own dashboard at /admin and a large /api surface,
   // so Payload is mounted on dedicated paths to avoid collisions.
@@ -50,6 +57,26 @@ export default buildConfig({
     },
   }),
   sharp,
+  onInit: async (payload) => {
+    const { docs } = await payload.find({
+      collection: 'users',
+      where: { email: { equals: 'admin@drwprime.com' } },
+      limit: 1,
+    });
+
+    if (docs.length === 0) {
+      await payload.create({
+        collection: 'users',
+        data: {
+          email: 'admin@drwprime.com',
+          password: 'drwprimeadmin2024',
+          name: 'Admin DRW Prime',
+          role: 'admin',
+        },
+      });
+      payload.logger.info('[SEED] Admin user created: admin@drwprime.com');
+    }
+  },
   plugins: [
     // Media is stored in self-hosted MinIO (S3-compatible) on the VPS.
     // Payload keeps serving files through its own /cms-api/media/file route,
