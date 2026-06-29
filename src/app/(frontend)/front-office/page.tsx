@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useUser } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import InstallPrompt from '@/components/InstallPrompt';
@@ -69,10 +67,6 @@ const getAffiliateFullName = (referrer?: Reservation['referrer']) => {
 };
 
 export default function FrontOfficePage() {
-  const { user, isLoaded } = useUser();
-  const router = useRouter();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [checkingAuth, setCheckingAuth] = useState(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState('all');
@@ -93,48 +87,6 @@ export default function FrontOfficePage() {
   const [reservationToDelete, setReservationToDelete] = useState<Reservation | null>(null);
   const [deleteError, setDeleteError] = useState('');
 
-
-  const checkAdminAccess = async () => {
-    if (!user) {
-      router.push('/sign-in');
-      return;
-    }
-
-    try {
-      // Sync user with database
-      await fetch('/api/user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: user.emailAddresses[0]?.emailAddress,
-          firstName: user.firstName,
-          lastName: user.lastName
-        })
-      });
-
-      // Fetch user data to check admin status
-      const response = await fetch('/api/user');
-      const data = await response.json();
-      
-      if (data.user?.isAdmin) {
-        setIsAdmin(true);
-      } else {
-        router.push('/');
-      }
-    } catch (error) {
-      console.error('Error checking admin access:', error);
-      router.push('/');
-    } finally {
-      setCheckingAuth(false);
-    }
-  };
-
-  useEffect(() => {
-    if (isLoaded) {
-      checkAdminAccess();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoaded]);
 
   const fetchReservations = async () => {
     setLoading(true);
@@ -167,12 +119,10 @@ export default function FrontOfficePage() {
   };
 
   useEffect(() => {
-    if (isAdmin) {
-      fetchReservations();
-      fetchTreatments();
-    }
+    fetchReservations();
+    fetchTreatments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterStatus, filterDate, isAdmin]);
+  }, [filterStatus, filterDate]);
 
   const updateReservationStatus = async (id: string, status: string, adminNotes?: string, finalPrice?: number) => {
     try {
@@ -352,16 +302,6 @@ export default function FrontOfficePage() {
       day: 'numeric'
     });
   };
-
-  if (checkingAuth || !isLoaded) {
-    return (
-      <LoadingScreen label="Checking access..." />
-    );
-  }
-
-  if (!isAdmin) {
-    return null;
-  }
 
   return (
     <div className="min-h-screen fo-glass-page fo-theme-dashboard">

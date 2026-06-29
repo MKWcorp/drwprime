@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import ExcelJS from 'exceljs';
-import { useUser } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
 import { Hourglass } from '@/components/LoadingScreen';
 
 interface CompletedProfile {
@@ -22,21 +20,12 @@ interface CompletedProfile {
 }
 
 export default function CompletedProfilesPage() {
-  const { user, isLoaded } = useUser();
-  const router = useRouter();
   const [profiles, setProfiles] = useState<CompletedProfile[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isLoaded && !user) {
-      router.push('/sign-in');
-      return;
-    }
-
-    if (user) {
-      fetchProfiles();
-    }
-  }, [isLoaded, user, router]);
+    fetchProfiles();
+  }, []);
 
   const fetchProfiles = async () => {
     try {
@@ -115,7 +104,7 @@ export default function CompletedProfilesPage() {
     document.body.removeChild(link);
   };
 
-  if (!isLoaded || loading) {
+  if (loading) {
     return (
       <div className="min-h-screen fo-glass-page fo-theme-dashboard">
         <div className="pt-20 flex items-center justify-center">

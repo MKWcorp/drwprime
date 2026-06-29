@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/prisma';
-import { ADMIN_USER_IDS } from '@/lib/admin';
 
-// GET - Get all withdrawal requests (Admin only)
+// GET - Get all withdrawal requests
 export async function GET(req: NextRequest) {
   try {
     const { userId } = await auth();
-    
-    if (!userId || !ADMIN_USER_IDS.includes(userId)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
 
     const { searchParams } = new URL(req.url);
     const status = searchParams.get('status') || 'all';
@@ -55,14 +50,10 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// PATCH - Update withdrawal status (Admin only)
+// PATCH - Update withdrawal status
 export async function PATCH(req: NextRequest) {
   try {
     const { userId } = await auth();
-    
-    if (!userId || !ADMIN_USER_IDS.includes(userId)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
 
     const body = await req.json();
     const { withdrawalId, status, adminNotes } = body;

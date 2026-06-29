@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/prisma';
-import { isUserAdmin } from '@/lib/admin';
 
 const TIER_THRESHOLDS = { GOLD: 1_000_000, PLATINUM: 5_000_000 };
 const RUPIAH_PER_POINT = 10_000; // Rp 10.000 = 1 poin
@@ -14,10 +13,6 @@ function computeTier(totalSpending: number): 'SILVER' | 'GOLD' | 'PLATINUM' {
 
 export async function POST(req: Request) {
   try {
-    if (!(await isUserAdmin())) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { userId } = await auth();
     const body = await req.json();
 

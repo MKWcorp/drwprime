@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import ExcelJS from 'exceljs';
-import { useUser } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
 import { Hourglass } from '@/components/LoadingScreen';
 
 interface AffiliatorData {
@@ -19,21 +17,12 @@ interface AffiliatorData {
 }
 
 export default function ReportPage() {
-  const { user, isLoaded } = useUser();
-  const router = useRouter();
   const [affiliators, setAffiliators] = useState<AffiliatorData[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isLoaded && !user) {
-      router.push('/sign-in');
-      return;
-    }
-
-    if (user) {
-      fetchAffiliators();
-    }
-  }, [isLoaded, user, router]);
+    fetchAffiliators();
+  }, []);
 
   const fetchAffiliators = async () => {
     try {
@@ -116,7 +105,7 @@ export default function ReportPage() {
   };
 
 
-  if (!isLoaded || loading) {
+  if (loading) {
     return (
       <div className="min-h-screen fo-glass-page fo-theme-report">
         <div className="pt-20 flex items-center justify-center">

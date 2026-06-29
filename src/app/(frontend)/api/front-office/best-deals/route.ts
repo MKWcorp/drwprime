@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/prisma';
 
 type PromoPayload = {
@@ -18,18 +17,6 @@ type PromoPayload = {
   isActive?: boolean;
 };
 
-async function isAdminUser(): Promise<boolean> {
-  const { userId } = await auth();
-  if (!userId) return false;
-
-  const user = await prisma.user.findUnique({
-    where: { clerkUserId: userId },
-    select: { isAdmin: true },
-  });
-
-  return Boolean(user?.isAdmin);
-}
-
 function toOptionalDate(value?: string): Date | null {
   if (!value) return null;
   const date = new Date(value);
@@ -38,10 +25,6 @@ function toOptionalDate(value?: string): Date | null {
 
 export async function GET() {
   try {
-    if (!(await isAdminUser())) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const promos = await prisma.bestDealPromo.findMany({
       orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
     });
@@ -55,10 +38,6 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    if (!(await isAdminUser())) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const body = (await req.json()) as PromoPayload;
 
     if (!body.title?.trim()) {
@@ -95,10 +74,6 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    if (!(await isAdminUser())) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const body = (await req.json()) as PromoPayload;
 
     if (!body.id) {
@@ -138,10 +113,6 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    if (!(await isAdminUser())) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
 

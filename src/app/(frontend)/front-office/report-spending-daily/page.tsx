@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useUser } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Hourglass } from '@/components/LoadingScreen';
 
@@ -45,11 +43,6 @@ type ScanRecord = {
 };
 
 export default function ReportSpendingDailyPage() {
-  const { user, isLoaded } = useUser();
-  const router = useRouter();
-
-  const [checkingAuth, setCheckingAuth] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState('');
   const [file, setFile] = useState<File | null>(null);
@@ -81,39 +74,6 @@ export default function ReportSpendingDailyPage() {
       year: 'numeric',
     });
 
-  const checkAdminAccess = async () => {
-    if (!user) {
-      router.push('/sign-in');
-      return;
-    }
-
-    try {
-      await fetch('/api/user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: user.emailAddresses[0]?.emailAddress,
-          firstName: user.firstName,
-          lastName: user.lastName,
-        }),
-      });
-
-      const response = await fetch('/api/user');
-      const result = await response.json();
-
-      if (result.user?.isAdmin) {
-        setIsAdmin(true);
-      } else {
-        router.push('/');
-      }
-    } catch (e) {
-      console.error('Error checking admin access:', e);
-      router.push('/');
-    } finally {
-      setCheckingAuth(false);
-    }
-  };
-
   const fetchData = async (dateFilter?: string) => {
     setLoading(true);
     setError('');
@@ -143,18 +103,9 @@ export default function ReportSpendingDailyPage() {
   };
 
   useEffect(() => {
-    if (isLoaded) {
-      checkAdminAccess();
-    }
+    fetchData(selectedDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoaded]);
-
-  useEffect(() => {
-    if (isAdmin) {
-      fetchData(selectedDate);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAdmin, selectedDate]);
+  }, [selectedDate]);
 
   const handleUpload = async () => {
     if (!file) {
@@ -230,18 +181,14 @@ export default function ReportSpendingDailyPage() {
 
   const totalCustomer = useMemo(() => data.customerSummaries.length, [data.customerSummaries.length]);
 
-  if (checkingAuth || !isLoaded) {
+  if (loading) {
     return (
       <div className="min-h-screen fo-glass-page fo-theme-spending">
         <div className="pt-24 flex items-center justify-center">
-          <p className="text-white/60">Checking access...</p>
+          <p className="text-white/60">Loading...</p>
         </div>
       </div>
     );
-  }
-
-  if (!isAdmin) {
-    return null;
   }
 
   return (

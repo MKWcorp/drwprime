@@ -2,8 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
 
 
 type Promo = {
@@ -62,11 +60,6 @@ function normalizeDateInput(value?: string | null): string {
 }
 
 export default function BestDealManagerPage() {
-  const router = useRouter();
-  const { user, isLoaded } = useUser();
-
-  const [checkingAuth, setCheckingAuth] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   const [promos, setPromos] = useState<Promo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -78,39 +71,6 @@ export default function BestDealManagerPage() {
   const [form, setForm] = useState<FormState>(initialForm);
 
   const activeCount = useMemo(() => promos.filter((p) => p.isActive).length, [promos]);
-
-  const checkAdminAccess = useCallback(async () => {
-    if (!user) {
-      router.push('/sign-in');
-      return;
-    }
-
-    try {
-      await fetch('/api/user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: user.emailAddresses[0]?.emailAddress,
-          firstName: user.firstName,
-          lastName: user.lastName,
-        }),
-      });
-
-      const response = await fetch('/api/user');
-      const data = await response.json();
-
-      if (data.user?.isAdmin) {
-        setIsAdmin(true);
-      } else {
-        router.push('/');
-      }
-    } catch (e) {
-      console.error('Error checking admin access:', e);
-      router.push('/');
-    } finally {
-      setCheckingAuth(false);
-    }
-  }, [router, user]);
 
   const fetchPromos = async () => {
     setLoading(true);
@@ -133,16 +93,8 @@ export default function BestDealManagerPage() {
   };
 
   useEffect(() => {
-    if (isLoaded) {
-      checkAdminAccess();
-    }
-  }, [isLoaded, checkAdminAccess]);
-
-  useEffect(() => {
-    if (isAdmin) {
-      fetchPromos();
-    }
-  }, [isAdmin]);
+    fetchPromos();
+  }, []);
 
   const resetForm = () => {
     setForm(initialForm);
@@ -308,18 +260,14 @@ export default function BestDealManagerPage() {
     }
   };
 
-  if (checkingAuth || !isLoaded) {
+  if (loading) {
     return (
       <div className="min-h-screen fo-glass-page fo-theme-dashboard">
         <div className="pt-24 flex items-center justify-center">
-          <p className="text-white/60">Checking access...</p>
+          <p className="text-white/60">Loading...</p>
         </div>
       </div>
     );
-  }
-
-  if (!isAdmin) {
-    return null;
   }
 
   return (

@@ -1,22 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
 import { uploadPublicObject, isUploadConfigured } from '@/lib/s3-upload';
 import { prisma } from '@/lib/prisma';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ALLOWED_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
-
-async function isAdminUser(): Promise<boolean> {
-  const { userId } = await auth();
-  if (!userId) return false;
-
-  const user = await prisma.user.findUnique({
-    where: { clerkUserId: userId },
-    select: { isAdmin: true },
-  });
-
-  return Boolean(user?.isAdmin);
-}
 
 function sanitizeFileName(name: string): string {
   return name
@@ -28,10 +15,6 @@ function sanitizeFileName(name: string): string {
 
 export async function POST(req: NextRequest) {
   try {
-    if (!(await isAdminUser())) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const formData = await req.formData();
     const file = formData.get('file');
 

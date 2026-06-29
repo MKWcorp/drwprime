@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useUser } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type { Html5Qrcode } from 'html5-qrcode';
 
@@ -22,11 +20,6 @@ const TIER_LABEL: Record<string, string> = {
 };
 
 export default function SpendingScanPage() {
-  const { user, isLoaded } = useUser();
-  const router = useRouter();
-
-  const [checkingAuth, setCheckingAuth] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   const [scanning, setScanning] = useState(false);
   const [manualToken, setManualToken] = useState('');
@@ -45,39 +38,6 @@ export default function SpendingScanPage() {
 
   const formatCurrency = (n: number) =>
     new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n || 0);
-
-  const checkAdminAccess = useCallback(async () => {
-    if (!user) {
-      router.push('/sign-in');
-      return;
-    }
-    try {
-      await fetch('/api/user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: user.emailAddresses[0]?.emailAddress,
-          firstName: user.firstName,
-          lastName: user.lastName,
-        }),
-      });
-      const res = await fetch('/api/user');
-      const data = await res.json();
-      if (data.user?.isAdmin) {
-        setIsAdmin(true);
-      } else {
-        router.push('/');
-      }
-    } catch {
-      router.push('/');
-    } finally {
-      setCheckingAuth(false);
-    }
-  }, [user, router]);
-
-  useEffect(() => {
-    if (isLoaded) checkAdminAccess();
-  }, [isLoaded, checkAdminAccess]);
 
   const stopScan = useCallback(async () => {
     const s = scannerRef.current;
@@ -177,18 +137,6 @@ export default function SpendingScanPage() {
     setTreatment('');
     setDate(new Date().toISOString().split('T')[0]);
   };
-
-  if (checkingAuth || !isLoaded) {
-    return (
-      <div className="min-h-screen fo-glass-page fo-theme-dashboard">
-        <div className="pt-24 flex items-center justify-center">
-          <p className="text-white/60">Checking access...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAdmin) return null;
 
   return (
     <div className="min-h-screen fo-glass-page fo-theme-dashboard">

@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useUser } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { QRCodeCanvas } from 'qrcode.react';
@@ -49,10 +47,6 @@ interface CodeReservation {
 }
 
 export default function AffiliateCodesPage() {
-  const { user, isLoaded } = useUser();
-  const router = useRouter();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [checkingAuth, setCheckingAuth] = useState(true);
   const [codes, setCodes] = useState<AffiliateCode[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState('all');
@@ -93,46 +87,6 @@ export default function AffiliateCodesPage() {
   const [actionError, setActionError] = useState('');
   const [actionSuccess, setActionSuccess] = useState('');
 
-  const checkAdminAccess = async () => {
-    if (!user) {
-      router.push('/sign-in');
-      return;
-    }
-
-    try {
-      await fetch('/api/user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: user.emailAddresses[0]?.emailAddress,
-          firstName: user.firstName,
-          lastName: user.lastName
-        })
-      });
-
-      const response = await fetch('/api/user');
-      const data = await response.json();
-      
-      if (data.user?.isAdmin) {
-        setIsAdmin(true);
-      } else {
-        router.push('/');
-      }
-    } catch (error) {
-      console.error('Error checking admin access:', error);
-      router.push('/');
-    } finally {
-      setCheckingAuth(false);
-    }
-  };
-
-  useEffect(() => {
-    if (isLoaded) {
-      checkAdminAccess();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoaded]);
-
   const fetchCodes = async () => {
     setLoading(true);
     try {
@@ -150,11 +104,9 @@ export default function AffiliateCodesPage() {
   };
 
   useEffect(() => {
-    if (isAdmin) {
-      fetchCodes();
-    }
+    fetchCodes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterStatus, isAdmin]);
+  }, [filterStatus]);
 
   const handleGenerateCode = async () => {
     try {
@@ -167,7 +119,7 @@ export default function AffiliateCodesPage() {
         body: JSON.stringify({
           customCode: customCode || null,
           notes: codeNotes || null,
-          createdBy: user?.emailAddresses[0]?.emailAddress
+          createdBy: null
         })
       });
 
@@ -450,16 +402,6 @@ export default function AffiliateCodesPage() {
       ? 'bg-green-500/20 text-green-400 border-green-500/30'
       : 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
   };
-
-  if (checkingAuth || !isLoaded) {
-    return (
-      <LoadingScreen label="Checking access..." />
-    );
-  }
-
-  if (!isAdmin) {
-    return null;
-  }
 
   return (
     <div className="min-h-screen fo-glass-page fo-theme-codes">

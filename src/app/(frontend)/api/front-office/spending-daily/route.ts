@@ -18,18 +18,6 @@ type ParsedRow = {
   keuntungan: number;
 };
 
-async function isAdminUser(): Promise<boolean> {
-  const { userId } = await auth();
-  if (!userId) return false;
-
-  const user = await prisma.user.findUnique({
-    where: { clerkUserId: userId },
-    select: { isAdmin: true },
-  });
-
-  return Boolean(user?.isAdmin);
-}
-
 function normalizeHeader(value: unknown): string {
   return String(value ?? '')
     .trim()
@@ -87,10 +75,6 @@ function startOfDay(input: Date): Date {
 
 export async function GET(req: NextRequest) {
   try {
-    if (!(await isAdminUser())) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { searchParams } = new URL(req.url);
     const dateParam = searchParams.get('date');
 
@@ -243,10 +227,6 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    if (!(await isAdminUser())) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { userId } = await auth();
     const formData = await req.formData();
     const file = formData.get('file');
@@ -432,10 +412,6 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    if (!(await isAdminUser())) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
     const all = searchParams.get('all') === 'true';
