@@ -4,20 +4,32 @@ import { useState, useEffect } from 'react';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import MobileBottomNavFO from "./MobileBottomNavFO";
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
   const { user, isLoaded } = useUser();
   const [isTeamLeader, setIsTeamLeader] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [roleChecked, setRoleChecked] = useState(false);
 
   useEffect(() => {
     if (isLoaded && user) {
       fetch('/api/user')
         .then((r) => r.json())
-        .then((data) => setIsTeamLeader(data.user?.isTeamLeader || false))
-        .catch(() => {});
+        .then((data) => {
+          setIsTeamLeader(data.user?.isTeamLeader || false);
+          setIsAdmin(data.user?.isAdmin || false);
+          setRoleChecked(true);
+        })
+        .catch(() => setRoleChecked(true));
+    } else if (isLoaded && !user) {
+      setRoleChecked(true);
     }
   }, [isLoaded, user]);
+
+  if (!roleChecked) return null;
+  if (isAdmin) return <MobileBottomNavFO />;
 
   const navItems = [
     {
