@@ -435,47 +435,47 @@ export default function FrontOfficePage() {
         <InstallPrompt />
 
         {/* Status Tracker — model pengiriman marketplace */}
-        <div className="fo-glass-card fo-fade-up fo-stagger-1 rounded-2xl border border-white/10 p-4 sm:p-6 mb-6">
+        <div className="fo-fade-up fo-stagger-1 rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-2xl p-4 sm:p-6 mb-6">
           <div className="flex items-stretch gap-0">
             {/* Pending */}
             <div className="flex flex-col items-center flex-1 relative">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-yellow-500/15 border-2 border-yellow-400/40 flex items-center justify-center mb-1.5 shadow-[0_0_20px_rgba(234,179,8,0.15)]">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-yellow-500/10 border border-yellow-400/25 flex items-center justify-center mb-1.5 backdrop-blur-sm shadow-[0_0_24px_rgba(234,179,8,0.1),inset_0_1px_0_rgba(255,255,255,0.05)]">
                 <svg className="w-6 h-6 sm:w-7 sm:h-7 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <span className="text-yellow-400 font-bold text-xl sm:text-2xl">{reservations.filter(r => r.status === 'pending').length}</span>
-              <div className="absolute top-7 sm:top-8 left-[calc(50%+2rem)] right-0 h-0.5 bg-gradient-to-r from-yellow-400/30 to-blue-400/15 mt-0.5" />
-              <span className="text-yellow-400 text-[10px] sm:text-xs font-semibold tracking-wider uppercase mt-0.5">Pending</span>
+              <div className="absolute top-7 sm:top-8 left-[calc(50%+2rem)] right-0 h-px bg-gradient-to-r from-yellow-400/25 via-white/5 to-transparent mt-0.5" />
+              <span className="text-yellow-400/80 text-[10px] sm:text-xs font-semibold tracking-wider uppercase mt-0.5">Pending</span>
             </div>
 
             {/* Confirmed */}
             <div className="flex flex-col items-center flex-1 relative">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-blue-500/15 border-2 border-blue-400/40 flex items-center justify-center mb-1.5 shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-blue-500/10 border border-blue-400/25 flex items-center justify-center mb-1.5 backdrop-blur-sm shadow-[0_0_24px_rgba(59,130,246,0.1),inset_0_1px_0_rgba(255,255,255,0.05)]">
                 <svg className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <span className="text-blue-400 font-bold text-xl sm:text-2xl">{reservations.filter(r => r.status === 'confirmed').length}</span>
-              <div className="absolute top-7 sm:top-8 left-[calc(50%+2rem)] right-0 h-0.5 bg-gradient-to-r from-blue-400/30 to-green-400/15 mt-0.5" />
-              <span className="text-blue-400 text-[10px] sm:text-xs font-semibold tracking-wider uppercase mt-0.5">Confirmed</span>
+              <div className="absolute top-7 sm:top-8 left-[calc(50%+2rem)] right-0 h-px bg-gradient-to-r from-blue-400/25 via-white/5 to-transparent mt-0.5" />
+              <span className="text-blue-400/80 text-[10px] sm:text-xs font-semibold tracking-wider uppercase mt-0.5">Confirmed</span>
             </div>
 
             {/* Completed */}
             <div className="flex flex-col items-center flex-1 relative">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-green-500/15 border-2 border-green-400/40 flex items-center justify-center mb-1.5 shadow-[0_0_20px_rgba(34,197,94,0.15)]">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-green-500/10 border border-green-400/25 flex items-center justify-center mb-1.5 backdrop-blur-sm shadow-[0_0_24px_rgba(34,197,94,0.1),inset_0_1px_0_rgba(255,255,255,0.05)]">
                 <svg className="w-6 h-6 sm:w-7 sm:h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M5 13l4 4L19 7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
               <span className="text-green-400 font-bold text-xl sm:text-2xl">{reservations.filter(r => r.status === 'completed').length}</span>
-              <span className="text-green-400 text-[10px] sm:text-xs font-semibold tracking-wider uppercase mt-0.5">Selesai</span>
+              <span className="text-green-400/80 text-[10px] sm:text-xs font-semibold tracking-wider uppercase mt-0.5">Selesai</span>
             </div>
           </div>
         </div>
 
         {/* Total Today */}
-        <div className="fo-glass-card fo-fade-up fo-stagger-2 rounded-2xl border-2 border-primary/30 p-5 sm:p-6 mb-10 text-center bg-primary/[0.04]">
+        <div className="fo-fade-up fo-stagger-2 rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(212,175,55,0.06),rgba(212,175,55,0.02))] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-2xl p-5 sm:p-6 mb-10 text-center">
           <p className="text-white/50 text-sm mb-1 tracking-wide flex items-center justify-center gap-1.5">
             <svg className="w-4 h-4 text-primary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
