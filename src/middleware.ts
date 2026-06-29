@@ -17,6 +17,7 @@ const isPublicRoute = createRouteMatcher([
   // Payload CMS (has its own auth)
   '/cms(.*)',
   '/cms-api(.*)',
+  '/api/cms-auto-login',
   '/api/treatments(.*)',
   '/api/best-deals(.*)',
   '/api/blog(.*)',
@@ -37,6 +38,11 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
+  // Auto-login for Payload CMS — bypass the login page
+  if (req.nextUrl.pathname === '/cms/login') {
+    return Response.redirect(new URL('/api/cms-auto-login', req.url));
+  }
+
   if (!isPublicRoute(req)) {
     await auth.protect();
   }
