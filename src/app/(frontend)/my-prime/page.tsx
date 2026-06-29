@@ -1,7 +1,8 @@
 ﻿'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useUser } from '@clerk/nextjs';
+import { useUser, useClerk } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import MobileLayout from '@/components/MobileLayout';
@@ -73,6 +74,8 @@ const TIER_CONFIG = {
 
 export default function MyPrimePage() {
   const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
+  const router = useRouter();
   const [membership, setMembership] = useState<MembershipData | null>(null);
   const [profileComplete, setProfileComplete] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
@@ -451,6 +454,19 @@ export default function MyPrimePage() {
                   </div>
                 )}
               </div>
+            </div>
+
+            {/* Logout */}
+            <div className="mt-8 mb-4 fo-fade-up">
+              <button
+                onClick={() => signOut(() => router.push('/'))}
+                className="w-full fo-glass-card-soft border-red-500/20 text-red-400 hover:text-red-300 hover:bg-red-500/10 hover:border-red-500/35 font-semibold py-3.5 rounded-xl transition-all duration-300 text-sm flex items-center justify-center gap-2 group"
+              >
+                <svg className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Keluar
+              </button>
             </div>
 
           </div>
