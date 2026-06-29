@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
+import { usePathname, useRouter } from "next/navigation";
+import { useUser, useClerk } from "@clerk/nextjs";
 import MobileBottomNavFO from "./MobileBottomNavFO";
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
   const [isTeamLeader, setIsTeamLeader] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [roleChecked, setRoleChecked] = useState(false);
@@ -30,6 +32,8 @@ export default function MobileBottomNav() {
 
   if (!roleChecked) return null;
   if (isAdmin) return <MobileBottomNavFO />;
+
+  const handleSignOut = () => signOut(() => router.push('/'));
 
   const navItems = [
     {
@@ -59,15 +63,6 @@ export default function MobileBottomNav() {
         </svg>
       ),
     },
-    {
-      name: "Akun",
-      href: "/my-prime",
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-        </svg>
-      ),
-    },
     isTeamLeader
       ? {
           name: 'Afiliasi',
@@ -87,6 +82,16 @@ export default function MobileBottomNav() {
             </svg>
           ),
         },
+    {
+      name: "Keluar",
+      href: "#",
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg>
+      ),
+      action: 'signout' as const,
+    },
   ];
 
   const isActive = (href: string) => {
@@ -99,6 +104,22 @@ export default function MobileBottomNav() {
       <div className="mx-auto max-w-md rounded-[1.9rem] border border-white/15 bg-[linear-gradient(180deg,rgba(28,34,46,0.55),rgba(10,14,22,0.42))] shadow-[0_10px_34px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-2xl backdrop-saturate-150">
         <div className="grid grid-cols-5 gap-1 px-2 pt-2 pb-1.5">
         {navItems.map((item) => {
+          if ('action' in item && item.action === 'signout') {
+            return (
+              <button
+                key={item.name}
+                onClick={handleSignOut}
+                className="group flex flex-col items-center justify-start gap-1 py-1 transition-colors text-white/70"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-transparent bg-white/0 group-hover:bg-red-500/10 group-hover:border-red-500/20 transition-all duration-300 group-active:scale-95">
+                  {item.icon}
+                </div>
+                <span className="text-[10.5px] leading-none font-medium tracking-tight text-white/65 group-hover:text-red-400 transition-colors">
+                  {item.name}
+                </span>
+              </button>
+            );
+          }
           const active = isActive(item.href);
 
           return (
