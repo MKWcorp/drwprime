@@ -217,6 +217,15 @@ export async function GET() {
       }, { status: 200 });
     }
 
+    // Recalculate admin status from hardcoded list (in case DB is stale)
+    const isAdmin = user.isAdmin || ADMIN_USER_IDS.includes(userId);
+    if (isAdmin && !user.isAdmin) {
+      await prisma.user.update({
+        where: { clerkUserId: userId },
+        data: { isAdmin: true }
+      });
+    }
+
     // Calculate additional fields
     const totalReferrals = user.referrals.length;
     const loyaltyLevel = getLoyaltyLevel(user.loyaltyPoints);
@@ -232,6 +241,7 @@ export async function GET() {
     return NextResponse.json({ 
       user: {
         ...user,
+        isAdmin,
         totalReferrals,
         loyaltyLevel,
         teamMembersCount
