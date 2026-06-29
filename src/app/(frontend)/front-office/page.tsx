@@ -434,32 +434,49 @@ export default function FrontOfficePage() {
         {/* Install App (mobile, untuk FO) */}
         <InstallPrompt />
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
-          <div className="fo-glass-card fo-fade-up fo-stagger-1 rounded-xl p-6 border-yellow-500/35">
-            <p className="text-yellow-400 text-sm mb-2">Pending</p>
-            <p className="font-playfair text-3xl font-bold text-yellow-400">
-              {reservations.filter(r => r.status === 'pending').length}
-            </p>
+        {/* Status Tracker — model pengiriman marketplace */}
+        <div className="fo-glass-card fo-fade-up fo-stagger-1 rounded-2xl border border-white/10 p-4 sm:p-6 mb-6">
+          <div className="flex items-stretch gap-0">
+            {/* Pending */}
+            <div className="flex flex-col items-center flex-1 relative">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-yellow-500/20 border-2 border-yellow-400/50 flex items-center justify-center mb-2">
+                <span className="text-yellow-400 font-bold text-lg sm:text-xl">
+                  {reservations.filter(r => r.status === 'pending').length}
+                </span>
+              </div>
+              <div className="absolute top-6 sm:top-7 left-[calc(50%+1.5rem)] right-0 h-0.5 bg-gradient-to-r from-yellow-400/40 to-blue-400/20" />
+              <span className="text-yellow-400 text-[10px] sm:text-xs font-semibold tracking-wider uppercase mt-0.5">Pending</span>
+            </div>
+
+            {/* Confirmed */}
+            <div className="flex flex-col items-center flex-1 relative">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-500/20 border-2 border-blue-400/50 flex items-center justify-center mb-2">
+                <span className="text-blue-400 font-bold text-lg sm:text-xl">
+                  {reservations.filter(r => r.status === 'confirmed').length}
+                </span>
+              </div>
+              <div className="absolute top-6 sm:top-7 left-[calc(50%+1.5rem)] right-0 h-0.5 bg-gradient-to-r from-blue-400/40 to-green-400/20" />
+              <span className="text-blue-400 text-[10px] sm:text-xs font-semibold tracking-wider uppercase mt-0.5">Confirmed</span>
+            </div>
+
+            {/* Completed */}
+            <div className="flex flex-col items-center flex-1 relative">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-green-500/20 border-2 border-green-400/50 flex items-center justify-center mb-2">
+                <span className="text-green-400 font-bold text-lg sm:text-xl">
+                  {reservations.filter(r => r.status === 'completed').length}
+                </span>
+              </div>
+              <span className="text-green-400 text-[10px] sm:text-xs font-semibold tracking-wider uppercase mt-0.5">Selesai</span>
+            </div>
           </div>
-          <div className="fo-glass-card fo-fade-up fo-stagger-2 rounded-xl p-6 border-blue-500/35">
-            <p className="text-blue-400 text-sm mb-2">Confirmed</p>
-            <p className="font-playfair text-3xl font-bold text-blue-400">
-              {reservations.filter(r => r.status === 'confirmed').length}
-            </p>
-          </div>
-          <div className="fo-glass-card fo-fade-up fo-stagger-3 rounded-xl p-6 border-green-500/35">
-            <p className="text-green-400 text-sm mb-2">Completed</p>
-            <p className="font-playfair text-3xl font-bold text-green-400">
-              {reservations.filter(r => r.status === 'completed').length}
-            </p>
-          </div>
-          <div className="fo-glass-card fo-fade-up fo-stagger-4 rounded-xl p-6 border-primary/40">
-            <p className="text-primary text-sm mb-2">Total Today</p>
-            <p className="font-playfair text-3xl font-bold text-primary">
-              {reservations.length}
-            </p>
-          </div>
+        </div>
+
+        {/* Total Today */}
+        <div className="fo-glass-card fo-fade-up fo-stagger-2 rounded-2xl border-2 border-primary/30 p-5 sm:p-6 mb-10 text-center bg-primary/[0.04]">
+          <p className="text-white/50 text-sm mb-1 tracking-wide">Total Reservasi Hari Ini</p>
+          <p className="font-playfair text-4xl sm:text-5xl font-bold text-primary">
+            {reservations.length}
+          </p>
         </div>
 
         {/* Reservations List */}
