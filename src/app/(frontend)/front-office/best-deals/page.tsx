@@ -4,8 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
-import Navbar from '@/components/Navbar';
-import MobileLayout from '@/components/MobileLayout';
+
 
 type Promo = {
   id: string;
@@ -311,14 +310,11 @@ export default function BestDealManagerPage() {
 
   if (checkingAuth || !isLoaded) {
     return (
-      <MobileLayout>
-        <div className="min-h-screen fo-glass-page fo-theme-dashboard">
-          <Navbar />
-          <div className="pt-24 flex items-center justify-center">
-            <p className="text-white/60">Checking access...</p>
-          </div>
+      <div className="min-h-screen fo-glass-page fo-theme-dashboard">
+        <div className="pt-24 flex items-center justify-center">
+          <p className="text-white/60">Checking access...</p>
         </div>
-      </MobileLayout>
+      </div>
     );
   }
 
@@ -327,11 +323,8 @@ export default function BestDealManagerPage() {
   }
 
   return (
-    <MobileLayout>
-      <div className="min-h-screen fo-glass-page fo-theme-dashboard">
-        <Navbar />
-
-        <div className="pt-20 pb-10">
+    <div className="min-h-screen fo-glass-page fo-theme-dashboard">
+      <div className="pt-20 pb-10">
           <div className="max-w-7xl mx-auto px-4 py-6">
             <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
               <div>
@@ -606,7 +599,6 @@ export default function BestDealManagerPage() {
             </div>
           </div>
         </div>
-      </div>
-    </MobileLayout>
+    </div>
   );
 }

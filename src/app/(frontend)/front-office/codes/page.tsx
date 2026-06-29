@@ -466,18 +466,18 @@ export default function AffiliateCodesPage() {
       <div className="max-w-7xl mx-auto px-5 py-10">
         {/* Header */}
         <div className="mb-10 fo-fade-up">
-          <div className="flex items-center justify-between mb-6">
-            <div>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div className="flex-1">
               <Link 
                 href="/front-office"
-                className="fo-nav-chip text-sm mb-3"
+                className="fo-nav-chip text-sm mb-3 inline-block"
               >
                 Back to Reservations
               </Link>
-              <h1 className="font-playfair text-4xl md:text-5xl font-bold text-primary mb-2">
+              <h1 className="font-playfair text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-2 leading-tight">
                 Affiliate Codes
               </h1>
-              <p className="text-white/70 text-lg">
+              <p className="text-white/70 text-base sm:text-lg">
                 Generate and manage pre-claim affiliate codes
               </p>
             </div>
@@ -486,7 +486,7 @@ export default function AffiliateCodesPage() {
               alt="DRW Prime" 
               width={120}
               height={40}
-              className="h-10 w-auto"
+              className="h-9 w-auto sm:h-10 shrink-0"
             />
           </div>
         </div>

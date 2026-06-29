@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import FrontOfficeShell from '@/components/FrontOfficeShell';
 
 export const metadata: Metadata = {
   title: 'Front Office',
@@ -10,5 +11,5 @@ export default function FrontOfficeLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return <FrontOfficeShell>{children}</FrontOfficeShell>;
 }

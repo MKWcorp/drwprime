@@ -368,54 +368,54 @@ export default function FrontOfficePage() {
       <div className="max-w-7xl mx-auto px-5 py-10">
         {/* Header */}
         <div className="mb-10 fo-fade-up">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="font-playfair text-4xl md:text-5xl font-bold text-primary mb-2">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div className="flex-1">
+              <h1 className="font-playfair text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-2 leading-tight">
                 Front Office Dashboard
               </h1>
-              <p className="text-white/70 text-lg">
+              <p className="text-white/70 text-base sm:text-lg">
                 Manage reservations and appointments
               </p>
-              <div className="flex flex-wrap gap-3 mt-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap gap-2.5 mt-4">
                 <Link 
                   href="/front-office/codes"
-                  className="fo-nav-chip text-sm"
+                  className="fo-nav-chip text-sm text-center"
                 >
                   Manage Affiliate Codes
                 </Link>
                 <Link 
                   href="/front-office/report"
-                  className="fo-nav-chip text-sm"
+                  className="fo-nav-chip text-sm text-center"
                 >
                   Report Affiliator
                 </Link>
                 <Link 
                   href="/front-office/completed-profiles"
-                  className="fo-nav-chip text-sm"
+                  className="fo-nav-chip text-sm text-center"
                 >
                   Report Profil Lengkap
                 </Link>
                 <Link 
                   href="/front-office/spending-scan"
-                  className="fo-nav-chip text-sm"
+                  className="fo-nav-chip text-sm text-center"
                 >
                   Catat Spending (Scan)
                 </Link>
                 <Link 
                   href="/front-office/report-spending-daily"
-                  className="fo-nav-chip text-sm"
+                  className="fo-nav-chip text-sm text-center"
                 >
                   Report Spending Daily
                 </Link>
                 <Link 
                   href="/front-office/best-deals"
-                  className="fo-nav-chip text-sm"
+                  className="fo-nav-chip text-sm text-center"
                 >
                   Best Deal Manager
                 </Link>
                 <Link 
                   href="/front-office/blog"
-                  className="fo-nav-chip text-sm"
+                  className="fo-nav-chip text-sm text-center col-span-2 sm:col-span-1"
                 >
                   Blog Manager
                 </Link>
@@ -426,7 +426,7 @@ export default function FrontOfficePage() {
               alt="DRW Prime" 
               width={120}
               height={40}
-              className="h-10 w-auto"
+              className="h-9 w-auto sm:h-10 shrink-0"
             />
           </div>
         </div>

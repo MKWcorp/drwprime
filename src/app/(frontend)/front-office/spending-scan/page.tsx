@@ -4,8 +4,6 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Navbar from '@/components/Navbar';
-import MobileLayout from '@/components/MobileLayout';
 import type { Html5Qrcode } from 'html5-qrcode';
 
 interface MemberInfo {
@@ -182,24 +180,19 @@ export default function SpendingScanPage() {
 
   if (checkingAuth || !isLoaded) {
     return (
-      <MobileLayout>
-        <div className="min-h-screen fo-glass-page fo-theme-dashboard">
-          <Navbar />
-          <div className="pt-24 flex items-center justify-center">
-            <p className="text-white/60">Checking access...</p>
-          </div>
+      <div className="min-h-screen fo-glass-page fo-theme-dashboard">
+        <div className="pt-24 flex items-center justify-center">
+          <p className="text-white/60">Checking access...</p>
         </div>
-      </MobileLayout>
+      </div>
     );
   }
 
   if (!isAdmin) return null;
 
   return (
-    <MobileLayout>
-      <div className="min-h-screen fo-glass-page fo-theme-dashboard">
-        <Navbar />
-        <div className="pt-20 pb-10">
+    <div className="min-h-screen fo-glass-page fo-theme-dashboard">
+      <div className="pt-20 pb-10">
           <div className="max-w-lg mx-auto px-4 py-6 fo-fade-up">
             <div className="flex items-center justify-between gap-3 mb-6">
               <div>
@@ -336,7 +329,6 @@ export default function SpendingScanPage() {
             )}
           </div>
         </div>
-      </div>
-    </MobileLayout>
+    </div>
   );
 }

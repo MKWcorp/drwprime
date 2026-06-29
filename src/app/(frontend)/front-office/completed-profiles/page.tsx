@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import ExcelJS from 'exceljs';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import Navbar from '@/components/Navbar';
-import MobileLayout from '@/components/MobileLayout';
 import { Hourglass } from '@/components/LoadingScreen';
 
 interface CompletedProfile {
@@ -119,22 +117,17 @@ export default function CompletedProfilesPage() {
 
   if (!isLoaded || loading) {
     return (
-      <MobileLayout>
-        <div className="min-h-screen fo-glass-page fo-theme-dashboard">
-          <Navbar />
-          <div className="pt-20 flex items-center justify-center">
-            <Hourglass size={56} />
-          </div>
+      <div className="min-h-screen fo-glass-page fo-theme-dashboard">
+        <div className="pt-20 flex items-center justify-center">
+          <Hourglass size={56} />
         </div>
-      </MobileLayout>
+      </div>
     );
   }
 
   return (
-    <MobileLayout>
-      <div className="min-h-screen fo-glass-page fo-theme-dashboard">
-        <Navbar />
-        <div className="pt-20">
+    <div className="min-h-screen fo-glass-page fo-theme-dashboard">
+      <div className="pt-20">
           <div className="max-w-7xl mx-auto px-4 py-6 fo-fade-up">
             {/* Header */}
             <div className="mb-6">
@@ -220,7 +213,6 @@ export default function CompletedProfilesPage() {
             </div>
           </div>
         </div>
-      </div>
-    </MobileLayout>
+    </div>
   );
 }
