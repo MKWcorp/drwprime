@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.drwprime.app",
+    "sha256_cert_fingerprints": [
+      "09:AB:B4:49:B3:EC:24:6E:E4:9E:46:3E:0F:00:45:52:EF:AB:24:A9:25:3B:E5:70:BA:C4:54:B7:25:10:32:EF"
+    ]
+  }
+}]
